@@ -26,7 +26,8 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     // Charger la feuille de personnage
-    std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters");
+    std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters/Idle");
+    std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
 
     // Créer un sprite pour le joueur
     sf::Sprite Player;
@@ -45,9 +46,10 @@ int main()
     // permet animation
     int currentFrame = 0;
     sf::Clock animationClock;
+    bool isRunning = false;
 
-    float gravity = 5.0f; // gravity force (decreased for longer jumps)
-    float velocity = 1.0f; // initial vertical velocity
+    float gravity = 0.1f; // gravity force (decreased for longer jumps)
+    float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
     bool wasZPressed = false; // was the space key pressed during the last iteration?
 
@@ -66,19 +68,21 @@ int main()
                 window.close();
         }
 
-        // Charger la feuille de personnage
-        std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            isRunning = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
+                Player.setTexture(runningCharacterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isRunning = false;
+        }
 
-        // Changer l'animation toutes les 0,5 secondes
-        sf::Time timeSinceLastAnimation = animationClock.getElapsedTime();
-        if (timeSinceLastAnimation.asSeconds() >= 0.5f) {
-            // Définir la texture du joueur sur le cadre actuel de l'animation
-            Player.setTexture(characterSheet[currentFrame]);
-
-            // Incrémenter le cadre actuel
+        if (!isRunning && animationClock.getElapsedTime().asSeconds() > 0.1f) {
             currentFrame = (currentFrame + 1) % characterSheet.size();
-
-            // Redémarrer l'horloge d'animation
+            Player.setTexture(characterSheet[currentFrame]);
             animationClock.restart();
         }
 
@@ -111,16 +115,16 @@ int main()
         bool isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
         if (isZPressed && !wasZPressed && jumps < 2)
         {
-            velocity = jumps == 0 ? -60.0f : -60.0f; // higher jump for the second jump
+            velocity = jumps == 0 ? -8.0f : -8.0f; // higher jump for the second jump
             jumps++;
         }
         wasZPressed = isZPressed;
 
         // move the player
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && Player.getGlobalBounds().left > 0)
-            Player.move(-30, 0);
+            Player.move(-3, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)
-            Player.move(30, 0);
+            Player.move(3, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getGlobalBounds().top + Player.getGlobalBounds().height < window.getSize().y)
             Player.move(0, 15);
 
@@ -129,12 +133,12 @@ int main()
         if (!isDashing && timeSinceLastDash.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getGlobalBounds().left > 0) {
                 isDashing = true;
-                dashDirection = -80.0f;
+                dashDirection = -20.0f;
                 dashClock.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) {
                 isDashing = true;
-                dashDirection = 80.0f;
+                dashDirection = 20.0f;
                 dashClock.restart();
             }
         }
