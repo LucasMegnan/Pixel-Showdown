@@ -2,24 +2,42 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Circle", sf::Style::Fullscreen);
+
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Le jeu de la mort qui tue", sf::Style::Fullscreen);
+    sf::Texture t;
+    t.loadFromFile("imgs/image.png");
+    sf::Sprite s(t);
     window.setVerticalSyncEnabled(true);
 
     sf::RectangleShape Player(sf::Vector2f(75,75));
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
-    Player.setFillColor(sf::Color::Green);
+
     rectangle.setFillColor(sf::Color::Red); // fill color
     rectangle2.setFillColor(sf::Color::Red); // fill color
     Player.setPosition(375, 275);
     rectangle.setPosition(200, 600); // position in the middle of the window
     rectangle2.setPosition(1400, 600); // position in the middle of the window
 
+    sf::Clock animationClock;
+    int currentFrame = 0;
+    int numberOfFrames = 5;
+    sf::Texture standbyTexture [5];
+
+    // load the textures 
+    standbyTexture[0].loadFromFile("imgs/Character/sb1.png");
+    standbyTexture[1].loadFromFile("imgs/Character/sb2.png");
+    standbyTexture[2].loadFromFile("imgs/Character/sb3.png");
+    standbyTexture[3].loadFromFile("imgs/Character/sb4.png");
+    standbyTexture[4].loadFromFile("imgs/Character/sb5.png");
+>>>>>>> 2937fd5c9392bda75cffb836d3c0cf2232fbd862
+
     float gravity = 0.3f; // gravity force (decreased for longer jumps)
     float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
     bool wasZPressed = false; // was the space key pressed during the last iteration?
     bool isDashing = false;
+
 
     while (window.isOpen())
     {
@@ -28,6 +46,21 @@ int main()
         {
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 window.close();
+        }
+
+        // animation
+        sf::Time timeSinceLastFrame = animationClock.getElapsedTime();
+        if (timeSinceLastFrame.asSeconds() >= 1.0f) { // 1 second cooldown
+            if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::E) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::Q) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
+                !sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+                currentFrame = (currentFrame + 1) % numberOfFrames;
+                Player.setTexture(&standbyTexture[currentFrame]);
+                animationClock.restart();
+            }
         }
 
         // apply gravity
@@ -67,9 +100,6 @@ int main()
         }
         wasZPressed = isZPressed;
 
-        sf::Clock dashClock;
-        float dashDistance = 0.0f;
-
         // move the player
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && Player.getPosition().x > 0)
             Player.move(-5, 0);
@@ -78,27 +108,30 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getPosition().y + Player.getSize().y < window.getSize().y)
             Player.move(0, 8);
 
+        // dash the player
         sf::Time timeSinceLastDash = dashClock.getElapsedTime();
         if (!isDashing && timeSinceLastDash.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
                 isDashing = true;
+                dashDirection = -80.0f;
                 dashClock.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
                 isDashing = true;
+                dashDirection = 80.0f;
                 dashClock.restart();
             }
         }
 
         if (isDashing) {
             if (dashDistance < 500.0f) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
-                    Player.move(-40, 0);
-                    dashDistance += 40.0f;
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
-                    Player.move(40, 0);
-                    dashDistance += 40.0f;
+                if ((dashDirection < 0 && Player.getPosition().x > 0) || 
+                    (dashDirection > 0 && Player.getPosition().x + Player.getSize().x < window.getSize().x)) {
+                    Player.move(dashDirection, 0);
+                    dashDistance += std::abs(dashDirection);
+                } else {
+                    isDashing = false;
+                    dashDistance = 0.0f;
                 }
             } else {
                 isDashing = false;
@@ -106,7 +139,9 @@ int main()
             }
         }
 
-        window.clear();
+        window.clear(sf::Color::Black);
+        window.draw(s);
+>>>>>>> 2937fd5c9392bda75cffb836d3c0cf2232fbd862
         window.draw(Player);
         window.draw(rectangle);
         window.draw(rectangle2);
