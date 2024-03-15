@@ -19,18 +19,54 @@ int main()
     rectangle.setPosition(200, 600); // position in the middle of the window
     rectangle2.setPosition(1400, 600); // position in the middle of the window
 
-    sf::Clock animationClock;
-    int currentFrame = 0;
-    int numberOfFrames = 5;
-    sf::Texture standbyTexture [5];
+    bool lastMoveRight = true; // true if the last move was to the right, false if it was to the left
 
+    sf::Clock standbyClock;
+    int currentFrame = 0;
+    int numberOfFramesstandby = 5;
+    sf::Texture standbyTexture [5];
     // load the textures 
     standbyTexture[0].loadFromFile("imgs/Character/sb1.png");
     standbyTexture[1].loadFromFile("imgs/Character/sb2.png");
     standbyTexture[2].loadFromFile("imgs/Character/sb3.png");
     standbyTexture[3].loadFromFile("imgs/Character/sb4.png");
     standbyTexture[4].loadFromFile("imgs/Character/sb5.png");
->>>>>>> 2937fd5c9392bda75cffb836d3c0cf2232fbd862
+
+
+    sf::Clock standbyiClock;
+    int numberOfFramesstandbyi = 5;
+    sf::Texture standbyiTexture [5];
+    // load the textures
+    standbyiTexture[0].loadFromFile("imgs/Character/sbi1.png");
+    standbyiTexture[1].loadFromFile("imgs/Character/sbi2.png");
+    standbyiTexture[2].loadFromFile("imgs/Character/sbi3.png");
+    standbyiTexture[3].loadFromFile("imgs/Character/sbi4.png");
+    standbyiTexture[4].loadFromFile("imgs/Character/sbi5.png");
+
+    sf::Clock leftwalkClock;
+    int numberOfFramesleftwalk = 7;
+    sf::Texture leftwalkTexture [7];
+    // load the textures
+    leftwalkTexture[0].loadFromFile("imgs/Character/move1.png");
+    leftwalkTexture[1].loadFromFile("imgs/Character/move2.png");
+    leftwalkTexture[2].loadFromFile("imgs/Character/move3.png");
+    leftwalkTexture[3].loadFromFile("imgs/Character/move4.png");
+    leftwalkTexture[4].loadFromFile("imgs/Character/move5.png");
+    leftwalkTexture[5].loadFromFile("imgs/Character/move6.png");
+    leftwalkTexture[6].loadFromFile("imgs/Character/move7.png");
+
+    sf::Clock rightwalkClock;
+    int numberOfFramesrightwalk = 8;
+    sf::Texture rightwalkTexture [8];
+    // load the textures
+    rightwalkTexture[0].loadFromFile("imgs/Character/movei1.png");
+    rightwalkTexture[1].loadFromFile("imgs/Character/movei2.png");
+    rightwalkTexture[2].loadFromFile("imgs/Character/movei3.png");
+    rightwalkTexture[3].loadFromFile("imgs/Character/movei4.png");
+    rightwalkTexture[4].loadFromFile("imgs/Character/movei5.png");
+    rightwalkTexture[5].loadFromFile("imgs/Character/movei6.png");
+    rightwalkTexture[6].loadFromFile("imgs/Character/movei7.png");
+    rightwalkTexture[7].loadFromFile("imgs/Character/movei8.png");
 
     float gravity = 0.3f; // gravity force (decreased for longer jumps)
     float velocity = 0.0f; // initial vertical velocity
@@ -49,18 +85,40 @@ int main()
         }
 
         // animation
-        sf::Time timeSinceLastFrame = animationClock.getElapsedTime();
-        if (timeSinceLastFrame.asSeconds() >= 1.0f) { // 1 second cooldown
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            // Handle D key press
+            lastMoveRight = true;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            // Handle Q key press
+            lastMoveRight = false;
+        }
+
+        sf::Time timeSinceLastStandbyFrame = standbyClock.getElapsedTime();
+        if (timeSinceLastStandbyFrame.asSeconds() >= 1.0f) { // 1 second cooldown
             if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::E) &&
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::Q) &&
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-                currentFrame = (currentFrame + 1) % numberOfFrames;
-                Player.setTexture(&standbyTexture[currentFrame]);
-                animationClock.restart();
+                currentFrame = (currentFrame + 1) % (lastMoveRight ? numberOfFramesstandby : numberOfFramesstandbyi);
+                Player.setTexture(lastMoveRight ? &standbyiTexture[currentFrame] : &standbyTexture[currentFrame]);
+                standbyClock.restart();
             }
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            currentFrame = (currentFrame + 5) % numberOfFramesleftwalk;
+            Player.setTexture(&leftwalkTexture[currentFrame]);
+            standbyClock.restart();
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            currentFrame = (currentFrame + 5) % numberOfFramesrightwalk;
+            Player.setTexture(&rightwalkTexture[currentFrame]);
+            standbyClock.restart();
         }
 
         // apply gravity
