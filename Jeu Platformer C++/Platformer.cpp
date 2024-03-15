@@ -28,6 +28,7 @@ int main()
     // Charger la feuille de personnage
     std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters/Idle");
     std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
+    std::vector<sf::Texture> runLCharecterSheet = loadCharacterSheet("Imgs/Characters/RunL");
 
     // Créer un sprite pour le joueur
     sf::Sprite Player;
@@ -47,6 +48,7 @@ int main()
     int currentFrame = 0;
     sf::Clock animationClock;
     bool isRunning = false;
+    bool isRunningL = false;
 
     float gravity = 0.1f; // gravity force (decreased for longer jumps)
     float velocity = 0.0f; // initial vertical velocity
@@ -78,6 +80,18 @@ int main()
             }
         } else {
             isRunning = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            isRunningL = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
+                Player.setTexture(runLCharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isRunningL = false;
         }
 
         if (!isRunning && animationClock.getElapsedTime().asSeconds() > 0.1f) {
