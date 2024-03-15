@@ -8,7 +8,7 @@ int main()
     sf::Sprite s(t);
     window.setVerticalSyncEnabled(true);
 
-    sf::RectangleShape Player(sf::Vector2f(75,75));
+    sf::RectangleShape Player(sf::Vector2f(125,125));
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
     rectangle.setFillColor(sf::Color::Red); // fill color
@@ -19,7 +19,8 @@ int main()
 
     bool lastMoveRight = true; // true if the last move was to the right, false if it was to the left
 
-    sf::Clock standbyClock;
+    sf::Clock animationClock;
+
     int currentFrame = 0;
     int numberOfFramesstandby = 5;
     sf::Texture standbyTexture [5];
@@ -96,7 +97,7 @@ int main()
             lastMoveRight = false;
         }
 
-        sf::Time timeSinceLastStandbyFrame = standbyClock.getElapsedTime();
+        sf::Time timeSinceLastStandbyFrame = animationClock.getElapsedTime();
         if (timeSinceLastStandbyFrame.asSeconds() >= 1.0f) { // 1 second cooldown
             if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) && 
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::E) &&
@@ -106,20 +107,27 @@ int main()
                 !sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
                 currentFrame = (currentFrame + 1) % (lastMoveRight ? numberOfFramesstandby : numberOfFramesstandbyi);
                 Player.setTexture(lastMoveRight ? &standbyiTexture[currentFrame] : &standbyTexture[currentFrame]);
-                standbyClock.restart();
+                animationClock.restart();
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            currentFrame = (currentFrame + 5) % numberOfFramesleftwalk;
-            Player.setTexture(&leftwalkTexture[currentFrame]);
-            standbyClock.restart();
+        sf::Time timeSinceLastLeftWalkFrame = leftwalkClock.getElapsedTime();
+        sf::Time timeSinceLastRightWalkFrame = rightwalkClock.getElapsedTime(); // Add this line
+
+        if (timeSinceLastLeftWalkFrame.asSeconds() >= 0.1f) { 
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                currentFrame = (currentFrame + 1) % numberOfFramesleftwalk;
+                Player.setTexture(&leftwalkTexture[currentFrame]);
+                leftwalkClock.restart();
+            }
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            currentFrame = (currentFrame + 5) % numberOfFramesrightwalk;
-            Player.setTexture(&rightwalkTexture[currentFrame]);
-            standbyClock.restart();
+        if (timeSinceLastRightWalkFrame.asSeconds() >= 0.1f) { // Change this line
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                currentFrame = (currentFrame + 5) % numberOfFramesrightwalk;
+                Player.setTexture(&rightwalkTexture[currentFrame]);
+                rightwalkClock.restart(); // Change this line
+            }
         }
 
         // apply gravity
@@ -151,7 +159,7 @@ int main()
         }
 
         // jump
-        bool isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Z);
+        bool isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
         if (isZPressed && !wasZPressed && jumps < 2)
         {
             velocity = jumps == 0 ? -15.0f : -15.0f; // higher jump for the second jump
