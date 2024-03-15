@@ -19,7 +19,12 @@ int main()
     float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
     bool wasZPressed = false; // was the space key pressed during the last iteration?
+
     bool isDashing = false;
+    float dashDistance = 0.0f;
+    float dashDirection = 0.0f;
+
+    sf::Clock dashClock;
 
     while (window.isOpen())
     {
@@ -67,9 +72,6 @@ int main()
         }
         wasZPressed = isZPressed;
 
-        sf::Clock dashClock;
-        float dashDistance = 0.0f;
-
         // move the player
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && Player.getPosition().x > 0)
             Player.move(-5, 0);
@@ -78,28 +80,25 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getPosition().y + Player.getSize().y < window.getSize().y)
             Player.move(0, 8);
 
+        // dash the player
         sf::Time timeSinceLastDash = dashClock.getElapsedTime();
         if (!isDashing && timeSinceLastDash.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
                 isDashing = true;
+                dashDirection = -80.0f;
                 dashClock.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
                 isDashing = true;
+                dashDirection = 80.0f;
                 dashClock.restart();
             }
         }
 
         if (isDashing) {
-            if (dashDistance < 500.0f) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
-                    Player.move(-40, 0);
-                    dashDistance += 40.0f;
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
-                    Player.move(40, 0);
-                    dashDistance += 40.0f;
-                }
+            if (dashDistance < 850.0f) {
+                Player.move(dashDirection, 0);
+                dashDistance += std::abs(dashDirection);
             } else {
                 isDashing = false;
                 dashDistance = 0.0f;
