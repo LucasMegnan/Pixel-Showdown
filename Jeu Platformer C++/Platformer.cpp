@@ -19,6 +19,7 @@ int main()
     float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
     bool wasZPressed = false; // was the space key pressed during the last iteration?
+    bool isDashing = false;
 
     while (window.isOpen())
     {
@@ -50,9 +51,9 @@ int main()
         }
 
         // collision with the bottom of the screen
-        if (Player.getPosition().y + 2 * Player.getSize().y > window.getSize().y)
+        if (Player.getPosition().y + Player.getSize().y > window.getSize().y)
         {
-            Player.setPosition(Player.getPosition().x, window.getSize().y - 2 * Player.getSize().y);
+            Player.setPosition(Player.getPosition().x, window.getSize().y - Player.getSize().y);
             velocity = 0.0f;
             jumps =  0;
         }
@@ -66,13 +67,44 @@ int main()
         }
         wasZPressed = isZPressed;
 
-        // move the circle
+        sf::Clock dashClock;
+        float dashDistance = 0.0f;
+
+        // move the player
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && Player.getPosition().x > 0)
             Player.move(-5, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Player.getPosition().x + 2 * Player.getSize().y < window.getSize().x)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Player.getPosition().x + Player.getSize().x < window.getSize().x)
             Player.move(5, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getPosition().y + 2 * Player.getSize().y < window.getSize().y)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getPosition().y + Player.getSize().y < window.getSize().y)
             Player.move(0, 8);
+
+        sf::Time timeSinceLastDash = dashClock.getElapsedTime();
+        if (!isDashing && timeSinceLastDash.asSeconds() >= 5.0f) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
+                isDashing = true;
+                dashClock.restart();
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
+                isDashing = true;
+                dashClock.restart();
+            }
+        }
+
+        if (isDashing) {
+            if (dashDistance < 500.0f) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getPosition().x > 0) {
+                    Player.move(-40, 0);
+                    dashDistance += 40.0f;
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getPosition().x + Player.getSize().x < window.getSize().x) {
+                    Player.move(40, 0);
+                    dashDistance += 40.0f;
+                }
+            } else {
+                isDashing = false;
+                dashDistance = 0.0f;
+            }
+        }
 
         window.clear();
         window.draw(Player);
