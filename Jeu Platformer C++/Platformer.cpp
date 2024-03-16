@@ -32,7 +32,9 @@ int main()
     std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
     std::vector<sf::Texture> runLCharecterSheet = loadCharacterSheet("Imgs/Characters/RunL");
     std::vector<sf::Texture> JMPCharecterSheet = loadCharacterSheet("Imgs/Characters/Jmp");
+    std::vector<sf::Texture> JMPLCharecterSheet = loadCharacterSheet("Imgs/Characters/JmpL");
     std::vector<sf::Texture> CRHCharecterSheet = loadCharacterSheet("Imgs/Characters/Crh");
+    std::vector<sf::Texture> CRHLCharecterSheet = loadCharacterSheet("Imgs/Characters/CrhL");
     std::vector<sf::Texture> ATTACKCharecterSheet = loadCharacterSheet("Imgs/Characters/attack1");
     std::vector<sf::Texture> ATTACK2CharecterSheet = loadCharacterSheet("Imgs/Characters/attack2");
     std::vector<sf::Texture> ATTACK3CharecterSheet = loadCharacterSheet("Imgs/Characters/attack3");
@@ -86,30 +88,6 @@ int main()
                 window.close();
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            isRunning = true;
-            // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
-                Player.setTexture(runningCharacterSheet[currentFrame]);
-                animationClock.restart();
-            }
-        } else {
-            isRunning = false;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            isRunningL = true;
-            // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
-                Player.setTexture(runLCharecterSheet[currentFrame]);
-                animationClock.restart();
-            }
-        } else {
-            isRunningL = false;
-        }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
             isAttack1 = true;
             // update the sprite every 0.1 seconds
@@ -158,51 +136,81 @@ int main()
             isDie = false;
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            isCrouch = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % CRHLCharecterSheet.size();
+                    Player.setTexture(CRHLCharecterSheet[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % CRHCharecterSheet.size();
+                    Player.setTexture(CRHCharecterSheet[currentFrame]);
+                }
+                animationClock.restart();
+            }
+        } else {
+            isCrouch = false;
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             isJumping = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
-                Player.setTexture(JMPCharecterSheet[currentFrame]);
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % JMPLCharecterSheet.size();
+                    Player.setTexture(JMPLCharecterSheet[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
+                    Player.setTexture(JMPCharecterSheet[currentFrame]);
+                }
                 animationClock.restart();
             }
-             } else {
-            isJumping = false;
-           }
-
-           if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            isCrouch = true;
-            // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
-                Player.setTexture(CRHCharecterSheet[currentFrame]);
-                animationClock.restart();
-            }
-             } else {
-            isCrouch = false;
-           }
-
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            isRunning = true;
-            lastDirectionLeft = false;
-            // Votre code existant pour la touche D ici...
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            isRunningL = true;
-            lastDirectionLeft = true;
-            // Votre code existant pour la touche Q ici...
         } else {
-            // Ici, utilisez la variable lastDirectionLeft pour décider quelle animation jouer
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % (lastDirectionLeft ? characterSheetL.size() : characterSheet.size());
-                Player.setTexture(lastDirectionLeft ? characterSheetL[currentFrame] : characterSheet[currentFrame]);
-                animationClock.restart();
-            }
-            isRunning = false;
-            isRunningL = false;
+            isJumping = false;
         }
 
+        if (!isJumping) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                isRunning = true;
+                lastDirectionLeft = false;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
+                    Player.setTexture(runningCharacterSheet[currentFrame]);
+                    animationClock.restart();
+                }
+            } else {
+                isRunning = false;
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                isRunningL = true;
+                lastDirectionLeft = true;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
+                    Player.setTexture(runLCharecterSheet[currentFrame]);
+                    animationClock.restart();
+                }
+            } else {
+                isRunningL = false;
+            }
+        }
+
+        if (!isJumping && !isRunning && !isRunningL && !isCrouch) {
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % characterSheetL.size();
+                    Player.setTexture(characterSheetL[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % characterSheet.size();
+                    Player.setTexture(characterSheet[currentFrame]);
+                }
+                animationClock.restart();
+            }
+        }
 
         // apply gravity
         float dy = velocity; // save the current velocity
