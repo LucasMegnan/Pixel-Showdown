@@ -28,6 +28,7 @@ int main()
 
     // Charger la feuille de personnage
     std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters/Idle");
+    std::vector<sf::Texture> characterSheetL = loadCharacterSheet("Imgs/Characters/IdleL");
     std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
     std::vector<sf::Texture> runLCharecterSheet = loadCharacterSheet("Imgs/Characters/RunL");
 
@@ -37,7 +38,7 @@ int main()
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajuster la taille du sprite si nécessaire
     Player.setPosition(375, 275);
 
->>>>>>> 2468dd8a4b082dbb8106d97b37e21d58f5369383
+
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
     rectangle.setFillColor(sf::Color::Red); // fill color
@@ -55,7 +56,8 @@ int main()
     float gravity = 0.1f; // gravity force (decreased for longer jumps)
     float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
-    bool wasZPressed = false; // was the space key pressed during the last iteration?
+    bool wasZPressed = false;
+    bool lastDirectionLeft = false; // was the space key pressed during the last iteration?
 
     bool isDashing = false;
     float dashDistance = 0.0f;
@@ -96,11 +98,25 @@ int main()
             isRunningL = false;
         }
 
-        if (!isRunning && animationClock.getElapsedTime().asSeconds() > 0.1f) {
-            currentFrame = (currentFrame + 1) % characterSheet.size();
-            Player.setTexture(characterSheet[currentFrame]);
-            animationClock.restart();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            isRunning = true;
+            lastDirectionLeft = false;
+            // Votre code existant pour la touche D ici...
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            isRunningL = true;
+            lastDirectionLeft = true;
+            // Votre code existant pour la touche Q ici...
+        } else {
+            // Ici, utilisez la variable lastDirectionLeft pour décider quelle animation jouer
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % (lastDirectionLeft ? characterSheetL.size() : characterSheet.size());
+                Player.setTexture(lastDirectionLeft ? characterSheetL[currentFrame] : characterSheet[currentFrame]);
+                animationClock.restart();
+            }
+            isRunning = false;
+            isRunningL = false;
         }
+
 
         // apply gravity
         float dy = velocity; // save the current velocity
