@@ -137,17 +137,37 @@ int main()
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            isCrouch = true;
-            // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % CRHLCharecterSheet.size();
-                    Player.setTexture(CRHLCharecterSheet[currentFrame]);
-                } else {
-                    currentFrame = (currentFrame + 1) % CRHCharecterSheet.size();
-                    Player.setTexture(CRHCharecterSheet[currentFrame]);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                isRunning = true;
+                lastDirectionLeft = false;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
+                    Player.setTexture(runningCharacterSheet[currentFrame]);
+                    animationClock.restart();
                 }
-                animationClock.restart();
+            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                isRunningL = true;
+                lastDirectionLeft = true;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
+                    Player.setTexture(runLCharecterSheet[currentFrame]);
+                    animationClock.restart();
+                }
+            } else {
+                isCrouch = true;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    if (lastDirectionLeft) {
+                        currentFrame = (currentFrame + 1) % CRHLCharecterSheet.size();
+                        Player.setTexture(CRHLCharecterSheet[currentFrame]);
+                    } else {
+                        currentFrame = (currentFrame + 1) % CRHCharecterSheet.size();
+                        Player.setTexture(CRHCharecterSheet[currentFrame]);
+                    }
+                    animationClock.restart();
+                }
             }
         } else {
             isCrouch = false;
