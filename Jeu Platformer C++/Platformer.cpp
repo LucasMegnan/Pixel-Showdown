@@ -2,17 +2,15 @@
 
 int main()
 {
-
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Le jeu de la mort qui tue", sf::Style::Fullscreen);
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
     sf::Sprite s(t);
     window.setVerticalSyncEnabled(true);
 
-    sf::RectangleShape Player(sf::Vector2f(75,75));
+    sf::RectangleShape Player(sf::Vector2f(100,100));
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
-
     rectangle.setFillColor(sf::Color::Red); // fill color
     rectangle2.setFillColor(sf::Color::Red); // fill color
     Player.setPosition(375, 275);
@@ -31,7 +29,6 @@ int main()
     standbyTexture[2].loadFromFile("imgs/Character/sb3.png");
     standbyTexture[3].loadFromFile("imgs/Character/sb4.png");
     standbyTexture[4].loadFromFile("imgs/Character/sb5.png");
-
 
     sf::Clock standbyiClock;
     int numberOfFramesstandbyi = 5;
@@ -72,7 +69,11 @@ int main()
     float velocity = 0.0f; // initial vertical velocity
     int jumps = 0; // number of jumps since the last ground contact
     bool wasZPressed = false; // was the space key pressed during the last iteration?
+
     bool isDashing = false;
+    float dashDistance = 0.0f;
+    float dashDirection = 0.0f;
+    sf::Clock dashClock;
 
 
     while (window.isOpen())
@@ -199,7 +200,6 @@ int main()
 
         window.clear(sf::Color::Black);
         window.draw(s);
->>>>>>> 2937fd5c9392bda75cffb836d3c0cf2232fbd862
         window.draw(Player);
         window.draw(rectangle);
         window.draw(rectangle2);
