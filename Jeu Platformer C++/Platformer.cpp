@@ -31,7 +31,13 @@ int main()
     std::vector<sf::Texture> characterSheetL = loadCharacterSheet("Imgs/Characters/IdleL");
     std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
     std::vector<sf::Texture> runLCharecterSheet = loadCharacterSheet("Imgs/Characters/RunL");
-
+    std::vector<sf::Texture> JMPCharecterSheet = loadCharacterSheet("Imgs/Characters/Jmp");
+    std::vector<sf::Texture> CRHCharecterSheet = loadCharacterSheet("Imgs/Characters/Crh");
+    std::vector<sf::Texture> ATTACKCharecterSheet = loadCharacterSheet("Imgs/Characters/attack1");
+    std::vector<sf::Texture> ATTACK2CharecterSheet = loadCharacterSheet("Imgs/Characters/attack2");
+    std::vector<sf::Texture> ATTACK3CharecterSheet = loadCharacterSheet("Imgs/Characters/attack3");
+    std::vector<sf::Texture> DIECharecterSheet = loadCharacterSheet("Imgs/Characters/die");
+    
     // Créer un sprite pour le joueur
     sf::Sprite Player;
     Player.setTexture(characterSheet[0]);
@@ -52,6 +58,12 @@ int main()
     sf::Clock animationClock;
     bool isRunning = false;
     bool isRunningL = false;
+    bool isJumping = false;
+    bool isCrouch = false;
+    bool isAttack1 = false;
+    bool isAttack2 = false;
+    bool isAttack3 = false;
+    bool isDie = false;
 
     float gravity = 0.1f; // gravity force (decreased for longer jumps)
     float velocity = 0.0f; // initial vertical velocity
@@ -97,6 +109,80 @@ int main()
         } else {
             isRunningL = false;
         }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+            isAttack1 = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % ATTACKCharecterSheet.size();
+                Player.setTexture(ATTACKCharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isAttack1 = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+            isAttack2 = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % ATTACK2CharecterSheet.size();
+                Player.setTexture(ATTACK2CharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isAttack2 = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+            isAttack3 = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % ATTACK3CharecterSheet.size();
+                Player.setTexture(ATTACK3CharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isAttack3 = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
+            isDie = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % DIECharecterSheet.size();
+                Player.setTexture(DIECharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+        } else {
+            isDie = false;
+        }
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            isJumping = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
+                Player.setTexture(JMPCharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+             } else {
+            isJumping = false;
+           }
+
+           if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            isCrouch = true;
+            // update the sprite every 0.1 seconds
+            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
+                Player.setTexture(CRHCharecterSheet[currentFrame]);
+                animationClock.restart();
+            }
+             } else {
+            isCrouch = false;
+           }
+
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             isRunning = true;
