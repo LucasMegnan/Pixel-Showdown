@@ -36,8 +36,11 @@ int main()
     std::vector<sf::Texture> CRHCharecterSheet = loadCharacterSheet("Imgs/Characters/Crh");
     std::vector<sf::Texture> CRHLCharecterSheet = loadCharacterSheet("Imgs/Characters/CrhL");
     std::vector<sf::Texture> ATTACKCharecterSheet = loadCharacterSheet("Imgs/Characters/attack1");
+    std::vector<sf::Texture> ATTACKLCharecterSheet = loadCharacterSheet("Imgs/Characters/attack1L");
     std::vector<sf::Texture> ATTACK2CharecterSheet = loadCharacterSheet("Imgs/Characters/attack2");
+    std::vector<sf::Texture> ATTACK2LCharecterSheet = loadCharacterSheet("Imgs/Characters/attack2L");
     std::vector<sf::Texture> ATTACK3CharecterSheet = loadCharacterSheet("Imgs/Characters/attack3");
+    std::vector<sf::Texture> ATTACK3LCharecterSheet = loadCharacterSheet("Imgs/Characters/attack3L");
     std::vector<sf::Texture> DIECharecterSheet = loadCharacterSheet("Imgs/Characters/die");
     
     // Créer un sprite pour le joueur
@@ -92,8 +95,13 @@ int main()
             isAttack1 = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % ATTACKCharecterSheet.size();
-                Player.setTexture(ATTACKCharecterSheet[currentFrame]);
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % ATTACKLCharecterSheet.size();
+                    Player.setTexture(ATTACKLCharecterSheet[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % ATTACKCharecterSheet.size();
+                    Player.setTexture(ATTACKCharecterSheet[currentFrame]);
+                }
                 animationClock.restart();
             }
         } else {
@@ -104,24 +112,30 @@ int main()
             isAttack2 = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % ATTACK2CharecterSheet.size();
-                Player.setTexture(ATTACK2CharecterSheet[currentFrame]);
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % ATTACK2LCharecterSheet.size();
+                    Player.setTexture(ATTACK2LCharecterSheet[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % ATTACK2CharecterSheet.size();
+                    Player.setTexture(ATTACK2CharecterSheet[currentFrame]);
+                }
                 animationClock.restart();
             }
-        } else {
-            isAttack2 = false;
         }
-
+ 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
             isAttack3 = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % ATTACK3CharecterSheet.size();
-                Player.setTexture(ATTACK3CharecterSheet[currentFrame]);
+                if (lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % ATTACK3LCharecterSheet.size();
+                    Player.setTexture(ATTACK3LCharecterSheet[currentFrame]);
+                } else {
+                    currentFrame = (currentFrame + 1) % ATTACK3CharecterSheet.size();
+                    Player.setTexture(ATTACK3CharecterSheet[currentFrame]);
+                }
                 animationClock.restart();
             }
-        } else {
-            isAttack3 = false;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
