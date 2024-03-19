@@ -26,9 +26,9 @@ int main()
     window.setVerticalSyncEnabled(true);
 
 
-    // Charger la feuille de personnage
-    std::vector<sf::Texture> characterSheet = loadCharacterSheet("Imgs/Characters/Idle");
-    std::vector<sf::Texture> characterSheetL = loadCharacterSheet("Imgs/Characters/IdleL");
+    // Charger la feuille de player 1
+    std::vector<sf::Texture> IdleCharacterSheet = loadCharacterSheet("Imgs/Characters/Idle");
+    std::vector<sf::Texture> IdleLCharacterSheet = loadCharacterSheet("Imgs/Characters/IdleL");
     std::vector<sf::Texture> runningCharacterSheet = loadCharacterSheet("Imgs/Characters/Run");
     std::vector<sf::Texture> runLCharecterSheet = loadCharacterSheet("Imgs/Characters/RunL");
     std::vector<sf::Texture> JMPCharecterSheet = loadCharacterSheet("Imgs/Characters/Jmp");
@@ -43,15 +43,30 @@ int main()
     std::vector<sf::Texture> ATTACK3LCharecterSheet = loadCharacterSheet("Imgs/Characters/attack3L");
     std::vector<sf::Texture> DIECharecterSheet = loadCharacterSheet("Imgs/Characters/die");
 
+    // Charger la feuille de player 2
+    std::vector<sf::Texture> IdleCharacterSheet2 = loadCharacterSheet("Imgs/Characters 2/Idle");
+    std::vector<sf::Texture> IdleLCharacterSheet2 = loadCharacterSheet("Imgs/Characters 2/IdleL");
+    std::vector<sf::Texture> RunCharacterSheet2 = loadCharacterSheet("Imgs/Characters 2/Run");
+    std::vector<sf::Texture> RunLCharacterSheet2 = loadCharacterSheet("Imgs/Characters 2/RunL");
+    std::vector<sf::Texture> CRHCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/Crh");
+    std::vector<sf::Texture> CRHLCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/CrhL");
+    std::vector<sf::Texture> JMPCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/Jmp");
+    std::vector<sf::Texture> JMPLCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/JmpL");
+    std::vector<sf::Texture> ATTACKCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/attack 1");
+    std::vector<sf::Texture> ATTACKLCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/attack 1L");
+    std::vector<sf::Texture> ATTACK2CharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/attack 2");
+    std::vector<sf::Texture> ATTACK2LCharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/attack 2L");
+    std::vector<sf::Texture> DIECharecterSheet2 = loadCharacterSheet("Imgs/Characters 2/die");
+
     //Créer un sprite pour le joueur 2
     sf::Sprite Player2;
-    Player2.setTexture(characterSheet[0]);
+    Player2.setTexture(IdleCharacterSheet2[0]);
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajuster la taille du sprite si nécessaire
     Player2.setPosition(200, 200);
     
     // Créer un sprite pour le joueur
     sf::Sprite Player;
-    Player.setTexture(characterSheet[0]);
+    Player.setTexture(IdleCharacterSheet[0]);
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajuster la taille du sprite si nécessaire
     Player.setPosition(375, 275);
 
@@ -64,7 +79,7 @@ int main()
     rectangle2.setPosition(1400, 600); // position in the middle of the window
 
 
-    // permet animation
+    // permet animation player 1
     int currentFrame = 0;
     sf::Clock animationClock;
     bool isRunning = false;
@@ -76,6 +91,17 @@ int main()
     bool isAttack3 = false;
     bool isDie = false;
 
+    // permet animation player 2
+    bool isRunning2 = false;
+    bool isRunningL2 = false;
+    bool isJumping2 = false;
+    bool isCrouch2 = false;
+    bool lastDirectionLeft2 = false;
+    bool isDie2 = false;
+    int currentFrame2 = 0;
+    sf::Clock animationClock2;
+
+
     float gravity = 0.1f; // gravity force (decreased for longer jumps)
     float velocity1 = 0.0f; // initial vertical velocity
     float velocity2 = 0.0f; // initial vertical velocity
@@ -85,10 +111,17 @@ int main()
     bool wasYPressed = false;
     bool lastDirectionLeft = false; // was the space key pressed during the last iteration?
 
-    bool isDashing = false;
-    float dashDistance = 0.0f;
-    float dashDirection = 0.0f;
-    sf::Clock dashClock;
+    // Player 1 dash
+    bool isDashing1 = false;
+    float dashDirection1 = 0.0f;
+    float dashDistance1 = 0.0f;
+    sf::Clock dashClock1;
+
+    // Player 2 dash
+    bool isDashing2 = false;
+    float dashDirection2 = 0.0f;
+    float dashDistance2 = 0.0f;
+    sf::Clock dashClock2;
 
 
     while (window.isOpen())
@@ -201,7 +234,7 @@ int main()
         }
 
         // die player 1
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             isDie = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
@@ -214,16 +247,16 @@ int main()
         }
 
         // die player 2
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
-            isDie = true;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::B)) {
+            isDie2 = true;
             // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % DIECharecterSheet.size();
-                Player2.setTexture(DIECharecterSheet[currentFrame]);
-                animationClock.restart();
+            if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                currentFrame2 = (currentFrame2 + 1) % DIECharecterSheet2.size();
+                Player2.setTexture(DIECharecterSheet2[currentFrame2]);
+                animationClock2.restart();
             }
         } else {
-            isDie = false;
+            isDie2 = false;
         }
 
         // crouch, run player 1
@@ -262,44 +295,48 @@ int main()
             }
         } else {
             isCrouch = false;
+            isRunning = false;
+            isRunningL = false;
         }
 
         // crouch, run player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-                isRunning = true;
-                lastDirectionLeft = false;
+                isRunning2 = true;
+                lastDirectionLeft2 = false;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
-                    Player2.setTexture(runningCharacterSheet[currentFrame]);
-                    animationClock.restart();
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame2 = (currentFrame2 + 1) % RunCharacterSheet2.size();
+                    Player2.setTexture(RunCharacterSheet2[currentFrame2]);
+                    animationClock2.restart();
                 }
             } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-                isRunningL = true;
-                lastDirectionLeft = true;
+                isRunningL2 = true;
+                lastDirectionLeft2 = true;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
-                    Player2.setTexture(runLCharecterSheet[currentFrame]);
-                    animationClock.restart();
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame2 = (currentFrame2 + 1) % RunLCharacterSheet2.size();
+                    Player2.setTexture(RunLCharacterSheet2[currentFrame2]);
+                    animationClock2.restart();
                 }
             } else {
-                isCrouch = true;
+                isCrouch2 = true;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft) {
-                        currentFrame = (currentFrame + 1) % CRHLCharecterSheet.size();
-                        Player2.setTexture(CRHLCharecterSheet[currentFrame]);
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    if (lastDirectionLeft2) {
+                        currentFrame2 = (currentFrame2 + 1) % CRHLCharecterSheet2.size();
+                        Player2.setTexture(CRHLCharecterSheet2[currentFrame2]);
                     } else {
-                        currentFrame = (currentFrame + 1) % CRHCharecterSheet.size();
-                        Player2.setTexture(CRHCharecterSheet[currentFrame]);
+                        currentFrame2 = (currentFrame2 + 1) % CRHCharecterSheet2.size();
+                        Player2.setTexture(CRHCharecterSheet2[currentFrame2]);
                     }
-                    animationClock.restart();
+                    animationClock2.restart();
                 }
             }
         } else {
-            isCrouch = false;
+            isCrouch2 = false;
+            isRunning2 = false;
+            isRunningL2 = false;
         }
 
         // jump and condition player 1
@@ -352,11 +389,11 @@ int main()
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % characterSheetL.size();
-                    Player.setTexture(characterSheetL[currentFrame]);
+                    currentFrame = (currentFrame + 1) % IdleLCharacterSheet.size();
+                    Player.setTexture(IdleLCharacterSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % characterSheet.size();
-                    Player.setTexture(characterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % IdleCharacterSheet.size();
+                    Player.setTexture(IdleCharacterSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -364,64 +401,63 @@ int main()
 
         // jump and condition player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) {
-            isJumping = true;
+            isJumping2 = true;
             // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % JMPLCharecterSheet.size();
-                    Player2.setTexture(JMPLCharecterSheet[currentFrame]);
+            if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft2) {
+                    currentFrame2 = (currentFrame2 + 1) % JMPLCharecterSheet2.size();
+                    Player2.setTexture(JMPLCharecterSheet2[currentFrame2]);
                 } else {
-                    currentFrame = (currentFrame + 1) % JMPCharecterSheet.size();
-                    Player2.setTexture(JMPCharecterSheet[currentFrame]);
+                    currentFrame2 = (currentFrame2 + 1) % JMPCharecterSheet2.size();
+                    Player2.setTexture(JMPCharecterSheet2[currentFrame2]);
                 }
-                animationClock.restart();
+                animationClock2.restart();
             }
         } else {
-            isJumping = false;
+            isJumping2 = false;
         }
 
-        if (!isJumping) {
+        if (!isJumping2) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-                isRunning = true;
-                lastDirectionLeft = false;
+                isRunning2 = true;
+                lastDirectionLeft2 = false;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
-                    Player2.setTexture(runningCharacterSheet[currentFrame]);
-                    animationClock.restart();
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame2 = (currentFrame2 + 1) % RunCharacterSheet2.size();
+                    Player2.setTexture(RunCharacterSheet2[currentFrame2]);
+                    animationClock2.restart();
                 }
             } else {
-                isRunning = false;
+                isRunning2 = false;
             }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-                isRunningL = true;
-                lastDirectionLeft = true;
+                isRunningL2 = true;
+                lastDirectionLeft2 = true;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % runLCharecterSheet.size();
-                    Player2.setTexture(runLCharecterSheet[currentFrame]);
-                    animationClock.restart();
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    currentFrame2 = (currentFrame2 + 1) % RunLCharacterSheet2.size();
+                    Player2.setTexture(RunLCharacterSheet2[currentFrame2]);
+                    animationClock2.restart();
                 }
             } else {
-                isRunningL = false;
+                isRunningL2 = false;
             }
         }
 
-        if (!isJumping && !isRunning && !isRunningL && !isCrouch) {
+        if (!isJumping2 && !isRunning2 && !isRunningL2 && !isCrouch2) {
             // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % characterSheetL.size();
-                    Player2.setTexture(characterSheetL[currentFrame]);
+            if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft2) {
+                    currentFrame2 = (currentFrame2 + 1) % IdleLCharacterSheet2.size();
+                    Player2.setTexture(IdleLCharacterSheet2[currentFrame2]);
                 } else {
-                    currentFrame = (currentFrame + 1) % characterSheet.size();
-                    Player2.setTexture(characterSheet[currentFrame]);
+                    currentFrame2 = (currentFrame2 + 1) % IdleCharacterSheet2.size();
+                    Player2.setTexture(IdleCharacterSheet2[currentFrame2]);
                 }
-                animationClock.restart();
+                animationClock2.restart();
             }
         }
-
         // apply gravity
         float dy1 = velocity1; // save the current velocity for Player1
         float dy2 = velocity2; // save the current velocity for Player2
@@ -505,64 +541,64 @@ int main()
             Player2.move(0, 6);
 
         // dash the player 1
-        sf::Time timeSinceLastDash = dashClock.getElapsedTime();
-        if (!isDashing && timeSinceLastDash.asSeconds() >= 5.0f) {
+        sf::Time timeSinceLastDash1 = dashClock1.getElapsedTime();
+        if (!isDashing1 && timeSinceLastDash1.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getGlobalBounds().left > 0) {
-                isDashing = true;
-                dashDirection = -20.0f;
-                dashClock.restart();
+                isDashing1 = true;
+                dashDirection1 = 20.0f;
+                dashClock1.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) {
-                isDashing = true;
-                dashDirection = 20.0f;
-                dashClock.restart();
+                isDashing1 = true;
+                dashDirection1 = 20.0f;
+                dashClock1.restart();
             }
         }
 
-        if (isDashing) {
-            if (dashDistance < 500.0f) {
-                if ((dashDirection < 0 && Player.getGlobalBounds().left > 0) || 
-                    (dashDirection > 0 && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)) {
-                    Player.move(dashDirection, 0);
-                    dashDistance += std::abs(dashDirection);
+        if (isDashing1) {
+            if (dashDistance1 < 500.0f) {
+                if ((dashDirection1 < 0 && Player.getGlobalBounds().left > 0) || 
+                    (dashDirection1 > 0 && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)) {
+                    Player.move(dashDirection1, 0);
+                    dashDistance1 += std::abs(dashDirection1);
                 } else {
-                    isDashing = false;
-                    dashDistance = 0.0f;
+                    isDashing1 = false;
+                    dashDistance1 = 0.0f;
                 }
             } else {
-                isDashing = false;
-                dashDistance = 0.0f;
+                isDashing1 = false;
+                dashDistance1 = 0.0f;
             }
         }
 
         // dash the player 2
-        sf::Time timeSinceLastDash2 = dashClock.getElapsedTime();
-        if (!isDashing && timeSinceLastDash2.asSeconds() >= 5.0f) {
+        sf::Time timeSinceLastDash2 = dashClock2.getElapsedTime();
+        if (!isDashing2 && timeSinceLastDash2.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::U) && Player2.getGlobalBounds().left > 0) {
-                isDashing = true;
-                dashDirection = -20.0f;
-                dashClock.restart();
+                isDashing2 = true;
+                dashDirection2 = -20.0f;
+                dashClock2.restart();
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::O) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
-                isDashing = true;
-                dashDirection = 20.0f;
-                dashClock.restart();
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::T) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
+                isDashing2 = true;
+                dashDirection2 = 20.0f;
+                dashClock2.restart();
             }
         }
 
-        if (isDashing) {
-            if (dashDistance < 500.0f) {
-                if ((dashDirection < 0 && Player2.getGlobalBounds().left > 0) || 
-                    (dashDirection > 0 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)) {
-                    Player2.move(dashDirection, 0);
-                    dashDistance += std::abs(dashDirection);
+        if (isDashing2) {
+            if (dashDistance2 < 500.0f) {
+                if ((dashDirection2 < 0 && Player2.getGlobalBounds().left > 0) || 
+                    (dashDirection2 > 0 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)) {
+                    Player2.move(dashDirection2, 0);
+                    dashDistance2 += std::abs(dashDirection2);
                 } else {
-                    isDashing = false;
-                    dashDistance = 0.0f;
+                    isDashing2 = false;
+                    dashDistance2 = 0.0f;
                 }
             } else {
-                isDashing = false;
-                dashDistance = 0.0f;
+                isDashing2 = false;
+                dashDistance2 = 0.0f;
             }
         }
 
