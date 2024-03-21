@@ -35,7 +35,8 @@ All characters have different sound effects.
 
 ## Menu
 
-At the beginning, a menu is available.
+At the beginning, a menu is available. You can play, learn how-to-play, go to the settings, and exit the game.
+In the settings, we can modify the sound volume.
 
 ## Gameplay
 
@@ -63,7 +64,7 @@ Expected keybinds:
 1st player:
     - Q-D -> left/right
     - Z -> jump/double jump
-    - S -> crouch
+    - S -> crouch + protection
     - E -> dash left/right
     - A -> taunt
     - C-F-R -> attack 1/2/3
@@ -71,7 +72,7 @@ Expected keybinds:
 2nd player:
     - K-M -> left/right
     - O -> jump/double jump
-    - L -> crouch
+    - L -> crouch + protection
     - I -> dash left/right
     - P -> taunt
     - N-J-U -> attack 1/2/3
