@@ -12,13 +12,13 @@
   - [Physics](#physics)
   - [Gameplay](#gameplay)
     - [Characters](#characters)
-    - [Colisions](#colisions)
-      - [Blocking colisions](#blocking-colisions)
+    - [Collisions](#collisions)
+      - [Blocking collisions](#blocking-collisions)
       - [Hitboxes](#hitboxes)
       - [Hurtboxes](#hurtboxes)
     - [Map](#map)
-    - [Characters' movements](#characters-movements)
-    - [Characters' attacks](#characters-attacks)
+    - [Characters' action panel](#characters-action-panel)
+  - [Inputs](#inputs)
   - [Resources](#resources)
 
 </details>
@@ -56,39 +56,45 @@ Velocity: To reproduce speed in game. A variable that manages the speed of the c
 
 ### Characters
 
-Characters will be a class. It would contain its sprites, its velocity, its, gravity and its collision.
+Characters will be a class. It would contain its sprites, its velocity, its attacks, and its collisions.
 
-### Colisions
+![Draft](./img/technicalDraft.png)
 
-Colisions are quite important to ensure the proper functionning of specific things.<br>
+### Collisions
 
-#### Blocking colisions
+Collisions are quite important to ensure the proper functionning of specific things.<br>
 
-Blocking colisions stops entities to go further wherever they want to.<br>
+#### Blocking collisions
 
-- The entire screen needs to have blocking colisions.
-- Platforms need to have blocking colisions.
+Blocking collisions stops entities to go further wherever they want to.<br>
+
+- The entire screen needs to have blocking collisions.
+- Platforms need to have blocking collisions.
 
 #### Hitboxes
 
-Hitboxes are attack colisions of a character. The hitboxes have to match with the characters' sprites.<br>
-They interact with opponents' hurtboxes. When a hitbox touches a hurtbox, the dealing damages of the hitbox will be given as received damages to the hurtbox. 
+Hitboxes are attack collisions of a character. The hitboxes have to match with the characters' sprites.<br>
+They interact with opponents' hurtboxes. When a hitbox touches a hurtbox, the dealing damages of the hitbox will be given as received damages to the hurtbox. The dealing damages depend on the attack and the character.
 
 #### Hurtboxes
 
-Hurtboxes
+Hurtboxes are defense colisions of a character. The hurtboxes have to match with the characters' sprites.<br>
+They interact with opponents' hitboxes. The receiving damages depend on the attack and the character. 
 
 ### Map
 
-<!-- TO-DO -->
+Maps will be where the fights will take place. Platforms will be different for each map.<br>
+The platforms are meant to permit the players to naviguate easier in the map. The fighting gameplay in itself doesn't need them at all.
 
-### Characters' movements
+### Characters' action panel
 
-<!-- TO-DO -->
+All characters have the same action panel: run to the left/right, crouch/protect, jump/double jump, use different attacks, use different special attacks, and taunt the enemy.<br>
+Although, speed, attacks and special attacks are different depending on your character. These parameters need to be changed directly on the object parameter.<br>
 
-### Characters' attacks
+## Inputs
 
-<!-- TO-DO -->
+Inputs, for now, are on PC. However, controller inputs would be a better experience. <br>
+To do so, we'll need a [special library](#resources).
 
 ## Resources
 
@@ -96,6 +102,6 @@ C++: C++ has object-oriented, generic, and functional features, in addition to f
 
 SFML library: SFML is a graphic library for C++. It provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. -- [Link](https://www.sfml-dev.org)
 
-Spritesheet: Spritesheet is an image composed of many sprites. It deals with listing all the sprites of a specific entity (e.g. a character). Spitesheets can be found from several websites: [SpritersResource](https://www.spriters-resource.com) - []()
+Spritesheet: Spritesheet is an image composed of many sprites. It deals with listing all the sprites of a specific entity (e.g. a character). Spitesheets can be found from several websites: [SpritersResource](https://www.spriters-resource.com) - [Itch.io](https://itch.io)
 
-Controller library?
+Controller library: [Gainput](https://gainput.johanneskuhlmann.de)
