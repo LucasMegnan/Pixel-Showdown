@@ -19,7 +19,7 @@ std::vector<sf::Texture> loadCharacterSheet(const std::string& directoryPath) {
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Le jeu de la mort qui tue", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Fullscreen);
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
     sf::Sprite s(t);
@@ -97,6 +97,8 @@ int main()
     bool isJumping2 = false;
     bool isCrouch2 = false;
     bool lastDirectionLeft2 = false;
+    bool isAttack12 = false;
+    bool isAttack22 = false;
     bool isDie2 = false;
     int currentFrame2 = 0;
     sf::Clock animationClock2;
@@ -153,20 +155,20 @@ int main()
 
         // attack1 player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Comma)) {
-            isAttack1 = true;
+            isAttack12 = true;
             // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACKLCharecterSheet.size();
-                    Player2.setTexture(ATTACKLCharecterSheet[currentFrame]);
+            if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft2) {
+                    currentFrame2 = (currentFrame2 + 1) % ATTACKLCharecterSheet2.size();
+                    Player2.setTexture(ATTACKLCharecterSheet2[currentFrame2]);
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACKCharecterSheet.size();
-                    Player2.setTexture(ATTACKCharecterSheet[currentFrame]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACKCharecterSheet2.size();
+                    Player2.setTexture(ATTACKCharecterSheet2[currentFrame2]);
                 }
-                animationClock.restart();
+                animationClock2.restart();
             }
         } else {
-            isAttack1 = false;
+            isAttack12 = false;
         }
 
         // attack2 player 1
@@ -187,20 +189,21 @@ int main()
 
         // attack2 player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-            isAttack2 = true;
+            isAttack22 = true;
             // update the sprite every 0.1 seconds
-            if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACK2LCharecterSheet.size();
-                    Player2.setTexture(ATTACK2LCharecterSheet[currentFrame]);
+            if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (lastDirectionLeft2) {
+                    currentFrame2 = (currentFrame2 + 1) % ATTACK2LCharecterSheet2.size();
+                    Player2.setTexture(ATTACK2LCharecterSheet2[currentFrame2]);
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACK2CharecterSheet.size();
-                    Player2.setTexture(ATTACK2CharecterSheet[currentFrame]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACK2CharecterSheet2.size();
+                    Player2.setTexture(ATTACK2CharecterSheet2[currentFrame2]);
                 }
-                animationClock.restart();
+                animationClock2.restart();
             }
+        } else {
+            isAttack22 = false;
         }
-
         // attack3 player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
             isAttack3 = true;
