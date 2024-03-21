@@ -545,7 +545,7 @@ int main()
         if (!isDashing1 && timeSinceLastDash1.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getGlobalBounds().left > 0) {
                 isDashing1 = true;
-                dashDirection1 = 20.0f;
+                dashDirection1 = -20.0f;
                 dashClock1.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) {
