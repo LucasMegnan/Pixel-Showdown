@@ -104,7 +104,7 @@ int main()
     sf::Clock animationClock2;
 
 
-    float gravity = 0.1f; // gravity force (decreased for longer jumps)
+    float gravity = 0.5f; // gravity force (decreased for longer jumps)
     float velocity1 = 0.0f; // initial vertical velocity
     float velocity2 = 0.0f; // initial vertical velocity
     int jumps1 = 0; // number of jumps since the last ground contact
@@ -513,7 +513,7 @@ int main()
         bool isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Z);
         if (isZPressed && !wasZPressed && jumps1 < 2)
         {
-            velocity1 = jumps1 == 0 ? -8.0f : -8.0f; // higher jump for the second jump
+            velocity1 = jumps1 == 0 ? -16.0f : -16.0f; // higher jump for the second jump
             jumps1++;
         }
         wasZPressed = isZPressed;
@@ -522,26 +522,26 @@ int main()
         bool isYPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Y);
         if (isYPressed && !wasYPressed && jumps2 < 2)
         {
-            velocity2 = jumps2 == 0 ? -8.0f : -8.0f; // higher jump for the second jump
+            velocity2 = jumps2 == 0 ? -16.0f : -16.0f; // higher jump for the second jump
             jumps2++;
         }
         wasYPressed = isYPressed;
 
         // move the player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && Player.getGlobalBounds().left > 0)
-            Player.move(-3, 0);
+            Player.move(-5, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)
-            Player.move(3, 0);
+            Player.move(5, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getGlobalBounds().top + Player.getGlobalBounds().height < window.getSize().y)
-            Player.move(0, 6);
+            Player.move(0, 12);
 
         // move the player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && Player2.getGlobalBounds().left > 0)
-            Player2.move(-3, 0);
+            Player2.move(-5, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)
-            Player2.move(3, 0);
+            Player2.move(5, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && Player2.getGlobalBounds().top + Player2.getGlobalBounds().height < window.getSize().y)
-            Player2.move(0, 6);
+            Player2.move(0, 12);
 
         // dash the player 1
         sf::Time timeSinceLastDash1 = dashClock1.getElapsedTime();
