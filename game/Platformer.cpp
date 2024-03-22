@@ -579,12 +579,12 @@ int main()
         if (!isDashing2 && timeSinceLastDash2.asSeconds() >= 5.0f) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::U) && Player2.getGlobalBounds().left > 0) {
                 isDashing2 = true;
-                dashDirection2 = -20.0f;
+                dashDirection2 = 20.0f;
                 dashClock2.restart();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::T) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
                 isDashing2 = true;
-                dashDirection2 = 20.0f;
+                dashDirection2 = -20.0f;
                 dashClock2.restart();
             }
         }
