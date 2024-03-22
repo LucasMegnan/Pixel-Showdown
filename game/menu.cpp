@@ -17,6 +17,45 @@ void updateChoicePosition(int& choicePos, int increment, int minValue, int maxVa
     }
 }
 
+void howToPlay(sf::RenderWindow& window, sf::Font font){
+    sf::Text howToPlayText("How to play?", font);
+    howToPlayText.setPosition(700, 75);
+    howToPlayText.setFillColor(sf::Color::Yellow);
+    howToPlayText.setScale(4, 4);
+
+    sf::Text instructions("Q-D  to move\nS  to crouch\nZ  to jump\nE  to dash\nC-F-R  to attack", font);
+    instructions.setPosition(300, 300);
+    instructions.setFillColor(sf::Color::Magenta);
+    instructions.setScale(2, 2);
+
+    sf::Text Return("Press Escape to return", font);
+    Return.setPosition(775, 900);
+    Return.setFillColor(sf::Color::Yellow);
+    Return.setScale(1.5, 1.5);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                return;
+            }
+            
+        window.clear(sf::Color::Black);
+        window.draw(howToPlayText);
+        window.draw(instructions);
+        window.draw(Return);
+        window.display();
+
+    }
+    return;
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Default);
@@ -83,7 +122,6 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-
             // *** Color Update depending on your choice ***
             if (choicePos == playButtonPos) {
                 playButton.setFillColor(sf::Color::Red);
@@ -124,7 +162,7 @@ int main()
                 return 0;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
-                clickSound.play();
+                howToPlay(window, font);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
                 clickSound.play();

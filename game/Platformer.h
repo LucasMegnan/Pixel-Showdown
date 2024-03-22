@@ -3,6 +3,13 @@
 
 void launchGame(sf::RenderWindow& window)
 {
+    sf::Music music;
+    if (!music.openFromFile("Music/game.wav")) {
+        // handle error
+    }
+    music.setLoop(true); // to loop the music
+    music.play();
+
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
     sf::Sprite s(t);
