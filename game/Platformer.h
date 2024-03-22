@@ -8,18 +8,32 @@ void launchGame(sf::RenderWindow& window)
     sf::Sprite s(t);
     window.setVerticalSyncEnabled(true);
 
+    Character Guts;
+    bool chosenGuts = false;
+    Character Shadr;
+    bool chosenShadr = false;
     Character firstPlayer;
     Character secondPlayer;
 
     // Creates a sprite for the 1st player
     sf::Sprite Player;
-    Player.setTexture(IdleCharacterSheet[0]);
+    if (chosenGuts = true){
+        Player.setTexture(IdleGutsSheet[0]);
+    }
+    else{
+        Player.setTexture(IdleShadrSheet[0]);
+    }
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player.setPosition(375, 275);
 
     //Creates a sprite for the 2nd player
     sf::Sprite Player2;
-    Player2.setTexture(IdleCharacterSheet2[0]);
+    if (chosenShadr = true){
+        Player2.setTexture(IdleShadrSheet[0]);
+    }
+    else{
+        Player2.setTexture(IdleGutsSheet[0]);
+    }
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player2.setPosition(200, 200);
     
@@ -127,11 +141,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACKLCharacterSheet.size();
-                    Player.setTexture(ATTACKLCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACKLGutsSheet.size();
+                    Player.setTexture(ATTACKLGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACKCharacterSheet.size();
-                    Player.setTexture(ATTACKCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACKGutsSheet.size();
+                    Player.setTexture(ATTACKGutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -145,11 +159,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACK2LCharacterSheet.size();
-                    Player.setTexture(ATTACK2LCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
+                    Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACK2CharacterSheet.size();
-                    Player.setTexture(ATTACK2CharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
+                    Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -164,11 +178,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACK3LCharacterSheet.size();
-                    Player.setTexture(ATTACK3LCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACK3LGutsSheet.size();
+                    Player.setTexture(ATTACK3LGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACK3CharacterSheet.size();
-                    Player.setTexture(ATTACK3CharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACK3GutsSheet.size();
+                    Player.setTexture(ATTACK3GutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -184,11 +198,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft2) {
-                    currentFrame2 = (currentFrame2 + 1) % ATTACKLCharacterSheet2.size();
-                    Player2.setTexture(ATTACKLCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACKLShadrSheet.size();
+                    Player2.setTexture(ATTACKLShadrSheet[currentFrame2]);
                 } else {
-                    currentFrame2 = (currentFrame2 + 1) % ATTACKCharacterSheet2.size();
-                    Player2.setTexture(ATTACKCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACKShadrSheet.size();
+                    Player2.setTexture(ATTACKShadrSheet[currentFrame2]);
                 }
                 animationClock2.restart();
             }
@@ -202,11 +216,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                 if (lastDirectionLeft2) {
-                    currentFrame2 = (currentFrame2 + 1) % ATTACK2LCharacterSheet2.size();
-                    Player2.setTexture(ATTACK2LCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACK2LShadrSheet.size();
+                    Player2.setTexture(ATTACK2LShadrSheet[currentFrame2]);
                 } else {
-                    currentFrame2 = (currentFrame2 + 1) % ATTACK2CharacterSheet2.size();
-                    Player2.setTexture(ATTACK2CharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % ATTACK2ShadrSheet.size();
+                    Player2.setTexture(ATTACK2ShadrSheet[currentFrame2]);
                 }
                 animationClock2.restart();
             }
@@ -219,12 +233,12 @@ void launchGame(sf::RenderWindow& window)
             secondPlayer.isAttack3 = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                if (lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % ATTACK3LCharacterSheet.size();
-                    Player2.setTexture(ATTACK3LCharacterSheet[currentFrame]);
+                if (secondPlayer.lastDirectionLeft) {
+                    currentFrame = (currentFrame + 1) % ATTACK2LShadrSheet.size(); // 3 IS NOT DONE YET
+                    Player2.setTexture(ATTACK2LShadrSheet[currentFrame]); // 3 IS NOT DONE YET
                 } else {
-                    currentFrame = (currentFrame + 1) % ATTACK3CharacterSheet.size();
-                    Player2.setTexture(ATTACK3CharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % ATTACK2ShadrSheet.size(); // 3 IS NOT DONE YET
+                    Player2.setTexture(ATTACK2ShadrSheet[currentFrame]); // 3 IS NOT DONE YET
                 }
                 animationClock.restart();
             }
@@ -238,8 +252,8 @@ void launchGame(sf::RenderWindow& window)
             firstPlayer.isDie = true;
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame = (currentFrame + 1) % DIECharacterSheet.size();
-                Player.setTexture(DIECharacterSheet[currentFrame]);
+                currentFrame = (currentFrame + 1) % DIEGutsSheet.size();
+                Player.setTexture(DIEGutsSheet[currentFrame]);
                 animationClock.restart();
             }
         } else {
@@ -251,8 +265,8 @@ void launchGame(sf::RenderWindow& window)
             secondPlayer.isDie = true;
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                currentFrame2 = (currentFrame2 + 1) % DIECharacterSheet2.size();
-                Player2.setTexture(DIECharacterSheet2[currentFrame2]);
+                currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size();
+                Player2.setTexture(DIEShadrSheet[currentFrame2]);
                 animationClock2.restart();
             }
         } else {
@@ -266,11 +280,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (firstPlayer.lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % CRHLCharacterSheet.size();
-                    Player.setTexture(CRHLCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % CRHLGutsSheet.size();
+                    Player.setTexture(CRHLGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % CRHCharacterSheet.size();
-                    Player.setTexture(CRHCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % CRHGutsSheet.size();
+                    Player.setTexture(CRHGutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -286,11 +300,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                 if (secondPlayer.lastDirectionLeft) {
-                    currentFrame2 = (currentFrame2 + 1) % CRHLCharacterSheet2.size();
-                    Player2.setTexture(CRHLCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % CRHLShadrSheet.size();
+                    Player2.setTexture(CRHLShadrSheet[currentFrame2]);
                 } else {
-                    currentFrame2 = (currentFrame2 + 1) % CRHCharacterSheet2.size();
-                    Player2.setTexture(CRHCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % CRHShadrSheet.size();
+                    Player2.setTexture(CRHShadrSheet[currentFrame2]);
                 }
                 animationClock2.restart();
             }
@@ -305,11 +319,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (firstPlayer.lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % JMPLCharacterSheet.size();
-                    Player.setTexture(JMPLCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % JMPLGutsSheet.size();
+                    Player.setTexture(JMPLGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % JMPCharacterSheet.size();
-                    Player.setTexture(JMPCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % JMPGutsSheet.size();
+                    Player.setTexture(JMPGutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -339,8 +353,8 @@ void launchGame(sf::RenderWindow& window)
                 firstPlayer.lastDirectionLeft = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % runLCharacterSheet.size();
-                    Player.setTexture(runLCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % runLGutsSheet.size();
+                    Player.setTexture(runLGutsSheet[currentFrame]);
                     animationClock.restart();
                 }
             } else {
@@ -352,11 +366,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                 if (firstPlayer.lastDirectionLeft) {
-                    currentFrame = (currentFrame + 1) % IdleLCharacterSheet.size();
-                    Player.setTexture(IdleLCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % IdleLGutsSheet.size();
+                    Player.setTexture(IdleLGutsSheet[currentFrame]);
                 } else {
-                    currentFrame = (currentFrame + 1) % IdleCharacterSheet.size();
-                    Player.setTexture(IdleCharacterSheet[currentFrame]);
+                    currentFrame = (currentFrame + 1) % IdleGutsSheet.size();
+                    Player.setTexture(IdleGutsSheet[currentFrame]);
                 }
                 animationClock.restart();
             }
@@ -368,11 +382,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                 if (secondPlayer.lastDirectionLeft) {
-                    currentFrame2 = (currentFrame2 + 1) % JMPLCharacterSheet2.size();
-                    Player2.setTexture(JMPLCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % JMPLShadrSheet.size();
+                    Player2.setTexture(JMPLShadrSheet[currentFrame2]);
                 } else {
-                    currentFrame2 = (currentFrame2 + 1) % JMPCharacterSheet2.size();
-                    Player2.setTexture(JMPCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % JMPShadrSheet.size();
+                    Player2.setTexture(JMPShadrSheet[currentFrame2]);
                 }
                 animationClock2.restart();
             }
@@ -386,8 +400,8 @@ void launchGame(sf::RenderWindow& window)
                 secondPlayer.lastDirectionLeft = false;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame2 = (currentFrame2 + 1) % RunCharacterSheet2.size();
-                    Player2.setTexture(RunCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % RunShadrSheet.size();
+                    Player2.setTexture(RunShadrSheet[currentFrame2]);
                     animationClock2.restart();
                 }
             } else {
@@ -399,8 +413,8 @@ void launchGame(sf::RenderWindow& window)
                 secondPlayer.lastDirectionLeft = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame2 = (currentFrame2 + 1) % RunLCharacterSheet2.size();
-                    Player2.setTexture(RunLCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % RunLShadrSheet.size();
+                    Player2.setTexture(RunLShadrSheet[currentFrame2]);
                     animationClock2.restart();
                 }
             } else {
@@ -412,11 +426,11 @@ void launchGame(sf::RenderWindow& window)
             // update the sprite every 0.1 seconds
             if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                 if (secondPlayer.lastDirectionLeft) {
-                    currentFrame2 = (currentFrame2 + 1) % IdleLCharacterSheet2.size();
-                    Player2.setTexture(IdleLCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % IdleLShadrSheet.size();
+                    Player2.setTexture(IdleLShadrSheet[currentFrame2]);
                 } else {
-                    currentFrame2 = (currentFrame2 + 1) % IdleCharacterSheet2.size();
-                    Player2.setTexture(IdleCharacterSheet2[currentFrame2]);
+                    currentFrame2 = (currentFrame2 + 1) % IdleShadrSheet.size();
+                    Player2.setTexture(IdleShadrSheet[currentFrame2]);
                 }
                 animationClock2.restart();
             }
@@ -519,7 +533,7 @@ void launchGame(sf::RenderWindow& window)
         }
 
         if (firstPlayer.isDashing) {
-            if (firstPlayer.dashDistance < 500.0f) {
+            if (firstPlayer.dashDistance < 250.0f) {
                 if ((firstPlayer.dashDirection < 0 && Player.getGlobalBounds().left > 0) || 
                     (firstPlayer.dashDirection > 0 && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)) {
                     Player.move(firstPlayer.dashDirection, 0);
@@ -550,7 +564,7 @@ void launchGame(sf::RenderWindow& window)
         }
 
         if (secondPlayer.isDashing) {
-            if (secondPlayer.dashDistance < 500.0f) {
+            if (secondPlayer.dashDistance < 400.0f) {
                 if ((secondPlayer.dashDirection < 0 && Player2.getGlobalBounds().left > 0) || 
                     (secondPlayer.dashDirection > 0 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)) {
                     Player2.move(secondPlayer.dashDirection, 0);

@@ -6,7 +6,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
 
     sf::Music music;
@@ -35,17 +35,17 @@ int main()
     
     sf::Text howToPlayButton("How to play", font);
     howToPlayButton.setPosition(100, 400);
-    howToPlayButton.setFillColor(sf::Color::Red);
+    howToPlayButton.setFillColor(sf::Color::White);
     howToPlayButton.setScale(2, 2);
 
     sf::Text settingsButton("Settings", font);
     settingsButton.setPosition(100, 500);
-    settingsButton.setFillColor(sf::Color::Red);
+    settingsButton.setFillColor(sf::Color::White);
     settingsButton.setScale(2, 2);
 
     sf::Text exitButton("Exit", font);
     exitButton.setPosition(100, 600);
-    exitButton.setFillColor(sf::Color::Red);
+    exitButton.setFillColor(sf::Color::White);
     exitButton.setScale(2, 2);
 
     while (window.isOpen())
@@ -56,10 +56,10 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (event.type == sf::Event::MouseButtonReleased) {
+            //if (event.type == sf::Event::MouseButtonReleased) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    clickSound.play();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                    music.stop();
                     launchGame(window);
                     return 0;
                 }
@@ -72,7 +72,7 @@ int main()
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     window.close();
                 }
-            }
+            //}
         }
 
         window.clear(sf::Color::Black);
