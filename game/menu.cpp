@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <vector>
 #include <SFML/Audio.hpp>
+#include "Platformer.h"
 
 int main()
 {
@@ -59,6 +60,8 @@ int main()
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     clickSound.play();
+                    launchGame(window);
+                    return 0;
                 }
                 if (howToPlayButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     clickSound.play();

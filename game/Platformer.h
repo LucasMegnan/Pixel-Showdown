@@ -1,9 +1,8 @@
 #include "src/class.h"
 
 
-int main()
+void launchGame(sf::RenderWindow& window)
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Fullscreen);
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
     sf::Sprite s(t);
@@ -574,6 +573,4 @@ int main()
         window.draw(rectangle2);
         window.display();
     }
-
-    return 0;
 }
