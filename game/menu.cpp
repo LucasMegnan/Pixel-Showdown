@@ -56,13 +56,18 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
     return;
 }
 
-void charSelection (sf::RenderWindow& window){
+void charSelection (sf::RenderWindow& window, sf::Font font){
     sf::Music music;
     if (!music.openFromFile("Music/charSelection.wav")) {
         // handle error
     }
     music.setLoop(true); // to loop the music
     music.play();
+
+    sf::Text Choose ("Choose your Character", font);
+    Choose.setPosition(700, 150);
+    Choose.setFillColor(sf::Color::Cyan);
+    Choose.setScale(3, 3);
 
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
@@ -119,7 +124,7 @@ void charSelection (sf::RenderWindow& window){
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos){
                 music.stop();
-                launchGame(window, character);
+                launchGame(window, character, font); // Fix: Add missing argument for the launchGame function
             }
             
             window.clear(sf::Color::Black);
@@ -127,7 +132,8 @@ void charSelection (sf::RenderWindow& window){
             window.draw(iconGuts);
             window.draw(iconShadr);
             window.draw(choose);
-            window.display();
+            window.draw(Choose);
+            window.display();       
     }
     return;
 }
@@ -234,7 +240,7 @@ int main()
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == playButtonPos) { // checks if you're on the Play button
                 music.stop();
-                charSelection(window);
+                charSelection(window, font);
                 return 0;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
