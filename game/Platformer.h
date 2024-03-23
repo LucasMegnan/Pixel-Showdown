@@ -43,7 +43,15 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
     }
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player2.setPosition(200, 200);
-    
+
+    // Create a health bar for the first player
+    sf::RectangleShape healthBar1(sf::Vector2f( 800.0f, 20.0f));
+    healthBar1.setFillColor(sf::Color::Red);
+    healthBar1.setPosition(10, 10); // Top left
+    // Create a health bar for the second player
+    sf::RectangleShape healthBar2(sf::Vector2f(800.0f, 20.0f));
+    healthBar2.setFillColor(sf::Color::Red);
+    healthBar2.setPosition(window.getSize().x - 810, 10); // Top right
 
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
@@ -137,21 +145,28 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
 
     GameState gameState = PLAYING;
 
+    int backToGamePos = 200;
     sf::Text backToGameText("Back to Game", font);
-    backToGameText.setPosition(700, 200);
+    backToGameText.setPosition(700, backToGamePos);
     backToGameText.setFillColor(sf::Color::Yellow);
     backToGameText.setScale(2, 2);
 
+    int backToMenuPos = 400;
     sf::Text backToMenuText("Back to Menu", font);
-    backToMenuText.setPosition(700, 400);
+    backToMenuText.setPosition(700, backToMenuPos);
     backToMenuText.setFillColor(sf::Color::Yellow);
     backToMenuText.setScale(2, 2);
 
+    int closeGamePos = 600;
     sf::Text closeGameText("Close Game", font);
-    closeGameText.setPosition(700, 600);
+    closeGameText.setPosition(700, closeGamePos);
     closeGameText.setFillColor(sf::Color::Yellow);
     closeGameText.setScale(2, 2);
 
+    int choicePos = backToGamePos;
+
+    bool isZPressed = false;
+    bool isSPressed = false;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -167,16 +182,38 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
                 }
             }
 
-            if (gameState == PAUSED && event.type == sf::Event::MouseButtonPressed) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                if (backToGameText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    gameState = PLAYING;
+            // Color Update depending on your choice
+            if (choicePos == backToGamePos) {
+                backToGameText.setFillColor(sf::Color::Red);
+                backToMenuText.setFillColor(sf::Color::White);
+                closeGameText.setFillColor(sf::Color::White);
+            } else if (choicePos == backToMenuPos) {
+                backToGameText.setFillColor(sf::Color::White);
+                backToMenuText.setFillColor(sf::Color::Red);
+                closeGameText.setFillColor(sf::Color::White);
+            } else if (choicePos == closeGamePos) {
+                backToGameText.setFillColor(sf::Color::White);
+                backToMenuText.setFillColor(sf::Color::White);
+                closeGameText.setFillColor(sf::Color::Red);
+            }
+
+            if (gameState == PAUSED) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && choicePos < closeGamePos) {
+                    choicePos += 200;
                 }
-                if (backToMenuText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    return;
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && choicePos > backToGamePos) {
+                    choicePos -= 200;
                 }
-                if (closeGameText.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    window.close();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                    if (choicePos == backToGamePos) {
+                        gameState = PLAYING;
+                    } else if (choicePos == backToMenuPos) {
+                        // Go back to the menu
+                        
+                        return;
+                    } else if (choicePos == closeGamePos) {
+                        window.close();
+                    }
                 }
             }
         }
@@ -633,6 +670,18 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
                     secondPlayer.isDashing = false;
                     secondPlayer.dashDistance = 0.0f;
                 }
+
+            // Create a health bar for the first player
+            healthBar1.setSize(sf::Vector2f(200.0f * firstPlayer.HP / firstPlayer.maxHP, 20.0f));
+            healthBar1.setFillColor(sf::Color::Red);
+            healthBar1.setPosition(10, 10); // Top left
+
+            // Create a health bar for the second player
+            healthBar2.setSize(sf::Vector2f(200.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
+            healthBar2.setFillColor(sf::Color::Red);
+            float healthBar2Width = 200.0f * secondPlayer.HP / secondPlayer.maxHP;
+            healthBar2.setPosition(window.getSize().x - healthBar2Width - 10, 10); // Top right
+
             }
 
         window.clear(sf::Color::Black);
@@ -641,6 +690,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
         window.draw(Player2);
         window.draw(rectangle);
         window.draw(rectangle2);
+        window.draw(healthBar1);
+        window.draw(healthBar2);
+
+
 
         } else if (gameState == PAUSED) {
         window.clear(sf::Color::Black);

@@ -9,6 +9,10 @@ public:
     bool isDie; // death condition
     bool lastDirectionLeft; // direction condition
 
+    // HP management
+    int HP;
+    int maxHP;
+
     // jump parameters
     int jumps;
     bool isZPressed;
