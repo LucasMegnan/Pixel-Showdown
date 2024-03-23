@@ -241,9 +241,13 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
                         Player.setTexture(ATTACKGutsSheet[currentFrame]);
                     }
                     animationClock.restart();
+                    // firstPlayer.isAttacking = true;
+                    // firstPlayer.attackBounds = Player.getGlobalBounds();
+                    // firstPlayer.attackDamage = 10;
                 }
             } else {
                 firstPlayer.isAttack1 = false;
+                // firstPlayer.isAttacking = false;
             }
 
             // attack2 player 1
@@ -671,16 +675,45 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
                     secondPlayer.dashDistance = 0.0f;
                 }
 
+            // // Check if player 1 is attacking
+            // if (firstPlayer.isAttacking) {
+            //     // Check if player 1's attack hits player 2
+            //     if (firstPlayer.attackBounds.intersects(secondPlayer.bounds)) {
+            //         // Reduce player 2's health
+            //         secondPlayer.HP -= firstPlayer.attackDamage;
+
+            //         // Make sure player 2's health doesn't fall below zero
+            //         if (secondPlayer.HP < 0) {
+            //             secondPlayer.HP = 0;
+            //         }
+                    
+            //         // Update the health bar
+            //         healthBar2.setSize(sf::Vector2f(200.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
+            //     }
+            // }
+
+            // // Check if player 2 is attacking
+            // if (secondPlayer.isAttacking) {
+            //     // Check if player 2's attack hits player 1
+            //     if (secondPlayer.attackBounds.intersects(firstPlayer.bounds)) {
+            //         // Reduce player 1's health
+            //         firstPlayer.HP -= secondPlayer.attackDamage;
+
+            //         // Make sure player 1's health doesn't fall below zero
+            //         if (firstPlayer.HP < 0) {
+            //             firstPlayer.HP = 0;
+            //         }
+                    
+            //         // Update the health bar
+            //         healthBar1.setSize(sf::Vector2f(200.0f * firstPlayer.HP / firstPlayer.maxHP, 20.0f));
+            //     }
+            // }
+
             // Create a health bar for the first player
             healthBar1.setSize(sf::Vector2f(200.0f * firstPlayer.HP / firstPlayer.maxHP, 20.0f));
-            healthBar1.setFillColor(sf::Color::Red);
-            healthBar1.setPosition(10, 10); // Top left
 
             // Create a health bar for the second player
             healthBar2.setSize(sf::Vector2f(200.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
-            healthBar2.setFillColor(sf::Color::Red);
-            float healthBar2Width = 200.0f * secondPlayer.HP / secondPlayer.maxHP;
-            healthBar2.setPosition(window.getSize().x - healthBar2Width - 10, 10); // Top right
 
             }
 

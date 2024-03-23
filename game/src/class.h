@@ -13,6 +13,12 @@ public:
     int HP;
     int maxHP;
 
+    // attack management
+    // int attackDamage;
+    // bool isAttacking;
+    // sf::FloatRect attackBounds;
+    // sf::FloatRect bounds;
+
     // jump parameters
     int jumps;
     bool isZPressed;
