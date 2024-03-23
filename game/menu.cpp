@@ -56,9 +56,85 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
     return;
 }
 
+void charSelection (sf::RenderWindow& window){
+    sf::Music music;
+    if (!music.openFromFile("Music/charSelection.wav")) {
+        // handle error
+    }
+    music.setLoop(true); // to loop the music
+    music.play();
+
+    sf::Texture t;
+    t.loadFromFile("imgs/image.png");
+    sf::Sprite s(t);
+
+    sf::Sprite iconGuts;
+    sf::Sprite iconShadr;
+    sf::Sprite choose;
+
+    sf::Texture charIconGuts;
+    charIconGuts.loadFromFile("Imgs/Guts/icon.png");
+    sf::Texture charIconShadr;
+    charIconShadr.loadFromFile("Imgs/Shadr/icon.png");
+    sf::Texture charChoose;
+    charChoose.loadFromFile("Imgs/selectHand.png");
+
+    int character;
+    int GutsPos = 700;
+    int ShadrPos = 1000;
+    int choicePos = ShadrPos;
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+            iconGuts.setPosition(600, 700);
+            iconGuts.setTexture(charIconGuts);
+            iconGuts.setScale(sf::Vector2f(3.0f, 3.0));
+            iconShadr.setPosition(950, 700);
+            iconShadr.setTexture(charIconShadr);
+            iconShadr.setScale(sf::Vector2f(3.0f, 3.0));
+            choose.setPosition(choicePos, 800);
+            choose.setTexture(charChoose);
+            choose.setScale(sf::Vector2f(3.0f, 3.0));
+
+            
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+                if (choicePos == ShadrPos) {
+                    choicePos -= 300;
+                }
+                else{}
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                if (choicePos == GutsPos) {
+                    choicePos += 300;
+                }
+                else{}
+            }
+
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos){
+                music.stop();
+                launchGame(window, character);
+            }
+            
+            window.clear(sf::Color::Black);
+            window.draw(s);
+            window.draw(iconGuts);
+            window.draw(iconShadr);
+            window.draw(choose);
+            window.display();
+    }
+    return;
+}
+
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
 
     sf::Music music;
@@ -158,7 +234,7 @@ int main()
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == playButtonPos) { // checks if you're on the Play button
                 music.stop();
-                launchGame(window);
+                charSelection(window);
                 return 0;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button

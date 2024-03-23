@@ -1,7 +1,7 @@
 #include "src/class.h"
 
 
-void launchGame(sf::RenderWindow& window)
+void launchGame(sf::RenderWindow& window, int character)
 {
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
