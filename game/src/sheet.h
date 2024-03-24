@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <vector>
+#include <cstdlib>
 
 // load character sheet
 std::vector<sf::Texture> loadCharacterSheet(const std::string& directoryPath) {

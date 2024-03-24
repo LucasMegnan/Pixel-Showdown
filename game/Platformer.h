@@ -199,16 +199,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
 
             if (gameState == PAUSED) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && choicePos < closeGamePos) {
-                    choicePos += 200;
+                    choicePos += 100;
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && choicePos > backToGamePos) {
-                    choicePos -= 200;
+                    choicePos -= 100;
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
                     if (choicePos == backToGamePos) {
                         gameState = PLAYING;
                     } else if (choicePos == backToMenuPos) {
-                        // Go back to the menu
+                        // Go back to the menu and will end all the programs at the end
+                        music.stop();
+                        system("sfml-app.exe");
+                        system("taskkill /F /IM sfml-app.exe");
                         
                         return;
                     } else if (choicePos == closeGamePos) {

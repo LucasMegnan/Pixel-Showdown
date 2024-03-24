@@ -65,8 +65,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     music.play();
 
     sf::Text Choose ("Choose your Character", font);
-    Choose.setPosition(700, 150);
-    Choose.setFillColor(sf::Color::Cyan);
+    Choose.setPosition(600, 150);
+    Choose.setFillColor(sf::Color::Magenta);
     Choose.setScale(3, 3);
 
     sf::Texture t;
@@ -147,6 +147,7 @@ int main()
     if (!music.openFromFile("Music/menu.wav")) {
         // handle error
     }
+    music.stop();
     music.setLoop(true); // to loop the music
     music.play();
 
