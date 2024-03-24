@@ -1,7 +1,7 @@
 #include "src/class.h"
 
 
-void launchGame(sf::RenderWindow& window, int character, sf::Font font)
+void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool chosenGuts, bool chosenShadr)
 {
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
@@ -16,33 +16,32 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
     window.setVerticalSyncEnabled(true);
 
     Character Guts;
-    bool chosenGuts = false;
     Character Shadr;
-    bool chosenShadr = false;
+
     Character firstPlayer;
     Character secondPlayer;
 
     // Creates a sprite for the 1st player
     sf::Sprite Player;
-    if (chosenGuts = true){
+    if (chosenGuts == true){
         Player.setTexture(IdleGutsSheet[0]);
     }
     else{
         Player.setTexture(IdleShadrSheet[0]);
     }
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
-    Player.setPosition(375, 275);
+    Player.setPosition(1500, 250);
 
     //Creates a sprite for the 2nd player
     sf::Sprite Player2;
-    if (chosenShadr = true){
+    if (chosenShadr == true){
         Player2.setTexture(IdleShadrSheet[0]);
     }
     else{
         Player2.setTexture(IdleGutsSheet[0]);
     }
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
-    Player2.setPosition(200, 200);
+    Player2.setPosition(250, 250);
 
     // Create a health bar for the first player
     sf::RectangleShape healthBar1(sf::Vector2f( 800.0f, 20.0f));
@@ -115,7 +114,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
     firstPlayer.wasZPressed = wasZPressed;
     bool wasYPressed = false;
     secondPlayer.wasZPressed = wasYPressed;
-    bool lastDirectionLeft = false; // was the space key pressed during the last iteration?
+    bool lastDirectionLeft = true; // was the space key pressed during the last iteration?
     firstPlayer.lastDirectionLeft = lastDirectionLeft;
     bool lastDirectionLeft2 = false;
     secondPlayer.lastDirectionLeft = lastDirectionLeft2;
@@ -439,8 +438,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font)
                     firstPlayer.lastDirectionLeft = false;
                     // update the sprite every 0.1 seconds
                     if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                        currentFrame = (currentFrame + 1) % runningCharacterSheet.size();
-                        Player.setTexture(runningCharacterSheet[currentFrame]);
+                        currentFrame = (currentFrame + 1) % runningGutsSheet.size();
+                        Player.setTexture(runningGutsSheet[currentFrame]);
                         animationClock.restart();
                     }
                 } else {

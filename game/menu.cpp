@@ -64,10 +64,10 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     music.setLoop(true); // to loop the music
     music.play();
 
-    sf::Text Choose ("Choose your Character", font);
-    Choose.setPosition(600, 150);
-    Choose.setFillColor(sf::Color::Magenta);
-    Choose.setScale(3, 3);
+    sf::Text ChooseCharacter ("Choose your Character", font);
+    ChooseCharacter.setPosition(600, 150);
+    ChooseCharacter.setFillColor(sf::Color::Magenta);
+    ChooseCharacter.setScale(3, 3);
 
     sf::Texture t;
     t.loadFromFile("imgs/image.png");
@@ -88,6 +88,10 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     int GutsPos = 700;
     int ShadrPos = 1000;
     int choicePos = ShadrPos;
+
+    
+    bool chosenGuts = false;
+    bool chosenShadr = false;
 
     while (window.isOpen())
     {
@@ -124,7 +128,9 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos){
                 music.stop();
-                launchGame(window, character, font); // Fix: Add missing argument for the launchGame function
+                chosenGuts = true;
+                chosenShadr = true; // to load properly the sprites for now
+                launchGame(window, character, font, chosenGuts, chosenShadr); // Fix: Add missing argument for the launchGame function
             }
             
             window.clear(sf::Color::Black);
@@ -132,7 +138,7 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             window.draw(iconGuts);
             window.draw(iconShadr);
             window.draw(choose);
-            window.draw(Choose);
+            window.draw(ChooseCharacter);
             window.display();       
     }
     return;
