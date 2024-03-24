@@ -38,6 +38,9 @@ public:
     bool isAttack1;
     bool isAttack2;
     bool isAttack3;
-    
+    bool isSpecial1;
+    bool isSpecial2;
+    bool isUlt;
+
 };
 

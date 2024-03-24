@@ -11,7 +11,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
     music.play();
 
     sf::Texture t;
-    t.loadFromFile("imgs/image.png");
+    t.loadFromFile("imgs/bg.png");
     sf::Sprite s(t);
     window.setVerticalSyncEnabled(true);
 
@@ -30,7 +30,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
         Player.setTexture(IdleShadrSheet[0]);
     }
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
-    Player.setPosition(1500, 250);
+    Player.setPosition(250, 250);
 
     //Creates a sprite for the 2nd player
     sf::Sprite Player2;
@@ -38,10 +38,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
         Player2.setTexture(IdleShadrSheet[0]);
     }
     else{
-        Player2.setTexture(IdleGutsSheet[0]);
+        Player2.setTexture(IdleLGutsSheet[0]);
     }
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
-    Player2.setPosition(250, 250);
+    Player2.setPosition(1500, 250);
 
     // Create a health bar for the first player
     sf::RectangleShape healthBar1(sf::Vector2f( 800.0f, 20.0f));
@@ -101,7 +101,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
     bool isDie2 = false;
     secondPlayer.isDie = isDie2;
 
-    float gravity = 0.5f; // gravity force (decreased for longer jumps)
+    float gravity1 = 0.5f; // gravity force (decreased for longer jumps)
+    float gravity2 = 0.4f;
     float velocity1; // initial vertical velocity
     firstPlayer.velocity = velocity1;
     float velocity2; // initial vertical velocity
@@ -114,7 +115,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
     firstPlayer.wasZPressed = wasZPressed;
     bool wasYPressed = false;
     secondPlayer.wasZPressed = wasYPressed;
-    bool lastDirectionLeft = true; // was the space key pressed during the last iteration?
+    bool lastDirectionLeft = false; 
     firstPlayer.lastDirectionLeft = lastDirectionLeft;
     bool lastDirectionLeft2 = false;
     secondPlayer.lastDirectionLeft = lastDirectionLeft2;
@@ -292,7 +293,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             // *** PLAYER 2 ATTACKS ***
 
             // attack1 player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Comma)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
                 secondPlayer.isAttack1 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -310,7 +311,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             }
 
             // attack2 player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
                 secondPlayer.isAttack2 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -328,7 +329,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             }
 
             // attack3 player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
                 secondPlayer.isAttack3 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
@@ -347,20 +348,29 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             
 
             // die player 1
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
                 firstPlayer.isDie = true;
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    currentFrame = (currentFrame + 1) % DIEGutsSheet.size();
-                    Player.setTexture(DIEGutsSheet[currentFrame]);
-                    animationClock.restart();
+                if (firstPlayer.lastDirectionLeft){
+                    if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                        currentFrame = (currentFrame + 1) % DIELGutsSheet.size();
+                        Player.setTexture(DIELGutsSheet[currentFrame]);
+                        animationClock.restart();
+                    }
+                }
+                else{
+                    if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                        currentFrame = (currentFrame + 1) % DIEGutsSheet.size();
+                        Player.setTexture(DIEGutsSheet[currentFrame]);
+                        animationClock.restart();
+                    }
                 }
             } else {
                 firstPlayer.isDie = false;
             }
 
             // die player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::B)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
                 secondPlayer.isDie = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -393,7 +403,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             }
 
             // crouch player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
                 secondPlayer.isCrouch = true;
                 secondPlayer.cannotMove = true;
                 // update the sprite every 0.1 seconds
@@ -476,7 +486,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             }
 
             // jump and condition player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
                 secondPlayer.isJumping = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -494,7 +504,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             }
 
             if (!secondPlayer.isJumping) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
                     secondPlayer.isRunning = true;
                     secondPlayer.lastDirectionLeft = false;
                     // update the sprite every 0.1 seconds
@@ -507,7 +517,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                     secondPlayer.isRunning = false;
                 }
 
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
                     secondPlayer.isRunningL = true;
                     secondPlayer.lastDirectionLeft = true;
                     // update the sprite every 0.1 seconds
@@ -537,8 +547,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             // apply gravity
             float dy1 = firstPlayer.velocity; // save the current velocity for Player1
             float dy2 = secondPlayer.velocity; // save the current velocity for Player2
-            firstPlayer.velocity += gravity;
-            secondPlayer.velocity += gravity;
+            firstPlayer.velocity += gravity1;
+            secondPlayer.velocity += gravity2;
             Player.move(0, firstPlayer.velocity);
             Player2.move(0, secondPlayer.velocity);
 
@@ -592,7 +602,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             firstPlayer.wasZPressed = firstPlayer.isZPressed;
 
             // jump player 2
-            secondPlayer.isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Y);
+            secondPlayer.isZPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::O);
             if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2)
             {
                 secondPlayer.velocity = secondPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
@@ -606,28 +616,30 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x && !(firstPlayer.cannotMove))
                 Player.move(5, 0);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && Player.getGlobalBounds().top + Player.getGlobalBounds().height < window.getSize().y)
-                Player.move(0, 12);
+                Player.move(0, 9);
 
             // move the player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && Player2.getGlobalBounds().left > 0 && !(secondPlayer.cannotMove))
-                Player2.move(-5, 0);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x && !(secondPlayer.cannotMove))
-                Player2.move(5, 0);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::H) && Player2.getGlobalBounds().top + Player2.getGlobalBounds().height < window.getSize().y)
-                Player2.move(0, 8);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && Player2.getGlobalBounds().left > 0 && !(secondPlayer.cannotMove))
+                Player2.move(-7, 0);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::M) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x && !(secondPlayer.cannotMove))
+                Player2.move(7, 0);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && Player2.getGlobalBounds().top + Player2.getGlobalBounds().height < window.getSize().y)
+                Player2.move(0, 5);
 
             // dash the player 1
             sf::Time timeSinceLastDash1 = dashClock1.getElapsedTime();
             if (!firstPlayer.isDashing && timeSinceLastDash1.asSeconds() >= 5.0f) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && Player.getGlobalBounds().left > 0) {
-                    firstPlayer.isDashing = true;
-                    firstPlayer.dashDirection = -20.0f;
-                    dashClock1.restart();
-                }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) {
-                    firstPlayer.isDashing = true;
-                    firstPlayer.dashDirection = 20.0f;
-                    dashClock1.restart();
+                    if (firstPlayer.lastDirectionLeft){
+                        firstPlayer.isDashing = true;
+                        firstPlayer.dashDirection = -20.0f;
+                        dashClock1.restart();
+                    }
+                    else{
+                        firstPlayer.isDashing = true;
+                        firstPlayer.dashDirection = 20.0f;
+                        dashClock1.restart();
+                    }
                 }
             }
 
@@ -650,15 +662,17 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
             // dash the player 2
             sf::Time timeSinceLastDash2 = dashClock2.getElapsedTime();
             if (!secondPlayer.isDashing && timeSinceLastDash2.asSeconds() >= 5.0f) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::U) && Player2.getGlobalBounds().left > 0) {
-                    secondPlayer.isDashing = true;
-                    secondPlayer.dashDirection = 20.0f;
-                    dashClock2.restart();
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::T) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
-                    secondPlayer.isDashing = true;
-                    secondPlayer.dashDirection = -20.0f;
-                    dashClock2.restart();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
+                    if (secondPlayer.lastDirectionLeft){
+                        secondPlayer.isDashing = true;
+                        secondPlayer.dashDirection = -20.0f;
+                        dashClock2.restart();
+                    }
+                    else{
+                        secondPlayer.isDashing = true;
+                        secondPlayer.dashDirection = 20.0f;
+                        dashClock2.restart();
+                    }
                 }
             }
 

@@ -70,8 +70,16 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     ChooseCharacter.setScale(3, 3);
 
     sf::Texture t;
-    t.loadFromFile("imgs/image.png");
+    t.loadFromFile("imgs/bg2.png");
     sf::Sprite s(t);
+
+    sf::RectangleShape iconSquare(sf::Vector2f(125.0f, 125.0f));
+    iconSquare.setFillColor(sf::Color::Magenta);
+    iconSquare.setPosition(725, 700); 
+    
+    sf::RectangleShape iconSquare2(sf::Vector2f(125.0f, 125.0f));
+    iconSquare2.setFillColor(sf::Color::Magenta);
+    iconSquare2.setPosition(1040, 700); 
 
     sf::Sprite iconGuts;
     sf::Sprite iconShadr;
@@ -85,8 +93,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     charChoose.loadFromFile("Imgs/selectHand.png");
 
     int character;
-    int GutsPos = 700;
-    int ShadrPos = 1000;
+    int GutsPos = 800;
+    int ShadrPos = 1100;
     int choicePos = ShadrPos;
 
     
@@ -101,10 +109,10 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-            iconGuts.setPosition(600, 700);
+            iconGuts.setPosition(700, 700);
             iconGuts.setTexture(charIconGuts);
             iconGuts.setScale(sf::Vector2f(3.0f, 3.0));
-            iconShadr.setPosition(950, 700);
+            iconShadr.setPosition(1050, 715);
             iconShadr.setTexture(charIconShadr);
             iconShadr.setScale(sf::Vector2f(3.0f, 3.0));
             choose.setPosition(choicePos, 800);
@@ -135,6 +143,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             
             window.clear(sf::Color::Black);
             window.draw(s);
+            window.draw(iconSquare);
+            window.draw(iconSquare2);
             window.draw(iconGuts);
             window.draw(iconShadr);
             window.draw(choose);

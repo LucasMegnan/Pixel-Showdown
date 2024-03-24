@@ -32,6 +32,7 @@ std::vector<sf::Texture> ATTACK2LGutsSheet = loadCharacterSheet("Imgs/Guts/attac
 std::vector<sf::Texture> ATTACK3GutsSheet = loadCharacterSheet("Imgs/Guts/attack3");
 std::vector<sf::Texture> ATTACK3LGutsSheet = loadCharacterSheet("Imgs/Guts/attack3L");
 std::vector<sf::Texture> DIEGutsSheet = loadCharacterSheet("Imgs/Guts/die");
+std::vector<sf::Texture> DIELGutsSheet = loadCharacterSheet("Imgs/Guts/dieL");
 
 // Loads player 2's sheet
 std::vector<sf::Texture> IdleShadrSheet = loadCharacterSheet("Imgs/Shadr/Idle");
@@ -46,4 +47,5 @@ std::vector<sf::Texture> ATTACKShadrSheet = loadCharacterSheet("Imgs/Shadr/attac
 std::vector<sf::Texture> ATTACKLShadrSheet = loadCharacterSheet("Imgs/Shadr/attack 1L");
 std::vector<sf::Texture> ATTACK2ShadrSheet = loadCharacterSheet("Imgs/Shadr/attack 2");
 std::vector<sf::Texture> ATTACK2LShadrSheet = loadCharacterSheet("Imgs/Shadr/attack 2L");
-std::vector<sf::Texture> DIEShadrSheet = loadCharacterSheet("Imgs/Shadr/die");
+std::vector<sf::Texture> DIEShadrSheet = loadCharacterSheet("Imgs/Shadr/Die");
+std::vector<sf::Texture> DIELShadrSheet = loadCharacterSheet("Imgs/Shadr/DieL");
