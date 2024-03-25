@@ -236,7 +236,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                 firstPlayer.isAttack1 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft) {
+                    if (firstPlayer.lastDirectionLeft) {
                         currentFrame = (currentFrame + 1) % ATTACKLGutsSheet.size();
                         Player.setTexture(ATTACKLGutsSheet[currentFrame]);
                     } else {
@@ -258,7 +258,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                 firstPlayer.isAttack2 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft) {
+                    if (firstPlayer.lastDirectionLeft) {
                         currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
                         Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                     } else {
@@ -277,7 +277,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                 firstPlayer.isAttack3 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft) {
+                    if (firstPlayer.lastDirectionLeft) {
                         currentFrame = (currentFrame + 1) % ATTACK3LGutsSheet.size();
                         Player.setTexture(ATTACK3LGutsSheet[currentFrame]);
                     } else {
@@ -297,7 +297,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                 secondPlayer.isAttack1 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft2) {
+                    if (secondPlayer.lastDirectionLeft) {
                         currentFrame2 = (currentFrame2 + 1) % ATTACKLShadrSheet.size();
                         Player2.setTexture(ATTACKLShadrSheet[currentFrame2]);
                     } else {
@@ -315,7 +315,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool cho
                 secondPlayer.isAttack2 = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                    if (lastDirectionLeft2) {
+                    if (secondPlayer.lastDirectionLeft) {
                         currentFrame2 = (currentFrame2 + 1) % ATTACK2LShadrSheet.size();
                         Player2.setTexture(ATTACK2LShadrSheet[currentFrame2]);
                     } else {
