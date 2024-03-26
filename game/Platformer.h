@@ -100,9 +100,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
 
     float gravity1 = 0.5f; // gravity force (decreased for longer jumps)
     float gravity2 = 0.4f;
-    int HP1 = 20;
+    int HP1 = 200;
     firstPlayer.maxHP = HP1;
-    int HP2 = 20;
+    int HP2 = 200;
     secondPlayer.maxHP = HP2;
     firstPlayer.HP = firstPlayer.maxHP;
     secondPlayer.HP = firstPlayer.maxHP;
@@ -237,6 +237,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack1 player 1
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
                 firstPlayer.isAttack1 = true;
+                firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -259,18 +260,15 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                         }
                     }
                     animationClock.restart();
-                    // firstPlayer.isAttacking = true;
-                    // firstPlayer.attackBounds = Player.getGlobalBounds();
-                    // firstPlayer.attackDamage = 10;
                 }
             } else {
                 firstPlayer.isAttack1 = false;
-                // firstPlayer.isAttacking = false;
             }
 
             // attack2 player 1
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
                 firstPlayer.isAttack2 = true;
+                firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -302,6 +300,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack3 player 1
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
                 firstPlayer.isAttack3 = true;
+                firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -334,6 +333,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack1 player 2
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
                 secondPlayer.isAttack1 = true;
+                secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
@@ -364,6 +364,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack2 player 2
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
                 secondPlayer.isAttack2 = true;
+                secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
@@ -394,6 +395,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack3 player 2
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
                 secondPlayer.isAttack3 = true;
+                secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
@@ -1005,43 +1007,73 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             }
 
             // // Check if player 1 is attacking
-            // if (firstPlayer.isAttacking) {
-            //     // Check if player 1's attack hits player 2
-            //     if (firstPlayer.attackBounds.intersects(secondPlayer.bounds)) {
-            //         // Reduce player 2's health
-            //         secondPlayer.HP -= firstPlayer.attackDamage;
+            if (firstPlayer.isAttack1) {
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                secondPlayer.HP -= firstPlayer.attackDamage;
 
-            //         // Make sure player 2's health doesn't fall below zero
-            //         if (secondPlayer.HP < 0) {
-            //             secondPlayer.HP = 0;
-            //         }
-                    
-            //         // Update the health bar
-            //         healthBar2.setSize(sf::Vector2f(200.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
-            //     }
-            // }
+                // Make sure player 2's health doesn't fall below zero
+                if (secondPlayer.HP < 0) {
+                    secondPlayer.HP = 0;
+                }                
+            }
+            else if (firstPlayer.isAttack2){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                secondPlayer.HP -= firstPlayer.attackDamage;
+
+                // Make sure player 2's health doesn't fall below zero
+                if (secondPlayer.HP < 0) {
+                    secondPlayer.HP = 0;
+                }  
+            }
+            else if (firstPlayer.isAttack3){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                secondPlayer.HP -= firstPlayer.attackDamage;
+
+                // Make sure player 2's health doesn't fall below zero
+                if (secondPlayer.HP < 0) {
+                    secondPlayer.HP = 0;
+                }  
+            }
 
             // // Check if player 2 is attacking
-            // if (secondPlayer.isAttacking) {
-            //     // Check if player 2's attack hits player 1
-            //     if (secondPlayer.attackBounds.intersects(firstPlayer.bounds)) {
-            //         // Reduce player 1's health
-            //         firstPlayer.HP -= secondPlayer.attackDamage;
+            if (secondPlayer.isAttack1) {
+                // Check if player 2's attack hits player 1
+                // Reduce player 1's health
+                firstPlayer.HP -= secondPlayer.attackDamage;
 
-            //         // Make sure player 1's health doesn't fall below zero
-            //         if (firstPlayer.HP < 0) {
-            //             firstPlayer.HP = 0;
-            //         }
-                    
-            //         // Update the health bar
-            //         healthBar1.setSize(sf::Vector2f(200.0f * firstPlayer.HP / firstPlayer.maxHP, 20.0f));
-            //     }
-            // }
+                // Make sure player 1's health doesn't fall below zero
+                if (firstPlayer.HP < 0) {
+                    firstPlayer.HP = 0;
+                }                
+            }
+            else if (secondPlayer.isAttack2) {
+                // Check if player 2's attack hits player 1
+                // Reduce player 1's health
+                firstPlayer.HP -= secondPlayer.attackDamage;
 
-            // Create a health bar for the first player
+                // Make sure player 1's health doesn't fall below zero
+                if (firstPlayer.HP < 0) {
+                    firstPlayer.HP = 0;
+                }                
+            }
+            else if (secondPlayer.isAttack3) {
+                // Check if player 2's attack hits player 1
+                // Reduce player 1's health
+                firstPlayer.HP -= secondPlayer.attackDamage;
+
+                // Make sure player 1's health doesn't fall below zero
+                if (firstPlayer.HP < 0) {
+                    firstPlayer.HP = 0;
+                }                
+            }
+
+            // Update the health bar for the first player
             healthBar1.setSize(sf::Vector2f(800.0f * firstPlayer.HP / firstPlayer.maxHP, 20.0f));
 
-            // Create a health bar for the second player
+            // Update the health bar for the second player
             healthBar2.setSize(sf::Vector2f(800.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
 
             
