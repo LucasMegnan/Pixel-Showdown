@@ -1,7 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <filesystem>
-#include <vector>
-#include <SFML/Audio.hpp>
 #include "Platformer.h"
 
 
@@ -97,9 +93,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     int ShadrPos = 1100;
     int choicePos = ShadrPos;
 
-    
-    bool chosenGuts = false;
-    bool chosenShadr = false;
+    int chosenChar1 = 0;
+    int chosenChar2 = 0;
 
     while (window.isOpen())
     {
@@ -122,25 +117,33 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
                 if (choicePos == ShadrPos) {
+                    chosenChar1 = 2;
                     choicePos -= 300;
                 }
                 else{}
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
                 if (choicePos == GutsPos) {
+                    chosenChar1 = 1;
                     choicePos += 300;
                 }
                 else{}
             }
 
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos && !(chosenChar1 == 0)){
                 music.stop();
-                chosenGuts = true;
-                chosenShadr = true; // to load properly the sprites for now
-                launchGame(window, character, font, chosenGuts, chosenShadr); // Fix: Add missing argument for the launchGame function
+                chosenChar1 = 1; // to load properly the sprites for now
+                chosenChar2 = 2;
+                launchGame(window, character, font, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
             }
-            
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == ShadrPos && !(chosenChar1 == 0)){
+                music.stop();
+                chosenChar1 = 2; // to load properly the sprites for now
+                chosenChar2 = 1;
+                launchGame(window, character, font, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
+            }
+
             window.clear(sf::Color::Black);
             window.draw(s);
             window.draw(iconSquare);

@@ -3,6 +3,8 @@
 class Character
 {
 public:
+    int chosenChar; // 1 for Guts, 2 for Shadr...
+
     float velocity; // speed
     bool isCrouch; // crouch condition
     bool cannotMove;

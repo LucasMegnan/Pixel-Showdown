@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <vector>
 #include <cstdlib>
+#include <SFML/Audio.hpp>
 
 // load character sheet
 std::vector<sf::Texture> loadCharacterSheet(const std::string& directoryPath) {
@@ -19,7 +20,7 @@ std::vector<sf::Texture> loadCharacterSheet(const std::string& directoryPath) {
 
 std::vector<sf::Texture> IdleGutsSheet = loadCharacterSheet("Imgs/Guts/Idle");
 std::vector<sf::Texture> IdleLGutsSheet = loadCharacterSheet("Imgs/Guts/IdleL");
-std::vector<sf::Texture> runningGutsSheet = loadCharacterSheet("Imgs/Guts/Run");
+std::vector<sf::Texture> runGutsSheet = loadCharacterSheet("Imgs/Guts/Run");
 std::vector<sf::Texture> runLGutsSheet = loadCharacterSheet("Imgs/Guts/RunL");
 std::vector<sf::Texture> JMPGutsSheet = loadCharacterSheet("Imgs/Guts/Jmp");
 std::vector<sf::Texture> JMPLGutsSheet = loadCharacterSheet("Imgs/Guts/JmpL");
