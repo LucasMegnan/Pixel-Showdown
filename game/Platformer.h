@@ -840,7 +840,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
 
             // jump player 1
             firstPlayer.isZPressed = controller1.isButtonPressed(0, 0);
-            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2)
+            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2 && !firstPlayer.cannotMove)
             {
                 firstPlayer.velocity = firstPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 firstPlayer.jumps++;
@@ -849,7 +849,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
 
             // jump player 2
             secondPlayer.isZPressed = controller1.isButtonPressed(1, 0);
-            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2)
+            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2 && !secondPlayer.cannotMove)
             {
                 secondPlayer.velocity = secondPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 secondPlayer.jumps++;
@@ -858,7 +858,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
 
             // move the player 1
             if (firstPlayer.chosenChar == 1){
-                    // Move player left or right based on joystick position
+                // Move player left or right based on joystick position
+                if (Player2.getGlobalBounds().left > 0 && !(firstPlayer.cannotMove)){
                     if (currentX < -JoystickNeutralThreshold)
                         Player.move(-5, 0); // Move left
                     else if (currentX > JoystickNeutralThreshold)
@@ -869,16 +870,21 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                         // Reset player movement
                         Player.move(0, 0);
                     }
+                }
             }
             else if (firstPlayer.chosenChar == 2){
-                if (abs(currentX - prevX) > JoystickSensitivity) {
-                    if (currentX < -JoystickNeutralThreshold)
+                if (Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x && !(firstPlayer.cannotMove)){
+                    if (currentX < -JoystickNeutralThreshold) // Move left
                         Player.move(-7, 0);
-                    else if (currentX > JoystickNeutralThreshold)
+                    else if (currentX > JoystickNeutralThreshold) // Move right
                         Player.move(7, 0);
+                    else if (sf::Joystick::isButtonPressed(0, 8) && Player.getGlobalBounds().top + Player.getGlobalBounds().height < window.getSize().y)
+                        Player.move(0, 5);
+                    else{
+                        // Rest player movement
+                        Player.move(0, 0);
+                    }
                 }
-                if (sf::Joystick::isButtonPressed(0, 8) && Player.getGlobalBounds().top + Player.getGlobalBounds().height < window.getSize().y)
-                    Player.move(0, 5);
             }
 
             // move the player 2
