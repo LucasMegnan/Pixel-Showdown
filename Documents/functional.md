@@ -62,19 +62,17 @@ For the moment, the keybinds are:
 
 Expected keybinds:
 1st player:
-    - Q-D -> left/right
-    - Z -> jump/double jump
-    - S -> crouch + protection
-    - E -> dash left/right
-    - A -> taunt
-    - C-F-R -> attack 1/2/3
-    - W-X -> special attacks (at the same time -> ultimate)
+    - Q-D -> left/right (Jostick left/right)
+    - Z -> jump/double jump (A)
+    - S -> crouch + protection (Jostick Left)
+    - E -> dash left/right (B)
+    - F-R -> attack 1/2 (X/Y)
+    - W-X -> special attacks (LB/RB) (at the same time -> ultimate) 
 2nd player:
     - K-M -> left/right
     - O -> jump/double jump
     - L -> crouch + protection
     - I -> dash left/right
-    - P -> taunt
     - N-J-U -> attack 1/2/3
     - ;-: -> special attacks (at the same time -> ultimate)
 

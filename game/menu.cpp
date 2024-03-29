@@ -19,15 +19,17 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
     howToPlayText.setFillColor(sf::Color::Yellow);
     howToPlayText.setScale(4, 4);
 
-    sf::Text instructions("Q-D  to move\nS  to crouch\nZ  to jump\nE  to dash\nC-F-R  to attack", font);
+    sf::Text instructions("Joystick to move\nClick Joystick to crouch\nA  to jump\nB  to dash\nX-Y  to attack", font);
     instructions.setPosition(300, 300);
     instructions.setFillColor(sf::Color::Magenta);
     instructions.setScale(2, 2);
 
-    sf::Text Return("Press Escape to return", font);
+    sf::Text Return("Press Select to return", font);
     Return.setPosition(775, 900);
     Return.setFillColor(sf::Color::Yellow);
     Return.setScale(1.5, 1.5);
+
+    sf::Joystick controller1;
 
     while (window.isOpen())
     {
@@ -38,7 +40,7 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
                 window.close();
         }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+            if (controller1.isButtonPressed(0, 6)){
                 return;
             }
             
@@ -91,10 +93,12 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
     int character;
     int GutsPos = 800;
     int ShadrPos = 1100;
-    int choicePos = ShadrPos;
+    int choicePos = 950;
 
     int chosenChar1 = 0;
     int chosenChar2 = 0;
+
+    sf::Joystick controller1;
 
     while (window.isOpen())
     {
@@ -115,29 +119,29 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             choose.setScale(sf::Vector2f(3.0f, 3.0));
 
             
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
-                if (choicePos == ShadrPos) {
+            if (controller1.isButtonPressed(0, 2)){
+                if (choicePos >= GutsPos) {
                     chosenChar1 = 2;
-                    choicePos -= 300;
+                    choicePos = 800;
                 }
                 else{}
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-                if (choicePos == GutsPos) {
+            if (controller1.isButtonPressed(0, 1)){
+                if (choicePos <= ShadrPos) {
                     chosenChar1 = 1;
-                    choicePos += 300;
+                    choicePos = 1100;
                 }
                 else{}
             }
 
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == GutsPos && !(chosenChar1 == 0)){
+            if (controller1.isButtonPressed(0, 7) && choicePos == GutsPos && !(chosenChar1 == 0)){
                 music.stop();
                 chosenChar1 = 1; // to load properly the sprites for now
                 chosenChar2 = 2;
                 launchGame(window, character, font, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == ShadrPos && !(chosenChar1 == 0)){
+            else if (controller1.isButtonPressed(0, 7) && choicePos == ShadrPos && !(chosenChar1 == 0)){
                 music.stop();
                 chosenChar1 = 2; // to load properly the sprites for now
                 chosenChar2 = 1;
@@ -181,6 +185,10 @@ int main()
     if (!font.loadFromFile("againts.otf")) {
         // handle error
     }
+
+    // Controller is connected
+    sf::Joystick controller1;
+    controller1.isConnected(0);
 
     sf::Text Title("Pixel Showdown", font);
     Title.setPosition(700, 150);
@@ -250,26 +258,26 @@ int main()
                 exitButton.setFillColor(sf::Color::Red);
             }
 
-            // Update the choice position
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !isSPressed) {
-                updateChoicePosition(choicePos, 50, playButtonPos, exitButtonPos);
-            } 
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !isZPressed) {
-                updateChoicePosition(choicePos, -50, playButtonPos, exitButtonPos);
+            // Check button presses
+            if (controller1.isButtonPressed(0, 0)) {
+                updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
+            }
+            if (controller1.isButtonPressed(0, 3)) { 
+                updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == playButtonPos) { // checks if you're on the Play button
+            if (controller1.isButtonPressed(0, 7) && choicePos == playButtonPos) { // checks if you're on the Play button
                 music.stop();
                 charSelection(window, font);
                 return 0;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
+            if (controller1.isButtonPressed(0, 7) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
                 howToPlay(window, font);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
+            if (controller1.isButtonPressed(0, 7) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
                 clickSound.play();
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && choicePos == exitButtonPos) { // checks if you're on the Exit button
+            if (controller1.isButtonPressed(0, 7) && choicePos == exitButtonPos) { // checks if you're on the Exit button
                 window.close();
             }
         }

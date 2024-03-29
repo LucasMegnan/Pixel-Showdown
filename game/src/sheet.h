@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <iostream>
 #include <filesystem>
 #include <vector>
 #include <cstdlib>
