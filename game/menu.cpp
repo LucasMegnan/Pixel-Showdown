@@ -1,5 +1,7 @@
 #include "Platformer.h"
 
+bool wasZPressed = false;
+bool wasSPressed = false;
 
 void updateChoicePosition(int& choicePos, int increment, int minValue, int maxValue) {
     // Move the choice position by the specified increment/decrement
@@ -258,26 +260,37 @@ int main()
                 exitButton.setFillColor(sf::Color::Red);
             }
 
-            // Check button presses
-            if (controller1.isButtonPressed(0, 0)) {
-                updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
-            }
-            if (controller1.isButtonPressed(0, 3)) { 
-                updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
+            // Check button presses and keyboard inputs
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                if (!wasZPressed) {
+                    updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
+                    wasZPressed = true;
+                }
+            } else {
+                wasZPressed = false;
             }
 
-            if (controller1.isButtonPressed(0, 7) && choicePos == playButtonPos) { // checks if you're on the Play button
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+                if (!wasSPressed) {
+                    updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
+                    wasSPressed = true;
+                }
+            } else {
+                wasSPressed = false;
+            }
+
+            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == playButtonPos) { // checks if you're on the Play button
                 music.stop();
                 charSelection(window, font);
                 return 0;
             }
-            if (controller1.isButtonPressed(0, 7) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
+            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
                 howToPlay(window, font);
             }
-            if (controller1.isButtonPressed(0, 7) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
+            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
                 clickSound.play();
             }
-            if (controller1.isButtonPressed(0, 7) && choicePos == exitButtonPos) { // checks if you're on the Exit button
+            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == exitButtonPos) { // checks if you're on the Exit button
                 window.close();
             }
         }
