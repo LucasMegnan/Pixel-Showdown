@@ -10,10 +10,14 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
     music.setLoop(true); // to loop the music
     music.play();
 
-    sf::Texture t;
-    t.loadFromFile("imgs/bg.png");
-    sf::Sprite s(t);
-    window.setVerticalSyncEnabled(true);
+    // Load the background image
+    sf::Texture texture;
+    if (!texture.loadFromFile("imgs/bg.png")) {
+        // Handle error
+    }
+    // Create a sprite from the texture
+    sf::Sprite sprite(texture);
+    sprite.scale(3.2, 6);
 
     Character Guts;
     Character Shadr;
@@ -41,7 +45,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
     Player2.setPosition(1500, 250);
 
     // Create a health bar for the first player
-    sf::RectangleShape healthBar1(sf::Vector2f( 800.0f, 20.0f));
+    sf::RectangleShape healthBar1(sf::Vector2f(800.0f, 20.0f));
     healthBar1.setFillColor(sf::Color::Red);
     healthBar1.setPosition(10, 10); // Top left
     // Create a health bar for the second player
@@ -51,8 +55,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
 
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
-    rectangle.setFillColor(sf::Color::Green); // fill color
-    rectangle2.setFillColor(sf::Color::Green); // fill color
+    rectangle.setFillColor(sf::Color::Yellow); // fill color
+    rectangle2.setFillColor(sf::Color::Yellow); // fill color
     rectangle.setPosition(200, 600); // position in the middle of the window
     rectangle2.setPosition(1400, 600); // position in the middle of the window
 
@@ -1040,7 +1044,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             
 
         window.clear(sf::Color::Black);
-        window.draw(s);
+        window.draw(sprite);
         window.draw(Player);
         window.draw(Player2);
         window.draw(rectangle);
