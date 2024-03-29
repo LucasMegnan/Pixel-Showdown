@@ -261,7 +261,7 @@ int main()
             }
 
             // Check button presses and keyboard inputs
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            if (controller1.isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
                 if (!wasZPressed) {
                     updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
                     wasZPressed = true;
@@ -270,7 +270,7 @@ int main()
                 wasZPressed = false;
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+            if (controller1.isButtonPressed (0,2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
                 if (!wasSPressed) {
                     updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
                     wasSPressed = true;
