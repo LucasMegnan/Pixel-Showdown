@@ -2,6 +2,8 @@
 
 bool wasZPressed = false;
 bool wasSPressed = false;
+bool wasButton0Pressed = false;
+bool wasButton3Pressed = false;
 
 void updateChoicePosition(int& choicePos, int increment, int minValue, int maxValue) {
     // Move the choice position by the specified increment/decrement
@@ -261,22 +263,26 @@ int main()
             }
 
             // Check button presses and keyboard inputs
-            if (controller1.isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                if (!wasZPressed) {
+            if (controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                if (!wasButton3Pressed && !wasSPressed) {
                     updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
-                    wasZPressed = true;
-                }
-            } else {
-                wasZPressed = false;
-            }
-
-            if (controller1.isButtonPressed (0,2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-                if (!wasSPressed) {
-                    updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
+                    wasButton3Pressed = true;
                     wasSPressed = true;
                 }
             } else {
+                wasButton3Pressed = false;
                 wasSPressed = false;
+            }
+
+            if (controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+                if (!wasButton0Pressed && !wasZPressed) {
+                    updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
+                    wasButton0Pressed = true;
+                    wasZPressed = true;
+                }
+            } else {
+                wasButton0Pressed = false;
+                wasZPressed = false;
             }
 
             if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == playButtonPos) { // checks if you're on the Play button
