@@ -254,7 +254,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack1 player 1
             if (controller1.isButtonPressed(0, 2)) {
                 firstPlayer.isAttack1 = true;
-                firstPlayer.attackDamage = 2;
+                firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -285,7 +285,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
             // attack2 player 1
             if (controller1.isButtonPressed(0, 3)) {
                 firstPlayer.isAttack2 = true;
-                firstPlayer.attackDamage = 2;
+                firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -311,6 +311,68 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                 }
             } else {
                 firstPlayer.isAttack2 = false;
+            }
+
+            // special1 player 1
+            if (controller1.isButtonPressed(0, 4)) {
+                firstPlayer.isSpecial1 = true;
+                firstPlayer.attackDamage = 2;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    if (firstPlayer.lastDirectionLeft) {
+                        if (firstPlayer.chosenChar == 1){
+                            currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
+                            Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
+                        }
+                        else if (firstPlayer.chosenChar == 2){
+                            currentFrame = (currentFrame + 1) % SPECIALLShadrSheet.size();
+                            Player.setTexture(SPECIALLShadrSheet[currentFrame]);
+                        }
+                    } else {
+                        if (firstPlayer.chosenChar == 1){
+                            currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
+                            Player.setTexture(ATTACK2GutsSheet[currentFrame]);
+                        }
+                        else if(firstPlayer.chosenChar == 2){
+                            currentFrame = (currentFrame + 1) % SPECIALShadrSheet.size();
+                            Player.setTexture(SPECIALShadrSheet[currentFrame]);
+                        }
+                    }
+                    animationClock.restart();
+                }
+            } else {
+                firstPlayer.isSpecial1 = false;
+            }
+
+            // special2 player 1
+            if (controller1.isButtonPressed(0, 5)) {
+                firstPlayer.isSpecial2 = true;
+                firstPlayer.attackDamage = 2;
+                // update the sprite every 0.1 seconds
+                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    if (firstPlayer.lastDirectionLeft) {
+                        if (firstPlayer.chosenChar == 1){
+                            currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
+                            Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
+                        }
+                        else if (firstPlayer.chosenChar == 2){
+                            currentFrame = (currentFrame + 1) % SPECIAL2LShadrSheet.size();
+                            Player.setTexture(SPECIAL2LShadrSheet[currentFrame]);
+                        }
+                    } else {
+                        if (firstPlayer.chosenChar == 1){
+                            currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
+                            Player.setTexture(ATTACK2GutsSheet[currentFrame]);
+                        }
+                        else if(firstPlayer.chosenChar == 2){
+                            currentFrame = (currentFrame + 1) % SPECIAL2ShadrSheet.size();
+                            Player.setTexture(SPECIAL2ShadrSheet[currentFrame]);
+                        }
+                    }
+                    animationClock.restart();
+                }
+            } else {
+                firstPlayer.isSpecial2 = false;
             }
 
             // *** PLAYER 2 ATTACKS ***
@@ -993,6 +1055,26 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                 }  
             }
             else if (firstPlayer.isAttack3){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                secondPlayer.HP -= firstPlayer.attackDamage;
+
+                // Make sure player 2's health doesn't fall below zero
+                if (secondPlayer.HP < 0) {
+                    secondPlayer.HP = 0;
+                }  
+            }
+            else if (firstPlayer.isSpecial1){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                secondPlayer.HP -= firstPlayer.attackDamage;
+
+                // Make sure player 2's health doesn't fall below zero
+                if (secondPlayer.HP < 0) {
+                    secondPlayer.HP = 0;
+                }  
+            }
+            else if (firstPlayer.isSpecial2){
                 // Check if player 1's attack hits player 2
                 // Reduce player 2's health
                 secondPlayer.HP -= firstPlayer.attackDamage;

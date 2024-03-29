@@ -12,8 +12,8 @@ public:
     bool lastDirectionLeft; // direction condition
 
     // HP management
-    int HP;
-    int maxHP;
+    float HP;
+    float maxHP;
 
     // jump parameters
     int jumps;
@@ -31,7 +31,7 @@ public:
     bool isRunningL;
 
     // attack management
-    int attackDamage;
+    float attackDamage;
 
     // attack parameters
     bool isAttack1;
