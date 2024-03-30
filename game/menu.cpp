@@ -4,6 +4,7 @@ bool wasZPressed = false;
 bool wasSPressed = false;
 bool wasButton0Pressed = false;
 bool wasButton3Pressed = false;
+bool musicOn = true;
 
 void updateChoicePosition(int& choicePos, int increment, int minValue, int maxValue) {
     // Move the choice position by the specified increment/decrement
@@ -17,14 +18,70 @@ void updateChoicePosition(int& choicePos, int increment, int minValue, int maxVa
     }
 }
 
+bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
+    sf::Text settingsText("Settings", font);
+    settingsText.setPosition(300, 75);
+    settingsText.setFillColor(sf::Color::Blue);
+    settingsText.setScale(4, 4);
+
+    sf::Text musicSettingOn("Music:\tOn\t\t\t\tPress X or B to change", font);
+    musicSettingOn.setPosition(700, 300);
+    musicSettingOn.setFillColor(sf::Color::Magenta);
+    musicSettingOn.setScale(1.5, 1.5);
+    sf::Text musicSettingOff("Music:\tOff\t\t\t\tPress X or B to change", font);
+    musicSettingOff.setPosition(700, 300);
+    musicSettingOff.setFillColor(sf::Color::Magenta);
+    musicSettingOff.setScale(1.5, 1.5);
+
+    sf::Text Return("Press Select to return", font);
+    Return.setPosition(775, 900);
+    Return.setFillColor(sf::Color::Blue);
+    Return.setScale(1.5, 1.5);
+
+    sf::Joystick controller1;
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+            if (controller1.isButtonPressed(0, 6)){
+                return musicOn;
+            }
+            if (controller1.isButtonPressed(0, 1) && musicOn == true){
+                musicOn = false;
+            }
+            if (controller1.isButtonPressed(0, 2) && musicOn == false){
+                musicOn = true;
+            }
+            
+        window.clear(sf::Color::Black);
+        window.draw(settingsText);
+        if (musicOn == true){
+            window.draw(musicSettingOn);
+        }
+        else {
+            window.draw(musicSettingOff);
+        }
+        window.draw(Return);
+        window.display();
+
+    }
+    return musicOn;
+}
+
 void howToPlay(sf::RenderWindow& window, sf::Font font){
     sf::Text howToPlayText("How to play?", font);
     howToPlayText.setPosition(700, 75);
     howToPlayText.setFillColor(sf::Color::Yellow);
     howToPlayText.setScale(4, 4);
 
-    sf::Text instructions("Joystick to move\nClick Joystick to crouch\nA  to jump\nB  to dash\nX-Y  to attack", font);
-    instructions.setPosition(300, 300);
+    sf::Text instructions("Joystick  to move\nClick Joystick  to protect\nA  to jump\nB  to dash\nX-Y  to attack\nLB-RB  to special", font);
+    instructions.setPosition(700, 300);
     instructions.setFillColor(sf::Color::Magenta);
     instructions.setScale(2, 2);
 
@@ -58,13 +115,12 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
     return;
 }
 
-void charSelection (sf::RenderWindow& window, sf::Font font){
+void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
     sf::Music music;
     if (!music.openFromFile("Music/charSelection.wav")) {
         // handle error
     }
     music.setLoop(true); // to loop the music
-    music.play();
 
     sf::Text ChooseCharacter ("Choose your Character", font);
     ChooseCharacter.setPosition(600, 150);
@@ -112,6 +168,18 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+
+            if (musicOn == true){
+                if (music.getStatus() != music.Playing){
+                    music.play();
+                }
+                else{
+                }
+            }
+            else{
+                music.stop();
+            }
+
             iconGuts.setPosition(700, 700);
             iconGuts.setTexture(charIconGuts);
             iconGuts.setScale(sf::Vector2f(3.0f, 3.0));
@@ -143,13 +211,13 @@ void charSelection (sf::RenderWindow& window, sf::Font font){
                 music.stop();
                 chosenChar1 = 1; // to load properly the sprites for now
                 chosenChar2 = 2;
-                launchGame(window, character, font, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
             }
             else if (controller1.isButtonPressed(0, 7) && choicePos == ShadrPos && !(chosenChar1 == 0)){
                 music.stop();
                 chosenChar1 = 2; // to load properly the sprites for now
                 chosenChar2 = 1;
-                launchGame(window, character, font, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
             }
 
             window.clear(sf::Color::Black);
@@ -178,12 +246,6 @@ int main()
     music.setLoop(true); // to loop the music
     music.play();
 
-    sf::SoundBuffer buffer;
-    if (!buffer.loadFromFile("Music/buttoneffect.wav")) {
-        // handle error
-    }
-    sf::Sound clickSound;
-    clickSound.setBuffer(buffer);
 
     sf::Font font;
     if (!font.loadFromFile("againts.otf")) {
@@ -236,6 +298,17 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            if (musicOn == true){
+                if (music.getStatus() != music.Playing){
+                    music.play();
+                }
+                else{
+                }
+            }
+            else{
+                music.stop();
+            }
+
             // *** Color Update depending on your choice ***
             if (choicePos == playButtonPos) {
                 playButton.setFillColor(sf::Color::Red);
@@ -287,14 +360,19 @@ int main()
 
             if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == playButtonPos) { // checks if you're on the Play button
                 music.stop();
-                charSelection(window, font);
+                charSelection(window, font, musicOn);
                 return 0;
             }
             if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == howToPlayButtonPos) { // checks if you're on the How to Play button
                 howToPlay(window, font);
             }
             if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == settingsButtonPos) { // checks if you're on the Settings button
-                clickSound.play();
+                if (settings(window, font, musicOn) == true){
+                    musicOn = true;
+                }
+                else{
+                    musicOn = false;
+                }
             }
             if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == exitButtonPos) { // checks if you're on the Exit button
                 window.close();

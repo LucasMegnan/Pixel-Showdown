@@ -1,14 +1,59 @@
 #include "src/class.h"
 
 
-void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chosenChar1, int chosenChar2)
+void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2)
 {
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
         // handle error
     }
     music.setLoop(true); // to loop the music
-    music.play();
+
+    sf::SoundBuffer soundeffect;
+    if (!soundeffect.loadFromFile("Music/soundEffects/dash.wav")){
+        // handle error
+    }
+    sf::Sound dash;
+    sf::SoundBuffer soundeffect1;
+    if (!soundeffect1.loadFromFile("Music/soundEffects/gutsAttack.wav")) {
+        // handle error
+    }
+    sf::Sound attack2GSound;
+    attack2GSound.setBuffer(soundeffect1);
+    sf::SoundBuffer soundeffect2;
+    if (!soundeffect2.loadFromFile("Music/soundEffects/gutsAttack2.wav")) {
+        // handle error
+    }
+    sf::Sound attackGSound;
+    attackGSound.setBuffer(soundeffect2);
+    sf::SoundBuffer soundeffect3;
+    if (!soundeffect3.loadFromFile("Music/soundEffects/ShadrAttack.wav")) {
+        // handle error
+    }
+    sf::Sound attackSSound;
+    attackSSound.setBuffer(soundeffect3);
+    sf::SoundBuffer soundeffect4;
+    if (!soundeffect4.loadFromFile("Music/soundEffects/ShadrAttack2.wav")) {
+        // handle error
+    }
+    sf::Sound attack2SSound;
+    attack2SSound.setBuffer(soundeffect4);
+    sf::SoundBuffer soundeffect5;
+    if (!soundeffect5.loadFromFile("Music/soundEffects/ShadrSpecial.wav")){
+        // handle error
+    }
+    sf::Sound specialSSound;
+    sf::SoundBuffer soundeffect6;
+    if (!soundeffect6.loadFromFile("Music/soundEffects/ShadrSpacial2.wav")){
+        // handle error
+    }
+    sf::Sound special2SSound;
+    sf::SoundBuffer soundeffect7;
+    if (!soundeffect7.loadFromFile("Music/soundEffects/ShadrSpacial2-.wav")){
+        // handle error
+    }
+    sf::Sound special2S_Sound;
+
 
     // Load the background image
     sf::Texture texture;
@@ -203,6 +248,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                     gameState = PLAYING;
                 }
             }
+            if (musicOn == true){
+                if (music.getStatus() != music.Playing){
+                    music.play();
+                }
+                else{
+                }
+            }
+            else{
+                music.stop();
+            }
 
             // Color Update depending on your choice
             if (choicePos == backToGamePos) {
@@ -261,19 +316,23 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
+                            attackGSound.play();
                             currentFrame = (currentFrame + 1) % ATTACKLGutsSheet.size();
                             Player.setTexture(ATTACKLGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
+                            attackSSound.play();
                             currentFrame = (currentFrame + 1) % ATTACKLShadrSheet.size();
                             Player.setTexture(ATTACKLShadrSheet[currentFrame]);
                         }
                     } else {
                         if (firstPlayer.chosenChar == 1){
+                            attackGSound.play();
                             currentFrame = (currentFrame + 1) % ATTACKGutsSheet.size();
                             Player.setTexture(ATTACKGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
+                            attackSSound.play();
                             currentFrame = (currentFrame + 1) % ATTACKShadrSheet.size();
                             Player.setTexture(ATTACKShadrSheet[currentFrame]);
                         }
@@ -292,19 +351,23 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
+                            attack2GSound.play();
                             currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
                             Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
+                            attack2SSound.play();
                             currentFrame = (currentFrame + 1) % ATTACK2LShadrSheet.size();
                             Player.setTexture(ATTACK2LShadrSheet[currentFrame]);
                         }
                     } else {
                         if (firstPlayer.chosenChar == 1){
+                            attack2GSound.play();
                             currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
                             Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
+                            attack2SSound.play();
                             currentFrame = (currentFrame + 1) % ATTACK2ShadrSheet.size();
                             Player.setTexture(ATTACK2ShadrSheet[currentFrame]);
                         }
@@ -327,6 +390,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                             Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
+                            // specialSSound.play();
                             currentFrame = (currentFrame + 1) % SPECIALLShadrSheet.size();
                             Player.setTexture(SPECIALLShadrSheet[currentFrame]);
                         }
@@ -336,6 +400,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                             Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
+                            // specialSSound.play();
                             currentFrame = (currentFrame + 1) % SPECIALShadrSheet.size();
                             Player.setTexture(SPECIALShadrSheet[currentFrame]);
                         }
@@ -358,6 +423,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                             Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
+                            // special2SSound.play();
+                            // special2S_Sound.play();
                             currentFrame = (currentFrame + 1) % SPECIAL2LShadrSheet.size();
                             Player.setTexture(SPECIAL2LShadrSheet[currentFrame]);
                         }
@@ -367,6 +434,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, int chos
                             Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
+                            // special2SSound.play();
+                            // special2S_Sound.play();
                             currentFrame = (currentFrame + 1) % SPECIAL2ShadrSheet.size();
                             Player.setTexture(SPECIAL2ShadrSheet[currentFrame]);
                         }
