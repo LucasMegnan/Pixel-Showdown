@@ -116,14 +116,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     firstPlayer.isJumping = isJumping;
     bool isCrouch = false;
     firstPlayer.isCrouch = isCrouch;
-    bool cannotMove1 = false;
-    firstPlayer.cannotMove = cannotMove1;
+    bool isProtect1 = false;
+    firstPlayer.isProtect = isProtect1;
     bool isAttack1 = false;
     bool isAttack2 = false;
-    bool isAttack3 = false;
     firstPlayer.isAttack1 = isAttack1;
     firstPlayer.isAttack2 = isAttack2;
-    firstPlayer.isAttack3 = isAttack3;
     bool isDie = false;
     firstPlayer.isDie = isDie;
 
@@ -138,8 +136,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     secondPlayer.isJumping = isJumping2;
     bool isCrouch2 = false;
     secondPlayer.isCrouch = isCrouch2;
-    bool cannotMove2 = false;
-    secondPlayer.cannotMove = cannotMove2;
+    bool isProtect2 = false;
+    secondPlayer.isProtect = isProtect2;
     bool isAttack12 = false;
     bool isAttack22 = false;
     secondPlayer.isAttack1 = isAttack12;
@@ -309,7 +307,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 1 ATTACKS ***
 
             // attack1 player 1
-            if (controller1.isButtonPressed(0, 2) && !firstPlayer.cannotMove) {
+            if (controller1.isButtonPressed(0, 2) && !firstPlayer.isProtect) {
                 firstPlayer.isAttack1 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -344,7 +342,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // attack2 player 1
-            if (controller1.isButtonPressed(0, 3) && !firstPlayer.cannotMove) {
+            if (controller1.isButtonPressed(0, 3) && !firstPlayer.isProtect) {
                 firstPlayer.isAttack2 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -379,7 +377,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special1 player 1
-            if (controller1.isButtonPressed(0, 4) && !firstPlayer.cannotMove) {
+            if (controller1.isButtonPressed(0, 4) && !firstPlayer.isProtect) {
                 firstPlayer.isSpecial1 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -412,7 +410,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special2 player 1
-            if (controller1.isButtonPressed(0, 5) && !firstPlayer.cannotMove) {
+            if (controller1.isButtonPressed(0, 5) && !firstPlayer.isProtect) {
                 firstPlayer.isSpecial2 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -509,6 +507,74 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             } else {
                 secondPlayer.isAttack2 = false;
             }
+
+            // special1 player 2
+            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect) {
+                secondPlayer.isSpecial1 = true;
+                secondPlayer.attackDamage = 2;
+                // update the sprite every 0.1 seconds
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    if (secondPlayer.lastDirectionLeft) {
+                        if (secondPlayer.chosenChar == 1){
+                            currentFrame2 = (currentFrame2 + 1) % ATTACK2LGutsSheet.size();
+                            Player2.setTexture(ATTACK2LGutsSheet[currentFrame2]);
+                        }
+                        else if (secondPlayer.chosenChar == 2){
+                            // specialSSound.play();
+                            currentFrame2 = (currentFrame2 + 1) % SPECIALLShadrSheet.size();
+                            Player2.setTexture(SPECIALLShadrSheet[currentFrame2]);
+                        }
+                    } else {
+                        if (secondPlayer.chosenChar == 1){
+                            currentFrame2 = (currentFrame2 + 1) % ATTACK2GutsSheet.size();
+                            Player2.setTexture(ATTACK2GutsSheet[currentFrame2]);
+                        }
+                        else if(secondPlayer.chosenChar == 2){
+                            // specialSSound.play();
+                            currentFrame2 = (currentFrame2 + 1) % SPECIALShadrSheet.size();
+                            Player2.setTexture(SPECIALShadrSheet[currentFrame2]);
+                        }
+                    }
+                    animationClock2.restart();
+                }
+            } else {
+                secondPlayer.isSpecial1 = false;
+            }
+
+            // special2 player 2
+            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect) {
+                secondPlayer.isSpecial2 = true;
+                secondPlayer.attackDamage = 2;
+                // update the sprite every 0.1 seconds
+                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                    if (secondPlayer.lastDirectionLeft) {
+                        if (secondPlayer.chosenChar == 1){
+                            currentFrame2 = (currentFrame2 + 1) % ATTACK2LGutsSheet.size();
+                            Player2.setTexture(ATTACK2LGutsSheet[currentFrame2]);
+                        }
+                        else if (secondPlayer.chosenChar == 2){
+                            // special2SSound.play();
+                            // special2S_Sound.play();
+                            currentFrame2 = (currentFrame2 + 1) % SPECIAL2LShadrSheet.size();
+                            Player2.setTexture(SPECIAL2LShadrSheet[currentFrame2]);
+                        }
+                    } else {
+                        if (secondPlayer.chosenChar == 1){
+                            currentFrame2 = (currentFrame2 + 1) % ATTACK2GutsSheet.size();
+                            Player2.setTexture(ATTACK2GutsSheet[currentFrame2]);
+                        }
+                        else if(secondPlayer.chosenChar == 2){
+                            // special2SSound.play();
+                            // special2S_Sound.play();
+                            currentFrame2 = (currentFrame2 + 1) % SPECIAL2ShadrSheet.size();
+                            Player2.setTexture(SPECIAL2ShadrSheet[currentFrame2]);
+                        }
+                    }
+                    animationClock2.restart();
+                }
+            } else {
+                secondPlayer.isSpecial2 = false;
+            }
             
 
             // die player 1
@@ -550,7 +616,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // die player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+            if (controller2.isButtonPressed(1, 9)) {
                 secondPlayer.isDie = true;
                 // update the sprite every 0.1 seconds
                 if (secondPlayer.lastDirectionLeft){
@@ -560,23 +626,23 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player2.setTexture(DIELGutsSheet[currentFrame2]);
                         }
                         else if (secondPlayer.chosenChar == 2){
-                            currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size(); // Shadr's left anim is not implemented yet
-                            Player2.setTexture(DIEShadrSheet[currentFrame2]); // Shadr's left anim is not implemented yet
+                            currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size();
+                            Player2.setTexture(DIEShadrSheet[currentFrame2]);
                         }
                         animationClock2.restart();
                     }
                 }
                 else{
                     if (secondPlayer.chosenChar == 1){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                            currentFrame = (currentFrame + 1) % DIEGutsSheet.size();
-                            Player.setTexture(DIEGutsSheet[currentFrame]);
+                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                            currentFrame2 = (currentFrame2 + 1) % DIEGutsSheet.size();
+                            Player2.setTexture(DIEGutsSheet[currentFrame2]);
                         }
                     }
                     else if (secondPlayer.chosenChar == 2){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                            currentFrame = (currentFrame + 1) % DIEShadrSheet.size(); 
-                            Player.setTexture(DIEShadrSheet[currentFrame]); 
+                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                            currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size(); 
+                            Player2.setTexture(DIEShadrSheet[currentFrame2]); 
                         }
                         animationClock.restart();
                     }
@@ -589,7 +655,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // crouch player 1
             if (controller1.isButtonPressed(0, 8)) {
                 firstPlayer.isCrouch = true;
-                firstPlayer.cannotMove = true;
+                firstPlayer.isProtect = true;
                 if (firstPlayer.chosenChar == 1){
                     // update the sprite every 0.1 seconds
                     if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
@@ -618,13 +684,13 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             } else {
                 firstPlayer.isCrouch = false;
-                firstPlayer.cannotMove = false;
+                firstPlayer.isProtect = false;
             }
 
             // crouch player 2
             if (controller2.isButtonPressed(1, 8)) {
                 secondPlayer.isCrouch = true;
-                secondPlayer.cannotMove = true;
+                secondPlayer.isProtect = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
@@ -650,7 +716,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             } else {
                 secondPlayer.isCrouch = false;
-                secondPlayer.cannotMove = false;
+                secondPlayer.isProtect = false;
             }
 
             // jump and condition player 1
@@ -757,7 +823,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // jump and condition player 2
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
+            if (controller2.isButtonPressed(1, 0)) {
                 secondPlayer.isJumping = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -787,39 +853,46 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             if (!secondPlayer.isJumping) {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
-                    secondPlayer.isRunning = true;
-                    secondPlayer.lastDirectionLeft = false;
-                    // update the sprite every 0.1 seconds
-                    if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                        if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % runGutsSheet.size();
-                            Player2.setTexture(runGutsSheet[currentFrame2]);
+                if (secondPlayer.isCrouch){
+                }
+                else if (std::abs(currentX2 - prevX2) > JoystickSensitivity2) {
+                    if (currentX2 > JoystickNeutralThreshold2) {
+                        secondPlayer.isRunning = true;
+                        secondPlayer.lastDirectionLeft = false;
+                        // update the sprite every 0.1 seconds
+                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                            if (secondPlayer.chosenChar == 1){
+                                currentFrame2 = (currentFrame2 + 1) % runGutsSheet.size();
+                                Player2.setTexture(runGutsSheet[currentFrame2]);
+                            }
+                            else if (secondPlayer.chosenChar == 2){
+                                currentFrame2 = (currentFrame2 + 1) % RunShadrSheet.size();
+                                Player2.setTexture(RunShadrSheet[currentFrame2]);
+                            }
+                            animationClock2.restart();
                         }
-                        else if (secondPlayer.chosenChar == 2){
-                            currentFrame2 = (currentFrame2 + 1) % RunShadrSheet.size();
-                            Player2.setTexture(RunShadrSheet[currentFrame2]);
-                        }
-                        animationClock2.restart();
                     }
                 } else {
                     secondPlayer.isRunning = false;
                 }
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-                    secondPlayer.isRunningL = true;
-                    secondPlayer.lastDirectionLeft = true;
-                    // update the sprite every 0.1 seconds
-                    if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                        if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % runLGutsSheet.size();
-                            Player2.setTexture(runLGutsSheet[currentFrame2]);
+                if (secondPlayer.isCrouch){
+                }
+                else if (std::abs(currentX2 - prevX2) > JoystickSensitivity2) {
+                    if (currentX2 < -JoystickNeutralThreshold2) {
+                        secondPlayer.isRunningL = true;
+                        secondPlayer.lastDirectionLeft = true;
+                        // update the sprite every 0.1 seconds
+                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                            if (secondPlayer.chosenChar == 1){
+                                currentFrame2 = (currentFrame2 + 1) % runLGutsSheet.size();
+                                Player2.setTexture(runLGutsSheet[currentFrame2]);
+                            }
+                            else if (secondPlayer.chosenChar == 2){
+                                currentFrame2 = (currentFrame2 + 1) % RunLShadrSheet.size();
+                                Player2.setTexture(RunLShadrSheet[currentFrame2]);
+                            }
+                            animationClock2.restart();
                         }
-                        else if (secondPlayer.chosenChar == 2){
-                            currentFrame2 = (currentFrame2 + 1) % RunLShadrSheet.size();
-                            Player2.setTexture(RunLShadrSheet[currentFrame2]);
-                        }
-                        animationClock2.restart();
                     }
                 } else {
                     secondPlayer.isRunningL = false;
@@ -911,7 +984,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // jump player 1
             firstPlayer.isZPressed = controller1.isButtonPressed(0, 0);
-            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2 && !firstPlayer.cannotMove)
+            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2 && !firstPlayer.isProtect)
             {
                 firstPlayer.velocity = firstPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 firstPlayer.jumps++;
@@ -920,7 +993,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // jump player 2
             secondPlayer.isZPressed = controller1.isButtonPressed(1, 0);
-            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2 && !secondPlayer.cannotMove)
+            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2 && !secondPlayer.isProtect)
             {
                 secondPlayer.velocity = secondPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 secondPlayer.jumps++;
@@ -930,7 +1003,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // move the player 1
             if (firstPlayer.chosenChar == 1){
                 // Move player left or right based on joystick position
-                if (!(firstPlayer.cannotMove)){
+                if (!(firstPlayer.isProtect)){
                     if (currentX < -JoystickNeutralThreshold && Player.getGlobalBounds().left > 0)
                         Player.move(-5, 0); // Move left
                     else if (currentX > JoystickNeutralThreshold && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)
@@ -944,7 +1017,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
             else if (firstPlayer.chosenChar == 2){
-                if (!(firstPlayer.cannotMove)){
+                if (!(firstPlayer.isProtect)){
                     if (currentX < -JoystickNeutralThreshold && Player.getGlobalBounds().left > 0) // Move left
                         Player.move(-7, 0);
                     else if (currentX > JoystickNeutralThreshold && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) // Move right
@@ -961,10 +1034,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // move the player 2
             if (secondPlayer.chosenChar == 1){
                 // Move player left or right based on joystick position
-                if (!(secondPlayer.cannotMove)){
-                    if (currentX2 < -JoystickNeutralThreshold && Player2.getGlobalBounds().left > 0)
+                if (!(secondPlayer.isProtect)){
+                    if (currentX2 < -JoystickNeutralThreshold2 && Player2.getGlobalBounds().left > 0)
                         Player2.move(-5, 0); // Move left
-                    else if (currentX2 > JoystickNeutralThreshold && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)
+                    else if (currentX2 > JoystickNeutralThreshold2 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)
                         Player2.move(5, 0); // Move right
                     else if (sf::Joystick::isButtonPressed(0, 8) && Player2.getGlobalBounds().top + Player2.getGlobalBounds().height < window.getSize().y)
                         Player2.move(0, 9);
@@ -975,10 +1048,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
             else if (secondPlayer.chosenChar == 2){
-                if (!(secondPlayer.cannotMove)){
-                    if (currentX2 < -JoystickNeutralThreshold && Player2.getGlobalBounds().left > 0) // Move left
+                if (!(secondPlayer.isProtect)){
+                    if (currentX2 < -JoystickNeutralThreshold2 && Player2.getGlobalBounds().left > 0) // Move left
                         Player2.move(-7, 0);
-                    else if (currentX2 > JoystickNeutralThreshold && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) // Move right
+                    else if (currentX2 > JoystickNeutralThreshold2 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) // Move right
                         Player2.move(7, 0);
                     else if (sf::Joystick::isButtonPressed(0, 8) && Player2.getGlobalBounds().top + Player2.getGlobalBounds().height < window.getSize().y)
                         Player2.move(0, 5);
@@ -1060,7 +1133,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             sf::Time timeSinceLastDash2 = dashClock2.getElapsedTime();
             if (secondPlayer.chosenChar == 1){
                 if (!secondPlayer.isDashing && timeSinceLastDash2.asSeconds() >= 3.5f) {
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
+                    if (controller2.isButtonPressed(1, 1) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
                         if (secondPlayer.lastDirectionLeft){
                             secondPlayer.isDashing = true;
                             secondPlayer.dashDirection = -20.0f;
@@ -1092,7 +1165,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
             else if (secondPlayer.chosenChar == 2){
                 if (!secondPlayer.isDashing && timeSinceLastDash2.asSeconds() >= 5.0f) {
-                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
+                    if (controller2.isButtonPressed(1, 1) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
                         if (secondPlayer.lastDirectionLeft){
                             secondPlayer.isDashing = true;
                             secondPlayer.dashDirection = -20.0f;
@@ -1144,16 +1217,6 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     secondPlayer.HP = 0;
                 }  
             }
-            else if (firstPlayer.isAttack3){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                secondPlayer.HP -= firstPlayer.attackDamage;
-
-                // Make sure player 2's health doesn't fall below zero
-                if (secondPlayer.HP < 0) {
-                    secondPlayer.HP = 0;
-                }  
-            }
             else if (firstPlayer.isSpecial1){
                 // Check if player 1's attack hits player 2
                 // Reduce player 2's health
@@ -1196,15 +1259,25 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     firstPlayer.HP = 0;
                 }                
             }
-            else if (secondPlayer.isAttack3) {
-                // Check if player 2's attack hits player 1
-                // Reduce player 1's health
+            else if (secondPlayer.isSpecial1){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
                 firstPlayer.HP -= secondPlayer.attackDamage;
 
-                // Make sure player 1's health doesn't fall below zero
+                // Make sure player 2's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
-                }                
+                }  
+            }
+            else if (secondPlayer.isSpecial2){
+                // Check if player 1's attack hits player 2
+                // Reduce player 2's health
+                firstPlayer.HP -= secondPlayer.attackDamage;
+
+                // Make sure player 2's health doesn't fall below zero
+                if (firstPlayer.HP < 0) {
+                    firstPlayer.HP = 0;
+                }
             }
 
             // Update the health bar for the first player

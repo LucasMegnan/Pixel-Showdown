@@ -7,7 +7,7 @@ public:
 
     float velocity; // speed
     bool isCrouch; // crouch condition
-    bool cannotMove;
+    bool isProtect;
     bool isDie; // death condition
     bool lastDirectionLeft; // direction condition
 
@@ -36,7 +36,6 @@ public:
     // attack parameters
     bool isAttack1;
     bool isAttack2;
-    bool isAttack3;
     bool isSpecial1;
     bool isSpecial2;
     bool isUlt;
