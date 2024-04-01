@@ -19,23 +19,27 @@ void updateChoicePosition(int& choicePos, int increment, int minValue, int maxVa
 }
 
 bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
+    sf::Texture t;
+    t.loadFromFile("imgs/bg2.png");
+    sf::Sprite s(t);
+
     sf::Text settingsText("Settings", font);
     settingsText.setPosition(300, 75);
-    settingsText.setFillColor(sf::Color::Blue);
+    settingsText.setFillColor(sf::Color::Yellow);
     settingsText.setScale(4, 4);
 
     sf::Text musicSettingOn("Music:\tOn\t\t\t\tPress X or B to change", font);
     musicSettingOn.setPosition(700, 300);
-    musicSettingOn.setFillColor(sf::Color::Magenta);
+    musicSettingOn.setFillColor(sf::Color::Blue);
     musicSettingOn.setScale(1.5, 1.5);
     sf::Text musicSettingOff("Music:\tOff\t\t\t\tPress X or B to change", font);
     musicSettingOff.setPosition(700, 300);
-    musicSettingOff.setFillColor(sf::Color::Magenta);
+    musicSettingOff.setFillColor(sf::Color::Blue);
     musicSettingOff.setScale(1.5, 1.5);
 
     sf::Text Return("Press Select to return", font);
     Return.setPosition(775, 900);
-    Return.setFillColor(sf::Color::Blue);
+    Return.setFillColor(sf::Color::Yellow);
     Return.setScale(1.5, 1.5);
 
     sf::Joystick controller1;
@@ -60,6 +64,7 @@ bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
             }
             
         window.clear(sf::Color::Black);
+        window.draw(s);
         window.draw(settingsText);
         if (musicOn == true){
             window.draw(musicSettingOn);
@@ -75,6 +80,10 @@ bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
 }
 
 void howToPlay(sf::RenderWindow& window, sf::Font font){
+    sf::Texture t;
+    t.loadFromFile("imgs/bg2.png");
+    sf::Sprite s(t);
+
     sf::Text howToPlayText("How to play?", font);
     howToPlayText.setPosition(700, 75);
     howToPlayText.setFillColor(sf::Color::Yellow);
@@ -82,7 +91,7 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
 
     sf::Text instructions("Joystick  to move\nClick Joystick  to protect\nA  to jump\nB  to dash\nX-Y  to attack\nLB-RB  to special", font);
     instructions.setPosition(700, 300);
-    instructions.setFillColor(sf::Color::Magenta);
+    instructions.setFillColor(sf::Color::Blue);
     instructions.setScale(2, 2);
 
     sf::Text Return("Press Select to return", font);
@@ -106,6 +115,7 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
             }
             
         window.clear(sf::Color::Black);
+        window.draw(s);
         window.draw(howToPlayText);
         window.draw(instructions);
         window.draw(Return);
@@ -127,17 +137,27 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
     ChooseCharacter.setFillColor(sf::Color::Magenta);
     ChooseCharacter.setScale(3, 3);
 
+    sf::Text CharacterName1 ("Guts", font);
+    CharacterName1.setPosition(740, 725);
+    CharacterName1.setFillColor(sf::Color::Magenta);
+    CharacterName1.setScale(2, 2);
+
+    sf::Text CharacterName2 ("Shadr", font);
+    CharacterName2.setPosition(1055, 725);
+    CharacterName2.setFillColor(sf::Color::Magenta);
+    CharacterName2.setScale(2, 2);
+
     sf::Texture t;
     t.loadFromFile("imgs/bg2.png");
     sf::Sprite s(t);
 
     sf::RectangleShape iconSquare(sf::Vector2f(125.0f, 125.0f));
     iconSquare.setFillColor(sf::Color::Magenta);
-    iconSquare.setPosition(725, 700); 
+    iconSquare.setPosition(725, 800); 
     
     sf::RectangleShape iconSquare2(sf::Vector2f(125.0f, 125.0f));
     iconSquare2.setFillColor(sf::Color::Magenta);
-    iconSquare2.setPosition(1040, 700); 
+    iconSquare2.setPosition(1040, 800); 
 
     sf::Sprite iconGuts;
     sf::Sprite iconShadr;
@@ -154,6 +174,13 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
     int GutsPos = 800;
     int ShadrPos = 1100;
     int choicePos = 950;
+
+    iconGuts.setPosition(700, 815);
+    iconGuts.setTexture(charIconGuts);
+    iconGuts.setScale(sf::Vector2f(3.0f, 3.0));
+    iconShadr.setPosition(1050, 815);
+    iconShadr.setTexture(charIconShadr);
+    iconShadr.setScale(sf::Vector2f(3.3f, 3.3));
 
     int chosenChar1 = 0;
     int chosenChar2 = 0;
@@ -180,13 +207,7 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
                 music.stop();
             }
 
-            iconGuts.setPosition(700, 700);
-            iconGuts.setTexture(charIconGuts);
-            iconGuts.setScale(sf::Vector2f(3.0f, 3.0));
-            iconShadr.setPosition(1050, 715);
-            iconShadr.setTexture(charIconShadr);
-            iconShadr.setScale(sf::Vector2f(3.0f, 3.0));
-            choose.setPosition(choicePos, 800);
+            choose.setPosition(choicePos, 850);
             choose.setTexture(charChoose);
             choose.setScale(sf::Vector2f(3.0f, 3.0));
 
@@ -228,6 +249,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
             window.draw(iconShadr);
             window.draw(choose);
             window.draw(ChooseCharacter);
+            window.draw(CharacterName1);
+            window.draw(CharacterName2);
             window.display();       
     }
     return;
@@ -237,6 +260,10 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pixel Showdown", sf::Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
+
+    sf::Texture t;
+    t.loadFromFile("imgs/bg2.png");
+    sf::Sprite s(t);
 
     sf::Music music;
     if (!music.openFromFile("Music/menu.wav")) {
@@ -380,6 +407,7 @@ int main()
         }
 
         window.clear(sf::Color::Black);
+        window.draw(s);
         window.draw(Title);
         window.draw(playButton);
         window.draw(howToPlayButton);
