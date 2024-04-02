@@ -54,7 +54,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     sf::Sound special2S_Sound;
 
     sf::Text GameOver ("Game Over", font);
-    GameOver.setPosition(750, 400);
+    GameOver.setPosition(750, 75);
     GameOver.setFillColor(sf::Color::Red);
     GameOver.setScale(4, 4);
 
@@ -66,19 +66,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     // Create a sprite from the texture
     sf::Sprite sprite(texture);
     sprite.scale(3.2, 6);
-
-    sf::Sprite lifeGuts;
-    sf::Sprite lifeShadr;
-    sf::Texture charlifeGuts;
-    charlifeGuts.loadFromFile("Imgs/Guts/icon.png");
-    sf::Texture charlifeShadr;
-    charlifeShadr.loadFromFile("Imgs/Shadr/icon.png");
-    lifeGuts.setTexture(charlifeGuts);
-    lifeGuts.setPosition(50, 50);
-    lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
-    lifeShadr.setTexture(charlifeShadr);
-    lifeShadr.setPosition(window.getSize().x - 80, 50);
-    lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
+    
 
     Character Guts;
     Character Shadr;
@@ -101,6 +89,29 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     Player.setPosition(250, 250);
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player2.setPosition(1500, 250);
+
+    sf::Sprite lifeGuts;
+    sf::Sprite lifeShadr;
+    sf::Texture charlifeGuts;
+    charlifeGuts.loadFromFile("Imgs/Guts/icon.png");
+    sf::Texture charlifeShadr;
+    charlifeShadr.loadFromFile("Imgs/Shadr/icon.png");
+    if (firstPlayer.chosenChar == 1){
+        lifeGuts.setTexture(charlifeGuts);
+        lifeGuts.setPosition(50, 50);
+        lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
+        lifeShadr.setTexture(charlifeShadr);
+        lifeShadr.setPosition(window.getSize().x - 80, 50);
+        lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
+    }
+    else if (firstPlayer.chosenChar == 2){
+        lifeGuts.setTexture(charlifeGuts);
+        lifeGuts.setPosition(window.getSize().x - 80, 50);
+        lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
+        lifeShadr.setTexture(charlifeShadr);
+        lifeShadr.setPosition(50, 50);
+        lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
+    }
 
     // Create a health bar for the first player
     sf::RectangleShape healthBar1(sf::Vector2f(800.0f, 20.0f));
@@ -1375,39 +1386,79 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
 
                 if (firstPlayer.lives >= 2){
-                    sf::Sprite lifeGuts2;
-                    sf::Texture charlifeGuts2;
-                    charlifeGuts2.loadFromFile("Imgs/Guts/icon.png");
-                    lifeGuts2.setTexture(charlifeGuts2);
-                    lifeGuts2.setPosition(100, 50);
-                    lifeGuts2.setScale(sf::Vector2f(1.0f, 1.0));
-                    window.draw(lifeGuts2);
-                    if (firstPlayer.lives == 3){
-                        sf::Sprite lifeGuts3;
-                        sf::Texture charlifeGuts3;
-                        charlifeGuts3.loadFromFile("Imgs/Guts/icon.png");
-                        lifeGuts3.setTexture(charlifeGuts3);
-                        lifeGuts3.setPosition(150, 50);
-                        lifeGuts3.setScale(sf::Vector2f(1.0f, 1.0));
-                        window.draw(lifeGuts3);
+                    if (firstPlayer.chosenChar == 1){
+                        sf::Sprite lifeGuts2;
+                        sf::Texture charlifeGuts2;
+                        charlifeGuts2.loadFromFile("Imgs/Guts/icon.png");
+                        lifeGuts2.setTexture(charlifeGuts2);
+                        lifeGuts2.setPosition(100, 50);
+                        lifeGuts2.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeGuts2);
+                        if (firstPlayer.lives == 3){
+                            sf::Sprite lifeGuts3;
+                            sf::Texture charlifeGuts3;
+                            charlifeGuts3.loadFromFile("Imgs/Guts/icon.png");
+                            lifeGuts3.setTexture(charlifeGuts3);
+                            lifeGuts3.setPosition(150, 50);
+                            lifeGuts3.setScale(sf::Vector2f(1.0f, 1.0));
+                            window.draw(lifeGuts3);
+                        }
+                    }
+                    else{
+                        sf::Sprite lifeShadr2;
+                        sf::Texture charlifeShadr2;
+                        charlifeShadr2.loadFromFile("Imgs/Shadr/icon.png");
+                        lifeShadr2.setTexture(charlifeShadr2);
+                        lifeShadr2.setPosition(100, 50);
+                        lifeShadr2.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeShadr2);
+                        if (firstPlayer.lives == 3){
+                            sf::Sprite lifeShadr3;
+                            sf::Texture charlifeShadr3;
+                            charlifeShadr3.loadFromFile("Imgs/Shadr/icon.png");
+                            lifeShadr3.setTexture(charlifeShadr3);
+                            lifeShadr3.setPosition(150, 50);
+                            lifeShadr3.setScale(sf::Vector2f(1.0f, 1.0));
+                            window.draw(lifeShadr3);
+                        }
                     }
                 }
                 if (secondPlayer.lives >= 2){
-                    sf::Sprite lifeShadr2;
-                    sf::Texture charlifeShadr2;
-                    charlifeShadr2.loadFromFile("Imgs/Shadr/icon.png");
-                    lifeShadr2.setTexture(charlifeShadr2);
-                    lifeShadr2.setPosition(window.getSize().x - 130, 50);
-                    lifeShadr2.setScale(sf::Vector2f(1.0f, 1.0));
-                    window.draw(lifeShadr2);
-                    if (secondPlayer.lives == 3){
-                        sf::Sprite lifeShadr3;
-                        sf::Texture charlifeShadr3;
-                        charlifeShadr3.loadFromFile("Imgs/Shadr/icon.png");
-                        lifeShadr3.setTexture(charlifeShadr3);
-                        lifeShadr3.setPosition(window.getSize().x - 180, 50);
-                        lifeShadr3.setScale(sf::Vector2f(1.0f, 1.0));
-                        window.draw(lifeShadr3);
+                    if (secondPlayer.chosenChar == 1){
+                        sf::Sprite lifeGuts2;
+                        sf::Texture charlifeGuts2;
+                        charlifeGuts2.loadFromFile("Imgs/Guts/icon.png");
+                        lifeGuts2.setTexture(charlifeGuts2);
+                        lifeGuts2.setPosition(window.getSize().x - 130, 50);
+                        lifeGuts2.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeGuts2);
+                        if (secondPlayer.lives == 3){
+                            sf::Sprite lifeGuts3;
+                            sf::Texture charlifeGuts3;
+                            charlifeGuts3.loadFromFile("Imgs/Guts/icon.png");
+                            lifeGuts3.setTexture(charlifeGuts3);
+                            lifeGuts3.setPosition(window.getSize().x - 180, 50);
+                            lifeGuts3.setScale(sf::Vector2f(1.0f, 1.0));
+                            window.draw(lifeGuts3);
+                        }
+                    }
+                    else{
+                        sf::Sprite lifeShadr2;
+                        sf::Texture charlifeShadr2;
+                        charlifeShadr2.loadFromFile("Imgs/Shadr/icon.png");
+                        lifeShadr2.setTexture(charlifeShadr2);
+                        lifeShadr2.setPosition(window.getSize().x - 130, 50);
+                        lifeShadr2.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeShadr2);
+                        if (secondPlayer.lives == 3){
+                            sf::Sprite lifeShadr3;
+                            sf::Texture charlifeShadr3;
+                            charlifeShadr3.loadFromFile("Imgs/Shadr/icon.png");
+                            lifeShadr3.setTexture(charlifeShadr3);
+                            lifeShadr3.setPosition(window.getSize().x - 180, 50);
+                            lifeShadr3.setScale(sf::Vector2f(1.0f, 1.0));
+                            window.draw(lifeShadr3);
+                        }
                     }
                 }
 
