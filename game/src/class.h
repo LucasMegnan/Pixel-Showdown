@@ -10,6 +10,7 @@ public:
     bool isProtect;
     bool isDie; // death condition
     bool lastDirectionLeft; // direction condition
+    int lives = 3;
 
     // HP management
     float HP;

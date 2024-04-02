@@ -132,6 +132,9 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
     }
     music.setLoop(true); // to loop the music
 
+    Character firstPlayer;
+    Character secondPlayer;
+
     sf::Text ChooseCharacter ("Choose your Character", font);
     ChooseCharacter.setPosition(600, 150);
     ChooseCharacter.setFillColor(sf::Color::Magenta);
@@ -232,13 +235,13 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
                 music.stop();
                 chosenChar1 = 1; // to load properly the sprites for now
                 chosenChar2 = 2;
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer); // Fix: Add missing argument for the launchGame function
             }
             else if (controller1.isButtonPressed(0, 7) && choicePos == ShadrPos && !(chosenChar1 == 0)){
                 music.stop();
                 chosenChar1 = 2; // to load properly the sprites for now
                 chosenChar2 = 1;
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2); // Fix: Add missing argument for the launchGame function
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer); // Fix: Add missing argument for the launchGame function
             }
 
             window.clear(sf::Color::Black);

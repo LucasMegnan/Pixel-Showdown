@@ -1,7 +1,6 @@
 #include "src/class.h"
 
-
-void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2)
+void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
@@ -54,6 +53,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     }
     sf::Sound special2S_Sound;
 
+    sf::Text GameOver ("Game Over", font);
+    GameOver.setPosition(750, 400);
+    GameOver.setFillColor(sf::Color::Red);
+    GameOver.setScale(4, 4);
 
     // Load the background image
     sf::Texture texture;
@@ -64,11 +67,21 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     sf::Sprite sprite(texture);
     sprite.scale(3.2, 6);
 
+    sf::Sprite lifeGuts;
+    sf::Sprite lifeShadr;
+    sf::Texture charlifeGuts;
+    charlifeGuts.loadFromFile("Imgs/Guts/icon.png");
+    sf::Texture charlifeShadr;
+    charlifeShadr.loadFromFile("Imgs/Shadr/icon.png");
+    lifeGuts.setTexture(charlifeGuts);
+    lifeGuts.setPosition(50, 50);
+    lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
+    lifeShadr.setTexture(charlifeShadr);
+    lifeShadr.setPosition(window.getSize().x - 80, 50);
+    lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
+
     Character Guts;
     Character Shadr;
-
-    Character firstPlayer;
-    Character secondPlayer;
 
     // Creates a sprite for the 1st player
     sf::Sprite Player;
@@ -171,10 +184,14 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     secondPlayer.lastDirectionLeft = lastDirectionLeft2;
 
     // Attack cooldown
-    sf:: Clock basicAttackClock1;
-    sf:: Clock specialAttackClock1;
-    sf:: Clock basicAttackClock2;
-    sf:: Clock specialAttackClock2;
+    sf:: Clock basicAttack1Clock1;
+    sf:: Clock basicAttack2Clock1;
+    sf:: Clock special1AttackClock1;
+    sf:: Clock special2AttackClock1;
+    sf:: Clock basicAttack1Clock2;
+    sf:: Clock basicAttack2Clock2;
+    sf:: Clock special1AttackClock2;
+    sf:: Clock special2AttackClock2;
 
     // Player 1 dash
     bool isDashing1 = false;
@@ -313,7 +330,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 1 ATTACKS ***
 
             // attack1 player 1
-            if (controller1.isButtonPressed(0, 2) && !firstPlayer.isProtect && basicAttackClock1.getElapsedTime().asSeconds() > 2.0f) {
+            if (controller1.isButtonPressed(0, 2) && !firstPlayer.isProtect && basicAttack1Clock1.getElapsedTime().asSeconds() > 0.5f) {
                 firstPlayer.isAttack1 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -343,7 +360,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock.restart();
                     if (currentFrame == 0 ) {
-                        basicAttackClock1.restart();
+                        basicAttack1Clock1.restart();
                     }
                 }
             } else {
@@ -351,7 +368,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // attack2 player 1
-            if (controller1.isButtonPressed(0, 3) && !firstPlayer.isProtect && basicAttackClock1.getElapsedTime().asSeconds() > 2.0f) {
+            if (controller1.isButtonPressed(0, 3) && !firstPlayer.isProtect && basicAttack2Clock1.getElapsedTime().asSeconds() > 0.5f) {
                 firstPlayer.isAttack2 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -381,7 +398,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock.restart();
                     if (currentFrame == 0 ) {
-                        basicAttackClock1.restart();
+                        basicAttack2Clock1.restart();
                     }
                 }
             } else {
@@ -389,7 +406,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special1 player 1
-            if (controller1.isButtonPressed(0, 4) && !firstPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
+            if (controller1.isButtonPressed(0, 4) && !firstPlayer.isProtect && special1AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
                 firstPlayer.isSpecial1 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -400,7 +417,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
-                            // specialSSound.play();
+                            specialSSound.play();
                             currentFrame = (currentFrame + 1) % SPECIALLShadrSheet.size();
                             Player.setTexture(SPECIALLShadrSheet[currentFrame]);
                         }
@@ -410,14 +427,14 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
-                            // specialSSound.play();
+                            specialSSound.play();
                             currentFrame = (currentFrame + 1) % SPECIALShadrSheet.size();
                             Player.setTexture(SPECIALShadrSheet[currentFrame]);
                         }
                     }
                     animationClock.restart();
                     if (currentFrame == 0 ) {
-                        specialAttackClock1.restart();
+                        special1AttackClock1.restart();
                     }
                 }
             } else {
@@ -425,7 +442,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special2 player 1
-            if (controller1.isButtonPressed(0, 5) && !firstPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
+            if (controller1.isButtonPressed(0, 5) && !firstPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
                 firstPlayer.isSpecial2 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -436,7 +453,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
-                            // special2SSound.play();
+                            special2SSound.play();
                             // special2S_Sound.play();
                             currentFrame = (currentFrame + 1) % SPECIAL2LShadrSheet.size();
                             Player.setTexture(SPECIAL2LShadrSheet[currentFrame]);
@@ -447,7 +464,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(ATTACK2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
-                            // special2SSound.play();
+                            special2SSound.play();
                             // special2S_Sound.play();
                             currentFrame = (currentFrame + 1) % SPECIAL2ShadrSheet.size();
                             Player.setTexture(SPECIAL2ShadrSheet[currentFrame]);
@@ -455,7 +472,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock.restart();
                     if (currentFrame == 0 ) {
-                        specialAttackClock1.restart();
+                        special2AttackClock1.restart();
                     }
                 }
             } else {
@@ -465,7 +482,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 2 ATTACKS ***
 
             // attack1 player 2
-            if (controller2.isButtonPressed(1, 2) && basicAttackClock2.getElapsedTime().asSeconds() > 2.0f) {
+            if (controller2.isButtonPressed(1, 2) && basicAttack1Clock2.getElapsedTime().asSeconds() > 2.0f) {
                 secondPlayer.isAttack1 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -491,7 +508,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock2.restart();
                     if (currentFrame2 == 0 ) {
-                        basicAttackClock2.restart();
+                        basicAttack1Clock2.restart();
                     }
                 }
             } else {
@@ -499,7 +516,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // attack2 player 2
-            if (controller2.isButtonPressed(1, 3) && basicAttackClock2.getElapsedTime().asSeconds() > 2.0f) {
+            if (controller2.isButtonPressed(1, 3) && basicAttack2Clock2.getElapsedTime().asSeconds() > 2.0f) {
                 secondPlayer.isAttack2 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -525,7 +542,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock2.restart();
                     if (currentFrame2 == 0 ) {
-                        basicAttackClock2.restart();
+                        basicAttack2Clock2.restart();
                     }
                 }
             } else {
@@ -533,7 +550,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special1 player 2
-            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && specialAttackClock2.getElapsedTime().asSeconds() > 5.0f) {
+            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && special1AttackClock2.getElapsedTime().asSeconds() > 5.0f) {
                 secondPlayer.isSpecial1 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -561,7 +578,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock2.restart();
                     if (currentFrame2 == 0 ) {
-                        specialAttackClock2.restart();
+                        special1AttackClock2.restart();
                     }
                 }
             } else {
@@ -569,7 +586,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special2 player 2
-            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
+            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 5.0f) {
                 secondPlayer.isSpecial2 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -599,7 +616,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     }
                     animationClock2.restart();
                     if (currentFrame2 == 0 ) {
-                        specialAttackClock2.restart();
+                        special2AttackClock2.restart();
                     }
                 }
             } else {
@@ -1316,9 +1333,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // Update the health bar for the second player
             healthBar2.setSize(sf::Vector2f(800.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
 
-            
 
         window.clear(sf::Color::Black);
+            
+
         window.draw(sprite);
         window.draw(Player);
         window.draw(Player2);
@@ -1326,6 +1344,74 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         window.draw(rectangle2);
         window.draw(healthBar1);
         window.draw(healthBar2);
+        window.draw(lifeGuts);
+        window.draw(lifeShadr);
+                
+                if (firstPlayer.HP == 0){
+                firstPlayer.lives--;
+                music.stop();
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+            }
+            if (secondPlayer.HP == 0){
+                secondPlayer.lives--;
+                music.stop();
+                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+            }
+            if (firstPlayer.lives == 0 || secondPlayer.lives == 0){
+                music.stop();
+                window.clear();
+                window.draw(sprite);
+                window.draw(Player);
+                window.draw(Player2);
+                window.draw(rectangle);
+                window.draw(rectangle2);
+                window.draw(healthBar1);
+                window.draw(healthBar2);
+                window.draw(GameOver);
+                window.display();
+                sf::sleep(sf::seconds(5));
+                window.close();
+            }
+
+
+                if (firstPlayer.lives >= 2){
+                    sf::Sprite lifeGuts2;
+                    sf::Texture charlifeGuts2;
+                    charlifeGuts2.loadFromFile("Imgs/Guts/icon.png");
+                    lifeGuts2.setTexture(charlifeGuts2);
+                    lifeGuts2.setPosition(100, 50);
+                    lifeGuts2.setScale(sf::Vector2f(1.0f, 1.0));
+                    window.draw(lifeGuts2);
+                    if (firstPlayer.lives == 3){
+                        sf::Sprite lifeGuts3;
+                        sf::Texture charlifeGuts3;
+                        charlifeGuts3.loadFromFile("Imgs/Guts/icon.png");
+                        lifeGuts3.setTexture(charlifeGuts3);
+                        lifeGuts3.setPosition(150, 50);
+                        lifeGuts3.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeGuts3);
+                    }
+                }
+                if (secondPlayer.lives >= 2){
+                    sf::Sprite lifeShadr2;
+                    sf::Texture charlifeShadr2;
+                    charlifeShadr2.loadFromFile("Imgs/Shadr/icon.png");
+                    lifeShadr2.setTexture(charlifeShadr2);
+                    lifeShadr2.setPosition(window.getSize().x - 130, 50);
+                    lifeShadr2.setScale(sf::Vector2f(1.0f, 1.0));
+                    window.draw(lifeShadr2);
+                    if (secondPlayer.lives == 3){
+                        sf::Sprite lifeShadr3;
+                        sf::Texture charlifeShadr3;
+                        charlifeShadr3.loadFromFile("Imgs/Shadr/icon.png");
+                        lifeShadr3.setTexture(charlifeShadr3);
+                        lifeShadr3.setPosition(window.getSize().x - 180, 50);
+                        lifeShadr3.setScale(sf::Vector2f(1.0f, 1.0));
+                        window.draw(lifeShadr3);
+                    }
+                }
+
+            
 
 
 
