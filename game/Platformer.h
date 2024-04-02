@@ -170,6 +170,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     bool lastDirectionLeft2 = true;
     secondPlayer.lastDirectionLeft = lastDirectionLeft2;
 
+    // Attack cooldown
+    sf:: Clock basicAttackClock1;
+    sf:: Clock specialAttackClock1;
+    sf:: Clock basicAttackClock2;
+    sf:: Clock specialAttackClock2;
+
     // Player 1 dash
     bool isDashing1 = false;
     firstPlayer.isDashing = isDashing1;
@@ -307,7 +313,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 1 ATTACKS ***
 
             // attack1 player 1
-            if (controller1.isButtonPressed(0, 2) && !firstPlayer.isProtect) {
+            if (controller1.isButtonPressed(0, 2) && !firstPlayer.isProtect && basicAttackClock1.getElapsedTime().asSeconds() > 2.0f) {
                 firstPlayer.isAttack1 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -336,13 +342,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock.restart();
+                    if (currentFrame == 0 ) {
+                        basicAttackClock1.restart();
+                    }
                 }
             } else {
                 firstPlayer.isAttack1 = false;
             }
 
             // attack2 player 1
-            if (controller1.isButtonPressed(0, 3) && !firstPlayer.isProtect) {
+            if (controller1.isButtonPressed(0, 3) && !firstPlayer.isProtect && basicAttackClock1.getElapsedTime().asSeconds() > 2.0f) {
                 firstPlayer.isAttack2 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -371,13 +380,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock.restart();
+                    if (currentFrame == 0 ) {
+                        basicAttackClock1.restart();
+                    }
                 }
             } else {
                 firstPlayer.isAttack2 = false;
             }
 
             // special1 player 1
-            if (controller1.isButtonPressed(0, 4) && !firstPlayer.isProtect) {
+            if (controller1.isButtonPressed(0, 4) && !firstPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
                 firstPlayer.isSpecial1 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -404,13 +416,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock.restart();
+                    if (currentFrame == 0 ) {
+                        specialAttackClock1.restart();
+                    }
                 }
             } else {
                 firstPlayer.isSpecial1 = false;
             }
 
             // special2 player 1
-            if (controller1.isButtonPressed(0, 5) && !firstPlayer.isProtect) {
+            if (controller1.isButtonPressed(0, 5) && !firstPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
                 firstPlayer.isSpecial2 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -439,6 +454,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock.restart();
+                    if (currentFrame == 0 ) {
+                        specialAttackClock1.restart();
+                    }
                 }
             } else {
                 firstPlayer.isSpecial2 = false;
@@ -447,7 +465,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 2 ATTACKS ***
 
             // attack1 player 2
-            if (controller2.isButtonPressed(1, 2)) {
+            if (controller2.isButtonPressed(1, 2) && basicAttackClock2.getElapsedTime().asSeconds() > 2.0f) {
                 secondPlayer.isAttack1 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -472,13 +490,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock2.restart();
+                    if (currentFrame2 == 0 ) {
+                        basicAttackClock2.restart();
+                    }
                 }
             } else {
                 secondPlayer.isAttack1 = false;
             }
 
             // attack2 player 2
-            if (controller2.isButtonPressed(1, 3)) {
+            if (controller2.isButtonPressed(1, 3) && basicAttackClock2.getElapsedTime().asSeconds() > 2.0f) {
                 secondPlayer.isAttack2 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -503,13 +524,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock2.restart();
+                    if (currentFrame2 == 0 ) {
+                        basicAttackClock2.restart();
+                    }
                 }
             } else {
                 secondPlayer.isAttack2 = false;
             }
 
             // special1 player 2
-            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect) {
+            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && specialAttackClock2.getElapsedTime().asSeconds() > 5.0f) {
                 secondPlayer.isSpecial1 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -536,13 +560,16 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock2.restart();
+                    if (currentFrame2 == 0 ) {
+                        specialAttackClock2.restart();
+                    }
                 }
             } else {
                 secondPlayer.isSpecial1 = false;
             }
 
             // special2 player 2
-            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect) {
+            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && specialAttackClock1.getElapsedTime().asSeconds() > 5.0f) {
                 secondPlayer.isSpecial2 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -571,6 +598,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                     animationClock2.restart();
+                    if (currentFrame2 == 0 ) {
+                        specialAttackClock2.restart();
+                    }
                 }
             } else {
                 secondPlayer.isSpecial2 = false;
