@@ -34,6 +34,10 @@ std::vector<sf::Texture> ATTACK2GutsSheet = loadCharacterSheet("Imgs/Guts/attack
 std::vector<sf::Texture> ATTACK2LGutsSheet = loadCharacterSheet("Imgs/Guts/attack2L");
 std::vector<sf::Texture> ATTACK3GutsSheet = loadCharacterSheet("Imgs/Guts/attack3");
 std::vector<sf::Texture> ATTACK3LGutsSheet = loadCharacterSheet("Imgs/Guts/attack3L");
+std::vector<sf::Texture> SPECIALGutsSheet = loadCharacterSheet("Imgs/Guts/Special 1");
+std::vector<sf::Texture> SPECIALLGutsSheet = loadCharacterSheet("Imgs/Guts/Special 1L");
+std::vector<sf::Texture> SPECIAL2GutsSheet = loadCharacterSheet("Imgs/Guts/Special 2");
+std::vector<sf::Texture> SPECIAL2LGutsSheet = loadCharacterSheet("Imgs/Guts/Special 2L");
 std::vector<sf::Texture> DIEGutsSheet = loadCharacterSheet("Imgs/Guts/die");
 std::vector<sf::Texture> DIELGutsSheet = loadCharacterSheet("Imgs/Guts/dieL");
 

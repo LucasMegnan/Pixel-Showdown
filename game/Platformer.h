@@ -442,8 +442,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
-                            currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
-                            Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
+                            currentFrame = (currentFrame + 1) % SPECIALLGutsSheet.size();
+                            Player.setTexture(SPECIALLGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
                             specialSSound.play();
@@ -452,8 +452,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     } else {
                         if (firstPlayer.chosenChar == 1){
-                            currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
-                            Player.setTexture(ATTACK2GutsSheet[currentFrame]);
+                            currentFrame = (currentFrame + 1) % SPECIALGutsSheet.size();
+                            Player.setTexture(SPECIALGutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
                             specialSSound.play();
@@ -478,8 +478,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
-                            currentFrame = (currentFrame + 1) % ATTACK2LGutsSheet.size();
-                            Player.setTexture(ATTACK2LGutsSheet[currentFrame]);
+                            currentFrame = (currentFrame + 1) % SPECIAL2LGutsSheet.size();
+                            Player.setTexture(SPECIAL2LGutsSheet[currentFrame]);
                         }
                         else if (firstPlayer.chosenChar == 2){
                             special2SSound.play();
@@ -489,8 +489,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     } else {
                         if (firstPlayer.chosenChar == 1){
-                            currentFrame = (currentFrame + 1) % ATTACK2GutsSheet.size();
-                            Player.setTexture(ATTACK2GutsSheet[currentFrame]);
+                            currentFrame = (currentFrame + 1) % SPECIAL2GutsSheet.size();
+                            Player.setTexture(SPECIAL2GutsSheet[currentFrame]);
                         }
                         else if(firstPlayer.chosenChar == 2){
                             special2SSound.play();
@@ -586,8 +586,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % ATTACK2LGutsSheet.size();
-                            Player2.setTexture(ATTACK2LGutsSheet[currentFrame2]);
+                            currentFrame2 = (currentFrame2 + 1) % SPECIALLGutsSheet.size();
+                            Player2.setTexture(SPECIALLGutsSheet[currentFrame2]);
                         }
                         else if (secondPlayer.chosenChar == 2){
                             // specialSSound.play();
@@ -596,8 +596,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     } else {
                         if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % ATTACK2GutsSheet.size();
-                            Player2.setTexture(ATTACK2GutsSheet[currentFrame2]);
+                            currentFrame2 = (currentFrame2 + 1) % SPECIALGutsSheet.size();
+                            Player2.setTexture(SPECIALGutsSheet[currentFrame2]);
                         }
                         else if(secondPlayer.chosenChar == 2){
                             // specialSSound.play();
@@ -622,8 +622,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % ATTACK2LGutsSheet.size();
-                            Player2.setTexture(ATTACK2LGutsSheet[currentFrame2]);
+                            currentFrame2 = (currentFrame2 + 1) % SPECIAL2LGutsSheet.size();
+                            Player2.setTexture(SPECIAL2LGutsSheet[currentFrame2]);
                         }
                         else if (secondPlayer.chosenChar == 2){
                             // special2SSound.play();
@@ -633,8 +633,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     } else {
                         if (secondPlayer.chosenChar == 1){
-                            currentFrame2 = (currentFrame2 + 1) % ATTACK2GutsSheet.size();
-                            Player2.setTexture(ATTACK2GutsSheet[currentFrame2]);
+                            currentFrame2 = (currentFrame2 + 1) % SPECIAL2GutsSheet.size();
+                            Player2.setTexture(SPECIAL2GutsSheet[currentFrame2]);
                         }
                         else if(secondPlayer.chosenChar == 2){
                             // special2SSound.play();
