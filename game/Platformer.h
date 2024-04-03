@@ -366,6 +366,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // attack1 player 1
             if ((controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::F)) && !firstPlayer.isProtect && basicAttack1Clock1.getElapsedTime().asSeconds() > 0.5f) {
+                    if (!firstPlayer.isAttack1) {
+                        currentFrame = 0;  // reset currentFrame only when changing state
+                    }
                 firstPlayer.isAttack1 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -404,6 +407,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // attack2 player 1
             if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::C)) && !firstPlayer.isProtect && basicAttack2Clock1.getElapsedTime().asSeconds() > 0.5f) {
+                    if (!firstPlayer.isAttack2) {
+                        currentFrame = 0;  // reset currentFrame only when changing state
+                    }
                 firstPlayer.isAttack2 = true;
                 firstPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -442,6 +448,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // special1 player 1
             if ((controller1.isButtonPressed(0, 4) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && !firstPlayer.isProtect && special1AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
+                if (!firstPlayer.isSpecial1) {
+                    currentFrame = 0;  // reset currentFrame only when changing state
+                }
                 firstPlayer.isSpecial1 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -478,6 +487,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // special2 player 1
             if ((controller1.isButtonPressed(0, 5) || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) && !firstPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
+                if (!firstPlayer.isSpecial2) {
+                    currentFrame = 0;  // reset currentFrame only when changing state
+                }
                 firstPlayer.isSpecial2 = true;
                 firstPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -518,6 +530,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // attack1 player 2
             if (controller2.isButtonPressed(1, 2) && basicAttack1Clock2.getElapsedTime().asSeconds() > 2.0f) {
+                if (!secondPlayer.isAttack1) {
+                    currentFrame2 = 0;  // reset currentFrame only when changing state
+                }
                 secondPlayer.isAttack1 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -552,6 +567,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // attack2 player 2
             if (controller2.isButtonPressed(1, 3) && basicAttack2Clock2.getElapsedTime().asSeconds() > 2.0f) {
+                if (!secondPlayer.isAttack2) {
+                    currentFrame2 = 0;  // reset currentFrame only when changing state
+                }
                 secondPlayer.isAttack2 = true;
                 secondPlayer.attackDamage = 1;
                 // update the sprite every 0.1 seconds
@@ -586,6 +604,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // special1 player 2
             if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && special1AttackClock2.getElapsedTime().asSeconds() > 5.0f) {
+                if (!secondPlayer.isSpecial1) {
+                    currentFrame2 = 0;  // reset currentFrame only when changing state
+                }
                 secondPlayer.isSpecial1 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -622,6 +643,9 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // special2 player 2
             if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 5.0f) {
+                if (!secondPlayer.isSpecial2) {
+                    currentFrame2 = 0;  // reset currentFrame only when changing state
+                }
                 secondPlayer.isSpecial2 = true;
                 secondPlayer.attackDamage = 2;
                 // update the sprite every 0.1 seconds
@@ -878,7 +902,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
 
-            if (!firstPlayer.isJumping && !firstPlayer.isRunning && !firstPlayer.isRunningL && !firstPlayer.isCrouch) {
+            if (!firstPlayer.isJumping && !firstPlayer.isRunning && !firstPlayer.isRunningL && !firstPlayer.isCrouch && !firstPlayer.isAttack1 && !firstPlayer.isAttack2 && !firstPlayer.isSpecial1 && !firstPlayer.isSpecial2 && !firstPlayer.isDie) {
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
                     if (firstPlayer.lastDirectionLeft) {
@@ -1006,6 +1030,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     animationClock2.restart();
                 }
             }
+
             // apply gravity
             float dy1 = firstPlayer.velocity; // save the current velocity for Player1
             float dy2 = secondPlayer.velocity; // save the current velocity for Player2
