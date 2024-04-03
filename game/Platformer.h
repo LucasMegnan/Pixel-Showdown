@@ -1272,45 +1272,52 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
 
-            // Check if player 1 is attacking
-            if (firstPlayer.isAttack1) {
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                secondPlayer.HP -= firstPlayer.attackDamage;
 
+            // ATACKS DAMAGES
+
+            // Check if player 1 is attacking
+            if (firstPlayer.isAttack1 && Player.getGlobalBounds().intersects(Player2.getGlobalBounds())) {
+                if ((Player.getPosition().x < Player2.getPosition().x && !firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && secondPlayer.lastDirectionLeft)) || (Player.getPosition().x > Player2.getPosition().x && firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && !secondPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    secondPlayer.HP -= firstPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
                     secondPlayer.isDie = true;
                 }
             }
-            else if (firstPlayer.isAttack2){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                secondPlayer.HP -= firstPlayer.attackDamage;
-
+            else if (firstPlayer.isAttack2 && Player.getGlobalBounds().intersects(Player2.getGlobalBounds())){
+                if ((Player.getPosition().x < Player2.getPosition().x && !firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && secondPlayer.lastDirectionLeft)) || (Player.getPosition().x > Player2.getPosition().x && firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && !secondPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    secondPlayer.HP -= firstPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
                     secondPlayer.isDie = true;
                 }  
             }
-            else if (firstPlayer.isSpecial1){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                secondPlayer.HP -= firstPlayer.attackDamage;
-
+            else if (firstPlayer.isSpecial1 && Player.getGlobalBounds().intersects(Player2.getGlobalBounds())){
+                if ((Player.getPosition().x < Player2.getPosition().x && !firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && secondPlayer.lastDirectionLeft)) || (Player.getPosition().x > Player2.getPosition().x && firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && !secondPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    secondPlayer.HP -= firstPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
                     secondPlayer.isDie = true;
                 }  
             }
-            else if (firstPlayer.isSpecial2){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                secondPlayer.HP -= firstPlayer.attackDamage;
-
+            else if (firstPlayer.isSpecial2 && Player.getGlobalBounds().intersects(Player2.getGlobalBounds())){
+                if ((Player.getPosition().x < Player2.getPosition().x && !firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && secondPlayer.lastDirectionLeft)) || (Player.getPosition().x > Player2.getPosition().x && firstPlayer.lastDirectionLeft && !(secondPlayer.isProtect && !secondPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    secondPlayer.HP -= firstPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
@@ -1319,44 +1326,48 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // Check if player 2 is attacking
-            if (secondPlayer.isAttack1) {
-                // Check if player 2's attack hits player 1
-                // Reduce player 1's health
-                firstPlayer.HP -= secondPlayer.attackDamage;
-
+            if (secondPlayer.isAttack1 && Player2.getGlobalBounds().intersects(Player.getGlobalBounds())) {
+                if ((Player2.getPosition().x < Player.getPosition().x && !secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && firstPlayer.lastDirectionLeft)) || (Player2.getPosition().x > Player.getPosition().x && secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && !firstPlayer.lastDirectionLeft))){
+                    // Check if player 2's attack hits player 1
+                    // Reduce player 1's health
+                    firstPlayer.HP -= secondPlayer.attackDamage;
+                }
                 // Make sure player 1's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
                     firstPlayer.isDie = true;
                 }                
             }
-            else if (secondPlayer.isAttack2) {
-                // Check if player 2's attack hits player 1
-                // Reduce player 1's health
-                firstPlayer.HP -= secondPlayer.attackDamage;
-
+            else if (secondPlayer.isAttack2 && Player2.getGlobalBounds().intersects(Player.getGlobalBounds())) {
+                if ((Player2.getPosition().x < Player.getPosition().x && !secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && firstPlayer.lastDirectionLeft)) || (Player2.getPosition().x > Player.getPosition().x && secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && !firstPlayer.lastDirectionLeft))){
+                    // Check if player 2's attack hits player 1
+                    // Reduce player 1's health
+                    firstPlayer.HP -= secondPlayer.attackDamage;
+                }
                 // Make sure player 1's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
                     firstPlayer.isDie = true;
                 }                
             }
-            else if (secondPlayer.isSpecial1){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                firstPlayer.HP -= secondPlayer.attackDamage;
-
+            else if (secondPlayer.isSpecial1 && Player2.getGlobalBounds().intersects(Player.getGlobalBounds())){
+                if ((Player2.getPosition().x < Player.getPosition().x && !secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && firstPlayer.lastDirectionLeft)) || (Player2.getPosition().x > Player.getPosition().x && secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && !firstPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    firstPlayer.HP -= secondPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
                     firstPlayer.isDie = true;
                 }  
             }
-            else if (secondPlayer.isSpecial2){
-                // Check if player 1's attack hits player 2
-                // Reduce player 2's health
-                firstPlayer.HP -= secondPlayer.attackDamage;
-
+            else if (secondPlayer.isSpecial2 && Player2.getGlobalBounds().intersects(Player.getGlobalBounds())){
+                if ((Player2.getPosition().x < Player.getPosition().x && !secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && firstPlayer.lastDirectionLeft)) || (Player2.getPosition().x > Player.getPosition().x && secondPlayer.lastDirectionLeft && !(firstPlayer.isProtect && !firstPlayer.lastDirectionLeft))){
+                    // Check if player 1's attack hits player 2
+                    // Reduce player 2's health
+                    firstPlayer.HP -= secondPlayer.attackDamage;
+                }
                 // Make sure player 2's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
