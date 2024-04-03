@@ -1254,7 +1254,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
 
-            // // Check if player 1 is attacking
+            // Check if player 1 is attacking
             if (firstPlayer.isAttack1) {
                 // Check if player 1's attack hits player 2
                 // Reduce player 2's health
@@ -1263,7 +1263,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
-                }                
+                    secondPlayer.isDie = true;
+                }
             }
             else if (firstPlayer.isAttack2){
                 // Check if player 1's attack hits player 2
@@ -1273,6 +1274,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
+                    secondPlayer.isDie = true;
                 }  
             }
             else if (firstPlayer.isSpecial1){
@@ -1283,6 +1285,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
+                    secondPlayer.isDie = true;
                 }  
             }
             else if (firstPlayer.isSpecial2){
@@ -1293,10 +1296,11 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (secondPlayer.HP < 0) {
                     secondPlayer.HP = 0;
+                    secondPlayer.isDie = true;
                 }  
             }
 
-            // // Check if player 2 is attacking
+            // Check if player 2 is attacking
             if (secondPlayer.isAttack1) {
                 // Check if player 2's attack hits player 1
                 // Reduce player 1's health
@@ -1305,6 +1309,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 1's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
+                    firstPlayer.isDie = true;
                 }                
             }
             else if (secondPlayer.isAttack2) {
@@ -1315,6 +1320,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 1's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
+                    firstPlayer.isDie = true;
                 }                
             }
             else if (secondPlayer.isSpecial1){
@@ -1325,6 +1331,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
+                    firstPlayer.isDie = true;
                 }  
             }
             else if (secondPlayer.isSpecial2){
@@ -1335,6 +1342,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 // Make sure player 2's health doesn't fall below zero
                 if (firstPlayer.HP < 0) {
                     firstPlayer.HP = 0;
+                    firstPlayer.isDie = true;
                 }
             }
 
@@ -1345,20 +1353,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             healthBar2.setSize(sf::Vector2f(800.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
 
 
-        window.clear(sf::Color::Black);
-            
-
-        window.draw(sprite);
-        window.draw(Player);
-        window.draw(Player2);
-        window.draw(rectangle);
-        window.draw(rectangle2);
-        window.draw(healthBar1);
-        window.draw(healthBar2);
-        window.draw(lifeGuts);
-        window.draw(lifeShadr);
-                
-                if (firstPlayer.HP == 0){
+            if (firstPlayer.HP == 0){
                 firstPlayer.lives--;
                 music.stop();
                 launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
@@ -1370,19 +1365,24 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
             if (firstPlayer.lives == 0 || secondPlayer.lives == 0){
                 music.stop();
-                window.clear();
-                window.draw(sprite);
-                window.draw(Player);
-                window.draw(Player2);
-                window.draw(rectangle);
-                window.draw(rectangle2);
-                window.draw(healthBar1);
-                window.draw(healthBar2);
                 window.draw(GameOver);
                 window.display();
                 sf::sleep(sf::seconds(5));
                 window.close();
             }
+
+
+        window.clear(sf::Color::Black);
+        window.draw(sprite);
+        window.draw(Player);
+        window.draw(Player2);
+        window.draw(rectangle);
+        window.draw(rectangle2);
+        window.draw(healthBar1);
+        window.draw(healthBar2);
+        window.draw(lifeGuts);
+        window.draw(lifeShadr);
+                
 
 
                 if (firstPlayer.lives >= 2){
