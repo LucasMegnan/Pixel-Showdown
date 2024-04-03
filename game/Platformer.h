@@ -2,6 +2,17 @@
 
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
+    sf::Clock chronometer; 
+    sf::Text Chrono ("", font, 75);
+    Chrono.setFillColor(sf::Color::White);
+    Chrono.setPosition(930, 55);
+    int maxTime = 180; // 3min of game
+
+    sf::Text GameOver ("", font);
+    GameOver.setPosition(750, 75);
+    GameOver.setFillColor(sf::Color::Red);
+    GameOver.setScale(4, 4);
+
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
         // handle error
@@ -52,11 +63,6 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         // handle error
     }
     sf::Sound special2S_Sound;
-
-    sf::Text GameOver ("Game Over", font);
-    GameOver.setPosition(750, 75);
-    GameOver.setFillColor(sf::Color::Red);
-    GameOver.setScale(4, 4);
 
     // Load the background image
     sf::Texture texture;
@@ -1392,8 +1398,21 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 music.stop();
                 launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
             }
-            if (firstPlayer.lives == 0 || secondPlayer.lives == 0){
+            if (firstPlayer.lives == 0){
                 music.stop();
+                std::stringstream Ss;
+                Ss << "2nd  Player won";
+                GameOver.setString(Ss.str());
+                window.draw(GameOver);
+                window.display();
+                sf::sleep(sf::seconds(5));
+                window.close();
+            }
+            if (secondPlayer.lives == 0){
+                music.stop();
+                std::stringstream Ss;
+                Ss << "1st  Player won";
+                GameOver.setString(Ss.str());
                 window.draw(GameOver);
                 window.display();
                 sf::sleep(sf::seconds(5));
@@ -1490,6 +1509,32 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         }
                     }
                 }
+
+                // Chronometer
+                std::stringstream ss;
+                if (chronometer.getElapsedTime().asSeconds() > 1){
+                    if (maxTime <= 0){ // if the time reaches 0
+                        ss << "TIMES UP";
+                        Chrono.setString(ss.str());
+                        Chrono.setPosition(850, 55);
+                        window.draw(Chrono);
+                        window.display();
+                        sf::sleep(sf::seconds(3));
+                        if (firstPlayer.HP < secondPlayer.HP){
+                            firstPlayer.lives--;
+                        }
+                        else if (secondPlayer.HP < firstPlayer.HP){
+                            secondPlayer.lives--;
+                        }
+                        music.stop();
+                        launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                    }
+                    ss << maxTime; // update the time (decreases per second)
+                    Chrono.setString(ss.str());
+                    maxTime--;
+                    chronometer.restart();
+                }
+                window.draw(Chrono);
 
             
 
