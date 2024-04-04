@@ -774,78 +774,76 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 secondPlayer.isSpecial2 = false;
             }
             
-
             // die player 1
-            if (controller1.isButtonPressed(0, 9)) {
+            if (firstPlayer.HP == 0) {
                 firstPlayer.isDie = true;
                 // update the sprite every 0.1 seconds
-                if (firstPlayer.lastDirectionLeft){
-                    if (firstPlayer.chosenChar == 1){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+                    if (firstPlayer.lastDirectionLeft) {
+                        if (firstPlayer.chosenChar == 1) {
                             currentFrame = (currentFrame + 1) % DIELGutsSheet.size();
                             Player.setTexture(DIELGutsSheet[currentFrame]);
                         }
-                    }
-                    else if (firstPlayer.chosenChar == 2){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                        else if (firstPlayer.chosenChar == 2) {
                             currentFrame = (currentFrame + 1) % DIELShadrSheet.size(); 
                             Player.setTexture(DIELShadrSheet[currentFrame]); 
                         }
-                        animationClock.restart();
                     }
-                }
-                else{
-                    if (firstPlayer.chosenChar == 1){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                    else {
+                        if (firstPlayer.chosenChar == 1){
                             currentFrame = (currentFrame + 1) % DIEGutsSheet.size();
                             Player.setTexture(DIEGutsSheet[currentFrame]);
                         }
-                    }
-                    else if (firstPlayer.chosenChar == 2){
-                        if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
-                            currentFrame = (currentFrame + 1) % DIEShadrSheet.size(); 
-                            Player.setTexture(DIEShadrSheet[currentFrame]); 
+                        else if (firstPlayer.chosenChar == 2){
+                            currentFrame = (currentFrame + 1) % DIEShadrSheet.size();
+                            Player.setTexture(DIEShadrSheet[currentFrame]);
                         }
-                        animationClock.restart();
                     }
+                    frameClock.restart();
+                }
+
+                if (currentFrame == DIELGutsSheet.size() - 1 || currentFrame == DIELShadrSheet.size() - 1 || currentFrame == DIEGutsSheet.size() - 1 || currentFrame == DIEShadrSheet.size() - 1) {
+                    firstPlayer.lives--;
+                    music.stop();
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
                 }
             } else {
                 firstPlayer.isDie = false;
             }
 
             // die player 2
-            if (controller2.isButtonPressed(1, 9)) {
+            if (secondPlayer.HP == 0) {
                 secondPlayer.isDie = true;
                 // update the sprite every 0.1 seconds
-                if (secondPlayer.lastDirectionLeft){
-                    if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                        if (secondPlayer.chosenChar == 1){
+                if (frameClock2.getElapsedTime().asSeconds() > frameDuration2) {
+                    frameClock2.restart();
+                    if (secondPlayer.lastDirectionLeft) {
+                        if (secondPlayer.chosenChar == 1) {
                             currentFrame2 = (currentFrame2 + 1) % DIELGutsSheet.size();
                             Player2.setTexture(DIELGutsSheet[currentFrame2]);
+                        }
+                        else if (secondPlayer.chosenChar == 2) {
+                            currentFrame2 = (currentFrame2 + 1) % DIELShadrSheet.size();
+                            Player2.setTexture(DIELShadrSheet[currentFrame2]); 
+                        }
+                    }
+                    else {
+                        if (secondPlayer.chosenChar == 1){
+                            currentFrame2 = (currentFrame2 + 1) % DIEGutsSheet.size();
+                            Player2.setTexture(DIEGutsSheet[currentFrame2]);
                         }
                         else if (secondPlayer.chosenChar == 2){
                             currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size();
                             Player2.setTexture(DIEShadrSheet[currentFrame2]);
                         }
-                        animationClock2.restart();
+                    }
+                    if (currentFrame2 == 0) {
+                        secondPlayer.lives--;
+                        music.stop();
+                        sf::sleep(sf::seconds(1));
+                        launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
                     }
                 }
-                else{
-                    if (secondPlayer.chosenChar == 1){
-                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                            currentFrame2 = (currentFrame2 + 1) % DIEGutsSheet.size();
-                            Player2.setTexture(DIEGutsSheet[currentFrame2]);
-                        }
-                    }
-                    else if (secondPlayer.chosenChar == 2){
-                        if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
-                            currentFrame2 = (currentFrame2 + 1) % DIEShadrSheet.size(); 
-                            Player2.setTexture(DIEShadrSheet[currentFrame2]); 
-                        }
-                        animationClock.restart();
-                    }
-                }
-                
             } else {
                 secondPlayer.isDie = false;
             }
@@ -1526,19 +1524,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 dashCooldown2.setSize(sf::Vector2f(150 * timeSinceLastDash2.asSeconds() / secondPlayer.dashCooldown, 10.0f));
             }
 
-
-
-            if (firstPlayer.HP == 0){
-                firstPlayer.lives--;
-                music.stop();
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
-            }
-            if (secondPlayer.HP == 0){
-                secondPlayer.lives--;
-                music.stop();
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
-            }
-            if (firstPlayer.lives == 0 || secondPlayer.lives == 0){
+            if (firstPlayer.lives == 0){
                 music.stop();
                 std::stringstream Ss;
                 Ss << "2nd  Player won";
@@ -1668,9 +1654,11 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                         sf::sleep(sf::seconds(3));
                         if (firstPlayer.HP < secondPlayer.HP){
                             firstPlayer.lives--;
+                            // death animation
                         }
                         else if (secondPlayer.HP < firstPlayer.HP){
                             secondPlayer.lives--;
+                            // death animation
                         }
                         music.stop();
                         launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
