@@ -2,16 +2,11 @@
 
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
-    sf::Clock chronometer; 
+    sf::Clock chronometer;
     sf::Text Chrono ("", font, 75);
     Chrono.setFillColor(sf::Color::White);
     Chrono.setPosition(930, 55);
     int maxTime = 180; // 3min of game
-
-    sf::Text GameOver ("", font);
-    GameOver.setPosition(750, 75);
-    GameOver.setFillColor(sf::Color::Red);
-    GameOver.setScale(4, 4);
 
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
@@ -63,6 +58,11 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         // handle error
     }
     sf::Sound special2S_Sound;
+
+    sf::Text GameOver ("Game Over", font);
+    GameOver.setPosition(750, 75);
+    GameOver.setFillColor(sf::Color::Red);
+    GameOver.setScale(4, 4);
 
     // Load the background image
     sf::Texture texture;
@@ -203,6 +203,20 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     bool wasButton0Pressed = false;
     bool wasSPressed = false;
     bool wasButton3Pressed = false;
+
+    bool isSpecial1P1 = false;
+    bool isSpecial2P1 = false;
+    bool isSpecial1P2 = false;
+    bool isSpecial2P2 = false;
+    bool isAttack1P1 = false;
+    bool isAttack2P1 = false;
+    bool isAttack1P2 = false;
+    bool isAttack2P2 = false;
+    sf::Clock frameClock;
+    float frameDuration = 0.1f;
+
+    sf::Clock frameClock2;
+    float frameDuration2 = 0.1f;
 
     // Attack cooldown
     sf:: Clock basicAttack1Clock1;
@@ -365,14 +379,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 1 ATTACKS ***
 
             // attack1 player 1
-            if ((controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::F)) && !firstPlayer.isProtect && basicAttack1Clock1.getElapsedTime().asSeconds() > 0.5f) {
-                    if (!firstPlayer.isAttack1) {
-                        currentFrame = 0;  // reset currentFrame only when changing state
-                    }
-                firstPlayer.isAttack1 = true;
-                firstPlayer.attackDamage = 1;
+            if ((controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::F)) && !firstPlayer.isProtect && basicAttack1Clock1.getElapsedTime().asSeconds() > 0.5f && !firstPlayer.isAttack1) {
+                    currentFrame = 0;
+                    firstPlayer.isAttack1 = true;
+                    firstPlayer.attackDamage = 1;
+                    isAttack1P1 = true;
+                    frameClock.restart();
+                }
+
+            if (isAttack1P1) {
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+                    frameClock.restart();
+
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
                             attackGSound.play();
@@ -390,7 +409,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             currentFrame = (currentFrame + 1) % ATTACKGutsSheet.size();
                             Player.setTexture(ATTACKGutsSheet[currentFrame]);
                         }
-                        else if (firstPlayer.chosenChar == 2){
+                        else if(firstPlayer.chosenChar == 2){
                             attackSSound.play();
                             currentFrame = (currentFrame + 1) % ATTACKShadrSheet.size();
                             Player.setTexture(ATTACKShadrSheet[currentFrame]);
@@ -399,6 +418,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     animationClock.restart();
                     if (currentFrame == 0 ) {
                         basicAttack1Clock1.restart();
+                        firstPlayer.isAttack1 = false;
+                        isAttack1P1 = false;
                     }
                 }
             } else {
@@ -406,14 +427,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // attack2 player 1
-            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::C)) && !firstPlayer.isProtect && basicAttack2Clock1.getElapsedTime().asSeconds() > 0.5f) {
-                    if (!firstPlayer.isAttack2) {
-                        currentFrame = 0;  // reset currentFrame only when changing state
-                    }
-                firstPlayer.isAttack2 = true;
-                firstPlayer.attackDamage = 1;
+            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::C)) && !firstPlayer.isProtect && basicAttack2Clock1.getElapsedTime().asSeconds() > 0.5f && !firstPlayer.isAttack2) {
+                    currentFrame = 0;
+                    firstPlayer.isAttack2 = true;
+                    firstPlayer.attackDamage = 1;
+                    isAttack2P1 = true;
+                    frameClock.restart();
+                }
+
+            if (isAttack2P1) {
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+                    frameClock.restart();
+
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
                             attack2GSound.play();
@@ -437,9 +463,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(ATTACK2ShadrSheet[currentFrame]);
                         }
                     }
-                    animationClock.restart();
                     if (currentFrame == 0 ) {
                         basicAttack2Clock1.restart();
+                        firstPlayer.isAttack2 = false;
+                        isAttack2P1 = false;
                     }
                 }
             } else {
@@ -447,14 +474,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special1 player 1
-            if ((controller1.isButtonPressed(0, 4) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && !firstPlayer.isProtect && special1AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
-                if (!firstPlayer.isSpecial1) {
-                    currentFrame = 0;  // reset currentFrame only when changing state
-                }
+            if ((controller1.isButtonPressed(0, 4) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && !firstPlayer.isProtect && special1AttackClock1.getElapsedTime().asSeconds() > 3.0f && !firstPlayer.isSpecial1) {
+                currentFrame = 0;
                 firstPlayer.isSpecial1 = true;
                 firstPlayer.attackDamage = 2;
-                // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                isSpecial1P1 = true;
+                frameClock.restart();
+            }
+
+            if (isSpecial1P1) {
+                // update the sprite every frameDuration seconds                
+                if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+                    frameClock.restart();
+                    
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
                             currentFrame = (currentFrame + 1) % SPECIALLGutsSheet.size();
@@ -476,9 +508,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(SPECIALShadrSheet[currentFrame]);
                         }
                     }
-                    animationClock.restart();
                     if (currentFrame == 0 ) {
                         special1AttackClock1.restart();
+                        firstPlayer.isSpecial1 = false;
+                        isSpecial1P1 = false;
                     }
                 }
             } else {
@@ -486,14 +519,20 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special2 player 1
-            if ((controller1.isButtonPressed(0, 5) || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) && !firstPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 3.0f) {
-                if (!firstPlayer.isSpecial2) {
-                    currentFrame = 0;  // reset currentFrame only when changing state
-                }
-                firstPlayer.isSpecial2 = true;
-                firstPlayer.attackDamage = 2;
+            if ((controller1.isButtonPressed(0, 5) || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) && !firstPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 3.0f && !firstPlayer.isSpecial2) {
+                    currentFrame = 0;
+                    firstPlayer.isSpecial2 = true;
+                    firstPlayer.attackDamage = 2;
+                    isSpecial2P1 = true;
+                    frameClock.restart();
+                }   
+
+
+            if (isSpecial2P1) {
                 // update the sprite every 0.1 seconds
-                if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+                    frameClock.restart();
+
                     if (firstPlayer.lastDirectionLeft) {
                         if (firstPlayer.chosenChar == 1){
                             currentFrame = (currentFrame + 1) % SPECIAL2LGutsSheet.size();
@@ -517,9 +556,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player.setTexture(SPECIAL2ShadrSheet[currentFrame]);
                         }
                     }
-                    animationClock.restart();
                     if (currentFrame == 0 ) {
                         special2AttackClock1.restart();
+                        firstPlayer.isSpecial2 = false;
+                        isSpecial2P1 = false;
                     }
                 }
             } else {
@@ -529,14 +569,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // *** PLAYER 2 ATTACKS ***
 
             // attack1 player 2
-            if (controller2.isButtonPressed(1, 2) && basicAttack1Clock2.getElapsedTime().asSeconds() > 2.0f) {
-                if (!secondPlayer.isAttack1) {
-                    currentFrame2 = 0;  // reset currentFrame only when changing state
-                }
-                secondPlayer.isAttack1 = true;
-                secondPlayer.attackDamage = 1;
+            if (controller2.isButtonPressed(1, 2) && basicAttack1Clock2.getElapsedTime().asSeconds() > 2.0f && !secondPlayer.isAttack1) {
+                    currentFrame2 = 0;
+                    secondPlayer.isAttack1 = true;
+                    secondPlayer.attackDamage = 1;
+                    isAttack1P2 = true;
+                    frameClock2.restart();
+                }   
+
+            if (secondPlayer.isAttack1) {
                 // update the sprite every 0.1 seconds
-                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock2.getElapsedTime().asSeconds() > frameDuration2) {
+                    frameClock2.restart();
+
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
                             currentFrame2 = (currentFrame2 + 1) % ATTACKLGutsSheet.size();
@@ -556,9 +601,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player2.setTexture(ATTACKShadrSheet[currentFrame2]);
                         }
                     }
-                    animationClock2.restart();
                     if (currentFrame2 == 0 ) {
                         basicAttack1Clock2.restart();
+                        secondPlayer.isAttack1 = false;
+                        isAttack1P2 = false;
                     }
                 }
             } else {
@@ -566,14 +612,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // attack2 player 2
-            if (controller2.isButtonPressed(1, 3) && basicAttack2Clock2.getElapsedTime().asSeconds() > 2.0f) {
-                if (!secondPlayer.isAttack2) {
-                    currentFrame2 = 0;  // reset currentFrame only when changing state
+            if (controller2.isButtonPressed(1, 3) && basicAttack2Clock2.getElapsedTime().asSeconds() > 2.0f && !secondPlayer.isAttack2) {
+                    currentFrame2 = 0;
+                    secondPlayer.isAttack2 = true;
+                    secondPlayer.attackDamage = 1;
+                    isAttack2P2 = true;
+                    frameClock2.restart();
                 }
-                secondPlayer.isAttack2 = true;
-                secondPlayer.attackDamage = 1;
+
+            if (isAttack2P2) {
                 // update the sprite every 0.1 seconds
-                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock2.getElapsedTime().asSeconds() > frameDuration2) {
+                    frameClock2.restart();
+
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
                             currentFrame2 = (currentFrame2 + 1) % ATTACK2LGutsSheet.size();
@@ -593,9 +644,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player2.setTexture(ATTACK2ShadrSheet[currentFrame2]);
                         }
                     }
-                    animationClock2.restart();
                     if (currentFrame2 == 0 ) {
                         basicAttack2Clock2.restart();
+                        secondPlayer.isAttack2 = false;
+                        isAttack2P2 = false;
                     }
                 }
             } else {
@@ -603,14 +655,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special1 player 2
-            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && special1AttackClock2.getElapsedTime().asSeconds() > 5.0f) {
-                if (!secondPlayer.isSpecial1) {
-                    currentFrame2 = 0;  // reset currentFrame only when changing state
+            if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && special1AttackClock2.getElapsedTime().asSeconds() > 5.0f && !secondPlayer.isSpecial1) {
+                    currentFrame2 = 0;
+                    secondPlayer.isSpecial1 = true;
+                    secondPlayer.attackDamage = 2;
+                    isSpecial1P2 = true;
+                    frameClock2.restart();
                 }
-                secondPlayer.isSpecial1 = true;
-                secondPlayer.attackDamage = 2;
+
+            if (isSpecial1P2) {
                 // update the sprite every 0.1 seconds
-                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock2.getElapsedTime().asSeconds() > frameDuration2) {
+                    frameClock2.restart();
+
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
                             currentFrame2 = (currentFrame2 + 1) % SPECIALLGutsSheet.size();
@@ -632,9 +689,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player2.setTexture(SPECIALShadrSheet[currentFrame2]);
                         }
                     }
-                    animationClock2.restart();
                     if (currentFrame2 == 0 ) {
                         special1AttackClock2.restart();
+                        secondPlayer.isSpecial1 = false;
+                        isSpecial1P2 = false;
                     }
                 }
             } else {
@@ -642,14 +700,18 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // special2 player 2
-            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 5.0f) {
-                if (!secondPlayer.isSpecial2) {
-                    currentFrame2 = 0;  // reset currentFrame only when changing state
+            if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 5.0f && !secondPlayer.isSpecial2) {
+                    currentFrame2 = 0;
+                    secondPlayer.isSpecial2 = true;
+                    secondPlayer.attackDamage = 2;
+                    isSpecial2P2 = true;
+                    frameClock2.restart();
                 }
-                secondPlayer.isSpecial2 = true;
-                secondPlayer.attackDamage = 2;
+
+            if (isSpecial2P2) {
                 // update the sprite every 0.1 seconds
-                if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
+                if (frameClock2.getElapsedTime().asSeconds() > frameDuration2) {
+                    frameClock2.restart();
                     if (secondPlayer.lastDirectionLeft) {
                         if (secondPlayer.chosenChar == 1){
                             currentFrame2 = (currentFrame2 + 1) % SPECIAL2LGutsSheet.size();
@@ -673,9 +735,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                             Player2.setTexture(SPECIAL2ShadrSheet[currentFrame2]);
                         }
                     }
-                    animationClock2.restart();
                     if (currentFrame2 == 0 ) {
                         special2AttackClock2.restart();
+                        secondPlayer.isSpecial2 = false;
+                        isSpecial2P2 = false;
                     }
                 }
             } else {
@@ -1005,7 +1068,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
 
-            if (!secondPlayer.isJumping && !secondPlayer.isRunning && !secondPlayer.isRunningL && !secondPlayer.isCrouch) {
+            if (!secondPlayer.isJumping && !secondPlayer.isRunning && !secondPlayer.isRunningL && !secondPlayer.isCrouch && !secondPlayer.isAttack1 && !secondPlayer.isAttack2 && !secondPlayer.isSpecial1 && !secondPlayer.isSpecial2 && !secondPlayer.isDie) {
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
                     if (secondPlayer.lastDirectionLeft) {
@@ -1030,7 +1093,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     animationClock2.restart();
                 }
             }
-
+            
             // apply gravity
             float dy1 = firstPlayer.velocity; // save the current velocity for Player1
             float dy2 = secondPlayer.velocity; // save the current velocity for Player2
@@ -1423,7 +1486,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 music.stop();
                 launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
             }
-            if (firstPlayer.lives == 0){
+            if (firstPlayer.lives == 0 || secondPlayer.lives == 0){
                 music.stop();
                 std::stringstream Ss;
                 Ss << "2nd  Player won";
