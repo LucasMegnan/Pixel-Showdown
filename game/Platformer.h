@@ -9,7 +9,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     sf::Text Chrono ("", font, 75);
     Chrono.setFillColor(sf::Color::White);
     Chrono.setPosition(930, 55);
-    int maxTime = 180; // 3min of game
+    int maxTime = 120; // 2min of game
 
     sf::Music music;
     if (!music.openFromFile("Music/game.wav")) {
@@ -561,10 +561,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 currentFrame = 0;
                 firstPlayer.isSpecial1 = true;
                 if (firstPlayer.chosenChar == 1){
-                    firstPlayer.attackDamage = 0.7;
+                    firstPlayer.attackDamage = 1;
                 }
                 else if (firstPlayer.chosenChar == 2){
-                    firstPlayer.attackDamage = 0.3;
+                    firstPlayer.attackDamage = 0.7;
                 }
                 isSpecial1P1 = true;
                 frameClock.restart();
@@ -611,10 +611,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     currentFrame = 0;
                     firstPlayer.isSpecial2 = true;
                     if (firstPlayer.chosenChar == 1){
-                        firstPlayer.attackDamage = 0.7;
+                        firstPlayer.attackDamage = 1;
                     }
                     else if (firstPlayer.chosenChar == 2){
-                        firstPlayer.attackDamage = 0.3;
+                        firstPlayer.attackDamage = 0.7;
                     }
                     isSpecial2P1 = true;
                     frameClock.restart();
@@ -751,10 +751,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     currentFrame2 = 0;
                     secondPlayer.isSpecial1 = true;
                     if (secondPlayer.chosenChar == 1){
-                        secondPlayer.attackDamage = 0.7;
+                        secondPlayer.attackDamage = 1;
                     }
                     else if (secondPlayer.chosenChar == 2){
-                        secondPlayer.attackDamage = 0.3;
+                        secondPlayer.attackDamage = 0.7;
                     }
                     isSpecial1P2 = true;
                     frameClock2.restart();
@@ -801,10 +801,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     currentFrame2 = 0;
                     secondPlayer.isSpecial2 = true;
                     if (secondPlayer.chosenChar == 1){
-                        secondPlayer.attackDamage = 0.7;
+                        secondPlayer.attackDamage = 0.33;
                     }
                     else if (secondPlayer.chosenChar == 2){
-                        secondPlayer.attackDamage = 0.3;
+                        secondPlayer.attackDamage = 0.7;
                     }
                     isSpecial2P2 = true;
                     frameClock2.restart();
