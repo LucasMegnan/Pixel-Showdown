@@ -851,7 +851,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // crouch player 1
-            if (controller1.isButtonPressed(0, 8) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            if (controller1.isButtonPressed(0, 8) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2)) {
                 firstPlayer.isCrouch = true;
                 firstPlayer.isProtect = true;
                 if (firstPlayer.chosenChar == 1){
@@ -886,7 +886,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // crouch player 2
-            if (controller2.isButtonPressed(1, 8)) {
+            if (controller2.isButtonPressed(1, 8) && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2)) {
                 secondPlayer.isCrouch = true;
                 secondPlayer.isProtect = true;
                 // update the sprite every 0.1 seconds
@@ -918,7 +918,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // jump and condition player 1
-            if (controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+            if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2)) {
                 firstPlayer.isJumping = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock.getElapsedTime().asSeconds() > 0.1f) {
@@ -947,7 +947,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 firstPlayer.isJumping = false;
             }
 
-            if (!firstPlayer.isJumping) {
+            if (!firstPlayer.isJumping && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2)) {
                 if (firstPlayer.isCrouch){
                 }
                 else if (std::abs(currentX - prevX) > JoystickSensitivity || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
@@ -1021,7 +1021,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             // jump and condition player 2
-            if (controller2.isButtonPressed(1, 0)) {
+            if ((controller2.isButtonPressed(1, 0)) && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2)) {
                 secondPlayer.isJumping = true;
                 // update the sprite every 0.1 seconds
                 if (animationClock2.getElapsedTime().asSeconds() > 0.1f) {
@@ -1050,7 +1050,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 secondPlayer.isJumping = false;
             }
 
-            if (!secondPlayer.isJumping) {
+            if (!secondPlayer.isJumping && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2)) {
                 if (secondPlayer.isCrouch){
                 }
                 else if (std::abs(currentX2 - prevX2) > JoystickSensitivity2) {
@@ -1183,7 +1183,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // jump player 1
             firstPlayer.isZPressed = (controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z));
-            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2 && !firstPlayer.isProtect)
+            if (firstPlayer.isZPressed && !firstPlayer.wasZPressed && firstPlayer.jumps < 2 && !firstPlayer.isProtect && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2))
             {
                 firstPlayer.velocity = firstPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 firstPlayer.jumps++;
@@ -1192,7 +1192,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
             // jump player 2
             secondPlayer.isZPressed = controller1.isButtonPressed(1, 0);
-            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2 && !secondPlayer.isProtect)
+            if (secondPlayer.isZPressed && !secondPlayer.wasZPressed && secondPlayer.jumps < 2 && !secondPlayer.isProtect && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2))
             {
                 secondPlayer.velocity = secondPlayer.jumps == 0 ? -16.0f : -16.0f; // higher jump for the second jump
                 secondPlayer.jumps++;
@@ -1202,7 +1202,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // move the player 1
             if (firstPlayer.chosenChar == 1){
                 // Move player left or right based on joystick position
-                if (!(firstPlayer.isProtect)){
+                if (!(firstPlayer.isProtect) && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2)){
                     if ((currentX < -JoystickNeutralThreshold || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) && Player.getGlobalBounds().left > 0)
                         Player.move(-5, 0); // Move left
                     else if ((currentX > JoystickNeutralThreshold || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x)
@@ -1216,7 +1216,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
             else if (firstPlayer.chosenChar == 2){
-                if (!(firstPlayer.isProtect)){
+                if (!(firstPlayer.isProtect) && !(firstPlayer.isAttack1 || firstPlayer.isAttack2 || firstPlayer.isSpecial1 || firstPlayer.isSpecial2)){
                     if ((currentX < -JoystickNeutralThreshold || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) && Player.getGlobalBounds().left > 0) // Move left
                         Player.move(-7, 0);
                     else if ((currentX > JoystickNeutralThreshold || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) // Move right
@@ -1233,7 +1233,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // move the player 2
             if (secondPlayer.chosenChar == 1){
                 // Move player left or right based on joystick position
-                if (!(secondPlayer.isProtect)){
+                if (!(secondPlayer.isProtect) && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2)){
                     if (currentX2 < -JoystickNeutralThreshold2 && Player2.getGlobalBounds().left > 0)
                         Player2.move(-5, 0); // Move left
                     else if (currentX2 > JoystickNeutralThreshold2 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x)
@@ -1247,7 +1247,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 }
             }
             else if (secondPlayer.chosenChar == 2){
-                if (!(secondPlayer.isProtect)){
+                if (!(secondPlayer.isProtect) && !(secondPlayer.isAttack1 || secondPlayer.isAttack2 || secondPlayer.isSpecial1 || secondPlayer.isSpecial2)){
                     if (currentX2 < -JoystickNeutralThreshold2 && Player2.getGlobalBounds().left > 0) // Move left
                         Player2.move(-7, 0);
                     else if (currentX2 > JoystickNeutralThreshold2 && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) // Move right
