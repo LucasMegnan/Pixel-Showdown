@@ -66,12 +66,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
     // Load the background image
     sf::Texture texture;
-    if (!texture.loadFromFile("imgs/bg.png")) {
+    if (!texture.loadFromFile("imgs/bg3.png")) {
         // Handle error
     }
     // Create a sprite from the texture
     sf::Sprite sprite(texture);
-    sprite.scale(3.2, 6);
+    sprite.scale(3.3, 3.2);
     
 
     Character Guts;
@@ -130,10 +130,31 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
     sf::RectangleShape rectangle(sf::Vector2f(300, 20)); // circle with radius 50
     sf::RectangleShape rectangle2(sf::Vector2f(300, 20)); // circle with radius 50
-    rectangle.setFillColor(sf::Color::Yellow); // fill color
-    rectangle2.setFillColor(sf::Color::Yellow); // fill color
+    rectangle.setFillColor(sf::Color::White); // fill color
+    rectangle2.setFillColor(sf::Color::White); // fill color
     rectangle.setPosition(200, 600); // position in the middle of the window
     rectangle2.setPosition(1400, 600); // position in the middle of the window
+
+    // cooldowns
+    sf::RectangleShape special1cooldown1(sf::Vector2f(150, 10)); 
+    sf::RectangleShape special1cooldown2(sf::Vector2f(150, 10)); 
+    special1cooldown1.setFillColor(sf::Color::Yellow); // fill color
+    special1cooldown2.setFillColor(sf::Color::Yellow); // fill color
+    special1cooldown1.setPosition(650, 50); // position at the bottom right of the health bar 1
+    special1cooldown2.setPosition(window.getSize().x - 810, 50); // position at the bottom left of the health bar 2
+    sf::RectangleShape special2cooldown1(sf::Vector2f(150, 10)); 
+    sf::RectangleShape special2cooldown2(sf::Vector2f(150, 10)); 
+    special2cooldown1.setFillColor(sf::Color::Yellow); // fill color
+    special2cooldown2.setFillColor(sf::Color::Yellow); // fill color
+    special2cooldown1.setPosition(650, 65); // position at the bottom right of the health bar 1
+    special2cooldown2.setPosition(window.getSize().x - 810, 65); // position at the bottom left of the health bar 2
+
+    sf::RectangleShape dashCooldown(sf::Vector2f(150, 10)); 
+    dashCooldown.setFillColor(sf::Color::White); // fill color
+    dashCooldown.setPosition(650, 80); // position at the bottom right of the health bar 1 (650, 50)
+    sf::RectangleShape dashCooldown2(sf::Vector2f(150, 10)); 
+    dashCooldown2.setFillColor(sf::Color::White); // fill color
+    dashCooldown2.setPosition(window.getSize().x - 810, 80); // position at the bottom right of the health bar 2 (..., 50)
 
     // permet animation player 1
     int currentFrame = 0;
@@ -275,6 +296,15 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
     bool isZPressed = false;
     bool isSPressed = false;
+
+    float special1Cooldown1 = 3.0f;
+    float special2Cooldown1 = 3.0f;
+    float special1Cooldown2 = 4.0f;
+    float special2Cooldown2 = 5.0f;
+    firstPlayer.special1Cooldown = special1Cooldown1;
+    firstPlayer.special2Cooldown = special2Cooldown1;
+    secondPlayer.special1Cooldown = special1Cooldown2;
+    secondPlayer.special2Cooldown = special2Cooldown2;
 
     // Constants for joystick sensitivity and neutral position threshold
     const float JoystickSensitivity = 5.0f; // Adjust as needed
@@ -526,7 +556,6 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     isSpecial2P1 = true;
                     frameClock.restart();
                 }   
-
 
             if (isSpecial2P1) {
                 // update the sprite every 0.1 seconds
@@ -1235,7 +1264,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // dash the player 1
             sf::Time timeSinceLastDash1 = dashClock1.getElapsedTime();
             if (firstPlayer.chosenChar == 1){
-                if (!firstPlayer.isDashing && timeSinceLastDash1.asSeconds() >= 3.5f) {
+                if (!firstPlayer.isDashing && timeSinceLastDash1.asSeconds() >= firstPlayer.dashCooldown) {
                     if ((controller1.isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) && Player.getGlobalBounds().left + Player.getGlobalBounds().width < window.getSize().x) {
                         if (firstPlayer.lastDirectionLeft){
                             firstPlayer.isDashing = true;
@@ -1302,7 +1331,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             // dash the player 2
             sf::Time timeSinceLastDash2 = dashClock2.getElapsedTime();
             if (secondPlayer.chosenChar == 1){
-                if (!secondPlayer.isDashing && timeSinceLastDash2.asSeconds() >= 3.5f) {
+                if (!secondPlayer.isDashing && timeSinceLastDash2.asSeconds() >= secondPlayer.dashCooldown) {
                     if (controller2.isButtonPressed(1, 1) && Player2.getGlobalBounds().left + Player2.getGlobalBounds().width < window.getSize().x) {
                         if (secondPlayer.lastDirectionLeft){
                             secondPlayer.isDashing = true;
@@ -1476,6 +1505,29 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             healthBar2.setSize(sf::Vector2f(800.0f * secondPlayer.HP / secondPlayer.maxHP, 20.0f));
 
 
+            // update the visible cooldowns
+            if (special1AttackClock1.getElapsedTime().asSeconds() < firstPlayer.special1Cooldown){
+                special1cooldown1.setSize(sf::Vector2f(150 * special1AttackClock1.getElapsedTime().asSeconds() / firstPlayer.special1Cooldown, 10.0f));
+            }
+            if (special2AttackClock1.getElapsedTime().asSeconds() < firstPlayer.special2Cooldown){
+                special2cooldown1.setSize(sf::Vector2f(150 * special2AttackClock1.getElapsedTime().asSeconds() / firstPlayer.special2Cooldown, 10.0f));
+            }
+            if (special1AttackClock2.getElapsedTime().asSeconds() < secondPlayer.special1Cooldown){
+                special1cooldown2.setSize(sf::Vector2f(150 * special1AttackClock2.getElapsedTime().asSeconds() / secondPlayer.special1Cooldown, 10.0f));
+            }
+            if (special2AttackClock2.getElapsedTime().asSeconds() < secondPlayer.special2Cooldown){
+                special2cooldown2.setSize(sf::Vector2f(150 * special2AttackClock2.getElapsedTime().asSeconds() / secondPlayer.special2Cooldown, 10.0f));
+            }
+            if (timeSinceLastDash1.asSeconds() <= firstPlayer.dashCooldown){
+                dashCooldown.setSize(sf::Vector2f(150 * timeSinceLastDash1.asSeconds() / firstPlayer.dashCooldown, 10.0f));
+
+            }
+            if (timeSinceLastDash2.asSeconds() <= secondPlayer.dashCooldown){
+                dashCooldown2.setSize(sf::Vector2f(150 * timeSinceLastDash2.asSeconds() / secondPlayer.dashCooldown, 10.0f));
+            }
+
+
+
             if (firstPlayer.HP == 0){
                 firstPlayer.lives--;
                 music.stop();
@@ -1518,6 +1570,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         window.draw(healthBar2);
         window.draw(lifeGuts);
         window.draw(lifeShadr);
+        window.draw(special1cooldown1);
+        window.draw(special1cooldown2);
+        window.draw(special2cooldown1);
+        window.draw(special2cooldown2);
+        window.draw(dashCooldown);
+        window.draw(dashCooldown2);
                 
 
 

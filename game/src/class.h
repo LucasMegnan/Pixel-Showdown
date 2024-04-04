@@ -39,7 +39,12 @@ public:
     bool isAttack2;
     bool isSpecial1;
     bool isSpecial2;
-    bool isUlt;
+    
+    // cooldowns
+    float attackCooldown = 0.5f;
+    float special1Cooldown;
+    float special2Cooldown;
+    float dashCooldown = 3.5f;
 
 };
 
