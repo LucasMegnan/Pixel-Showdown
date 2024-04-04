@@ -7,7 +7,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 {
     sf::Clock chronometer;
     sf::Text Chrono ("", font, 75);
-    Chrono.setFillColor(sf::Color::White);
+    Chrono.setFillColor(sf::Color::Black);
     Chrono.setPosition(930, 55);
     int maxTime = 120; // 2min of game
 
