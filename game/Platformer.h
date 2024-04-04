@@ -1,5 +1,8 @@
 #include "src/class.h"
 
+void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1);
+void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer);
+
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
     sf::Clock chronometer;
@@ -1567,25 +1570,15 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 dashCooldown2.setSize(sf::Vector2f(150 * timeSinceLastDash2.asSeconds() / secondPlayer.dashCooldown, 10.0f));
             }
 
-            if (firstPlayer.lives == 0){
+            if (firstPlayer.lives == 0 || secondPlayer.lives == 0) {
                 music.stop();
                 std::stringstream Ss;
-                Ss << "2nd  Player won";
+                Ss << (firstPlayer.lives == 0 ? "2nd Player won" : "1st Player won");
                 GameOver.setString(Ss.str());
                 window.draw(GameOver);
                 window.display();
-                sf::sleep(sf::seconds(5));
-                window.close();
-            }
-            if (secondPlayer.lives == 0){
-                music.stop();
-                std::stringstream Ss;
-                Ss << "1st  Player won";
-                GameOver.setString(Ss.str());
-                window.draw(GameOver);
-                window.display();
-                sf::sleep(sf::seconds(5));
-                window.close();
+                sf::sleep(sf::seconds(1));
+                endGameMenu(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer, music, controller1);
             }
 
 
@@ -1724,6 +1717,96 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         window.draw(closeGameText);
     } 
 
+        window.display();
+    }
+}
+
+void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1) {
+    // Create menu options
+    sf::Text replayOption("Rejouer", font, 50);
+    sf::Text menuOption("Retourner au menu", font, 50);
+    sf::Text quitOption("Quitter", font, 50);
+
+    // Position menu options
+    replayOption.setPosition(window.getSize().x / 2, window.getSize().y / 2 - 100);
+    menuOption.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    quitOption.setPosition(window.getSize().x / 2, window.getSize().y / 2 + 100);
+
+    int choicePos = window.getSize().y / 2 - 100; // Initial choice position
+    int backToGamePos = window.getSize().y / 2 - 100;
+    int backToMenuPos = window.getSize().y / 2;
+    int closeGamePos = window.getSize().y / 2 + 100;
+
+    bool wasButton0Pressed = false;
+    bool wasButton3Pressed = false;
+    bool wasSPressed = false;
+    bool wasZPressed = false;
+
+    // Game loop
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            // Check if menu options are clicked
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                if (replayOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    // Replay game
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                } else if (menuOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    // Return to menu
+                    // Add your menu function here
+                } else if (quitOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    // Quit game
+                    window.close();
+                }
+            }
+
+            // Check if menu options are selected
+            if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < closeGamePos) {
+                if (!wasButton0Pressed && !wasSPressed) {
+                    choicePos += 200;
+                    wasButton0Pressed = true;
+                    wasSPressed = true;
+                }
+            } else {    
+                wasButton0Pressed = false;
+                wasSPressed = false;
+            }
+            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > backToGamePos) {
+                if (!wasButton3Pressed && !wasZPressed) {
+                   choicePos -= 200;
+                   wasButton3Pressed = true;
+                   wasZPressed = true;
+                }
+            } else {
+                wasButton3Pressed = false;
+                wasZPressed = false;
+            }
+            if (controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+                if (choicePos == backToGamePos) {
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                } else if (choicePos == backToMenuPos) {
+                    // Go back to the menu and will end all the programs at the end
+                    music.stop();
+                    system("Pixel-Showdown.exe");
+                    system("taskkill /F /IM Pixel-Showdown.exe");
+                    
+                    return;
+                } else if (choicePos == closeGamePos) {
+                    window.close();
+                }
+            }
+        }
+
+        // Draw menu options
+        window.clear();
+        window.draw(replayOption);
+        window.draw(menuOption);
+        window.draw(quitOption);
         window.display();
     }
 }
