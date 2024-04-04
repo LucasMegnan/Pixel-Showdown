@@ -2,6 +2,7 @@
 
 void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1);
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer);
+void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn);
 
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
@@ -1767,6 +1768,10 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 }
 
 void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1) {
+
+    firstPlayer.lives = 3;
+    secondPlayer.lives = 3;
+
     // Create menu options
     sf::Text replayOption("Rejouer", font, 50);
     sf::Text menuOption("Retourner au menu", font, 50);
@@ -1777,10 +1782,13 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
     menuOption.setPosition(window.getSize().x / 2, window.getSize().y / 2);
     quitOption.setPosition(window.getSize().x / 2, window.getSize().y / 2 + 100);
 
-    int choicePos = window.getSize().y / 2 - 100; // Initial choice position
-    int backToGamePos = window.getSize().y / 2 - 100;
-    int backToMenuPos = window.getSize().y / 2;
-    int closeGamePos = window.getSize().y / 2 + 100;
+    // Menu options positions
+    int replayOptionPos = window.getSize().y / 2 - 100;
+    int menuOptionPos = window.getSize().y / 2;
+    int quitOptionPos = window.getSize().y / 2 + 100;
+
+    // Initial choice position
+    int choicePos = replayOptionPos;
 
     bool wasButton0Pressed = false;
     bool wasButton3Pressed = false;
@@ -1795,23 +1803,23 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
                 window.close();
             }
 
-            // Check if menu options are clicked
-            if (event.type == sf::Event::MouseButtonPressed) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                if (replayOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    // Replay game
-                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
-                } else if (menuOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    // Return to menu
-                    // Add your menu function here
-                } else if (quitOption.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    // Quit game
-                    window.close();
-                }
+            // Color Update depending on your choice
+            if (choicePos == replayOptionPos) {
+                replayOption.setFillColor(sf::Color::Red);
+                menuOption.setFillColor(sf::Color::White);
+                quitOption.setFillColor(sf::Color::White);
+            } else if (choicePos == menuOptionPos) {
+                replayOption.setFillColor(sf::Color::White);
+                menuOption.setFillColor(sf::Color::Red);
+                quitOption.setFillColor(sf::Color::White);
+            } else if (choicePos == quitOptionPos) {
+                replayOption.setFillColor(sf::Color::White);
+                menuOption.setFillColor(sf::Color::White);
+                quitOption.setFillColor(sf::Color::Red);
             }
 
-            // Check if menu options are selected
-            if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < closeGamePos) {
+            // Check if menu options are clicked
+            if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < quitOptionPos) {
                 if (!wasButton0Pressed && !wasSPressed) {
                     choicePos += 200;
                     wasButton0Pressed = true;
@@ -1821,27 +1829,25 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
                 wasButton0Pressed = false;
                 wasSPressed = false;
             }
-            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > backToGamePos) {
+            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > replayOptionPos) {
                 if (!wasButton3Pressed && !wasZPressed) {
-                   choicePos -= 200;
-                   wasButton3Pressed = true;
-                   wasZPressed = true;
+                    choicePos -= 200;
+                    wasButton3Pressed = true;
+                    wasZPressed = true;
                 }
             } else {
                 wasButton3Pressed = false;
                 wasZPressed = false;
             }
             if (controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-                if (choicePos == backToGamePos) {
+                if (choicePos == replayOptionPos) {
+                    // Replay game
                     launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
-                } else if (choicePos == backToMenuPos) {
-                    // Go back to the menu and will end all the programs at the end
-                    music.stop();
-                    system("Pixel-Showdown.exe");
-                    system("taskkill /F /IM Pixel-Showdown.exe");
-                    
-                    return;
-                } else if (choicePos == closeGamePos) {
+                } else if (choicePos == menuOptionPos) {
+                    // Return to menu
+                    void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn);
+                } else if (choicePos == quitOptionPos) {
+                    // Quit game
                     window.close();
                 }
             }

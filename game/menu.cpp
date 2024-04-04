@@ -2,6 +2,7 @@
 
 bool wasZPressed = false;
 bool wasSPressed = false;
+bool wasSpacePressed = false;
 bool wasButton0Pressed = false;
 bool wasButton3Pressed = false;
 bool musicOn = true;
@@ -53,14 +54,20 @@ bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
                 window.close();
         }
 
-            if (controller1.isButtonPressed(0, 6)){
+            if (controller1.isButtonPressed(0, 6) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 return musicOn;
             }
-            if (controller1.isButtonPressed(0, 1) && musicOn == true){
+            if ((controller1.isButtonPressed(0, 1)) && musicOn == true){
                 musicOn = false;
             }
-            if (controller1.isButtonPressed(0, 2) && musicOn == false){
+            if ((controller1.isButtonPressed(0, 2)) && musicOn == false){
                 musicOn = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+                if (!wasSpacePressed) {
+                    musicOn = !musicOn;
+                    wasSpacePressed = true;
+                }
             }
             
         window.clear(sf::Color::Black);
@@ -110,7 +117,7 @@ void howToPlay(sf::RenderWindow& window, sf::Font font){
                 window.close();
         }
 
-            if (controller1.isButtonPressed(0, 6)){
+            if (controller1.isButtonPressed(0, 6) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 return;
             }
             
@@ -237,14 +244,14 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
                 }
                 else{}
             }
-            if (controller1.isButtonPressed(1, 2)) {
+            if (controller1.isButtonPressed(1, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
                 if (choicePos2 >= GutsPos) {
                     chosenChar2 = 1;
                     choicePos2 = 800;
                 }
                 else{}
             }
-            if (controller1.isButtonPressed(1, 1)){
+            if (controller1.isButtonPressed(1, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
                 if (choicePos2 <= ShadrPos) {
                     chosenChar2 = 2;
                     choicePos2 = 1100;
