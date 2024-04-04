@@ -1607,6 +1607,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 window.display();
                 sf::sleep(sf::seconds(1));
                 endGameMenu(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer, music, controller1);
+                return;
             }
 
             iconPlayer.setTexture(icon1Player);
@@ -1773,9 +1774,9 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
     secondPlayer.lives = 3;
 
     // Create menu options
-    sf::Text replayOption("Rejouer", font, 50);
-    sf::Text menuOption("Retourner au menu", font, 50);
-    sf::Text quitOption("Quitter", font, 50);
+    sf::Text replayOption("Play again", font, 50);
+    sf::Text menuOption("Return to menu", font, 50);
+    sf::Text quitOption("Quit", font, 50);
 
     // Position menu options
     replayOption.setPosition(window.getSize().x / 2, window.getSize().y / 2 - 100);
@@ -1819,24 +1820,36 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
             }
 
             // Check if menu options are clicked
-            if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < quitOptionPos) {
+            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == menuOptionPos) {
+                if (!wasButton3Pressed && !wasZPressed) {
+                    choicePos = replayOptionPos;
+                    wasButton3Pressed = true;
+                    wasZPressed = true;
+                }
+            } 
+            else if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == menuOptionPos) {
                 if (!wasButton0Pressed && !wasSPressed) {
-                    choicePos += 200;
+                    choicePos = quitOptionPos;
                     wasButton0Pressed = true;
                     wasSPressed = true;
                 }
-            } else {    
-                wasButton0Pressed = false;
-                wasSPressed = false;
-            }
-            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > replayOptionPos) {
+            } 
+            else if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == replayOptionPos) {
+                if (!wasButton0Pressed && !wasSPressed) {
+                    choicePos = menuOptionPos;
+                    wasButton0Pressed = true;
+                    wasZPressed = true;
+                }
+            } 
+            else if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == quitOptionPos){
                 if (!wasButton3Pressed && !wasZPressed) {
-                    choicePos -= 200;
+                    choicePos = menuOptionPos;
                     wasButton3Pressed = true;
                     wasZPressed = true;
                 }
             } else {
                 wasButton3Pressed = false;
+                wasButton0Pressed = false;
                 wasZPressed = false;
             }
             if (controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
@@ -1845,7 +1858,8 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
                     launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
                 } else if (choicePos == menuOptionPos) {
                     // Return to menu
-                    void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn);
+                    system("Pixel-Showdown.exe");
+                    system("taskkill /F /IM Pixel-Showdown.exe");
                 } else if (choicePos == quitOptionPos) {
                     // Quit game
                     window.close();
