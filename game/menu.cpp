@@ -43,25 +43,33 @@ bool settings(sf::RenderWindow& window, sf::Font font, bool musicOn){
     Return.setFillColor(sf::Color::Yellow);
     Return.setScale(1.5, 1.5);
 
+    const float JoystickSensitivity = 5.0f;
+    const float JoystickNeutralThreshold = 7.5f;
+    float prevX = 0.0f;
+
     sf::Joystick controller1;
 
     while (window.isOpen())
     {
+        float currentX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+            controller1.update();
 
             if (controller1.isButtonPressed(0, 6) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 return musicOn;
             }
-            if ((controller1.isButtonPressed(0, 1)) && musicOn == true){
-                musicOn = false;
-            }
-            if ((controller1.isButtonPressed(0, 2)) && musicOn == false){
-                musicOn = true;
+            if (std::abs(currentX - prevX) > JoystickSensitivity){ 
+                if ((currentX > JoystickNeutralThreshold) && musicOn == true){ // right
+                    musicOn = false;
+                 }
+                if ((currentX < -JoystickNeutralThreshold) && musicOn == false){ // left
+                    musicOn = true;
+                }
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
                 if (!wasSpacePressed) {
@@ -199,10 +207,20 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
     int chosenChar1 = 0;
     int chosenChar2 = 0;
 
+    const float JoystickSensitivity = 5.0f;
+    const float JoystickSensitivity2 = 5.0f;
+    const float JoystickNeutralThreshold = 7.5f;
+    const float JoystickNeutralThreshold2 = 7.5f;
+    float prevX = 0.0f;
+    float prevX2 = 0.0f;
+
     sf::Joystick controller1;
+    sf::Joystick controller2;
 
     while (window.isOpen())
     {
+        float currentX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+        float currentX2 = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -230,28 +248,28 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
 
 
             
-            if (controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            if ((std::abs(currentX - prevX) > JoystickSensitivity && currentX < -JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
                 if (choicePos1 >= GutsPos) {
                     chosenChar1 = 2;
                     choicePos1 = 800;
                 }
                 else{}
             }
-            if (controller1.isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+            if ((std::abs(currentX - prevX) > JoystickSensitivity && currentX > JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
                 if (choicePos1 <= ShadrPos) {
                     chosenChar1 = 1;
                     choicePos1 = 1100;
                 }
                 else{}
             }
-            if (controller1.isButtonPressed(1, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+            if ((std::abs(currentX2 - prevX2) > JoystickSensitivity2 && currentX2 < -JoystickNeutralThreshold2) || sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
                 if (choicePos2 >= GutsPos) {
                     chosenChar2 = 1;
                     choicePos2 = 800;
                 }
                 else{}
             }
-            if (controller1.isButtonPressed(1, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
+            if ((std::abs(currentX2 - prevX2) > JoystickSensitivity2 && currentX2 > JoystickNeutralThreshold2) || sf::Keyboard::isKeyPressed(sf::Keyboard::L)){
                 if (choicePos2 <= ShadrPos) {
                     chosenChar2 = 2;
                     choicePos2 = 1100;
@@ -272,7 +290,7 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
                     launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
                 }
             }
-            else if ((controller1.isButtonPressed(1, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && !chosenChar1 == 0 && !chosenChar2 == 0){
+            else if ((controller2.isButtonPressed(1, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && !chosenChar1 == 0 && !chosenChar2 == 0){
                 if (choicePos2 == GutsPos){
                     music.stop();
                     chosenChar2 = 1;
@@ -324,10 +342,6 @@ int main()
         // handle error
     }
 
-    // Controller is connected
-    sf::Joystick controller1;
-    controller1.isConnected(0);
-
     sf::Text Title("Pixel Showdown", font);
     Title.setPosition(700, 150);
     Title.setFillColor(sf::Color::Cyan);
@@ -362,8 +376,15 @@ int main()
     bool isZPressed = false;
     bool isSPressed = false;
 
+    const float JoystickSensitivity = 7.5f;
+    const float JoystickNeutralThreshold = 7.5f;
+    float prevY = 0.0f;
+
+    sf::Joystick controller1;
+
     while (window.isOpen())
     {
+        float currentY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -408,7 +429,7 @@ int main()
             }
 
             // Check button presses and keyboard inputs
-            if (controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            if ((std::abs(currentY - prevY) > JoystickSensitivity && currentY > JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
                 if (!wasButton3Pressed && !wasSPressed) {
                     updateChoicePosition(choicePos, 100, playButtonPos, exitButtonPos);
                     wasButton3Pressed = true;
@@ -419,7 +440,7 @@ int main()
                 wasSPressed = false;
             }
 
-            if (controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+            if ((std::abs(currentY - prevY) > JoystickSensitivity && currentY < -JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
                 if (!wasButton0Pressed && !wasZPressed) {
                     updateChoicePosition(choicePos, -100, playButtonPos, exitButtonPos);
                     wasButton0Pressed = true;

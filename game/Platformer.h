@@ -2,7 +2,6 @@
 
 void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1);
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer);
-void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn);
 
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer)
 {
@@ -361,12 +360,13 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     }
 
     // Constants for joystick sensitivity and neutral position threshold
-    const float JoystickSensitivity = 5.0f; // Adjust as needed
+    const float JoystickSensitivity = 7.5f; // Adjust as needed
     const float JoystickNeutralThreshold = 7.5f; // Adjust as needed
-    const float JoystickSensitivity2 = 5.0f;
+    const float JoystickSensitivity2 = 7.5f;
     const float JoystickNeutralThreshold2 = 7.5f;
     // Previous joystick position
     float prevX = 0.0f;
+    float prevY = 0.0f;
     float prevX2 = 0.0f;
 
     sf::Joystick controller1;
@@ -374,6 +374,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
     while (window.isOpen()) {
         float currentX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+        float currentY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
         float currentX2 = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -415,7 +416,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             }
 
             if (gameState == PAUSED) {
-                if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < closeGamePos) {
+                if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY > JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos < closeGamePos) {
                     if (!wasButton0Pressed && !wasZPressed) {
                         choicePos += 200;
                         wasButton0Pressed = true;
@@ -425,7 +426,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     wasButton0Pressed = false;
                     wasSPressed = false;
                 }
-                if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > backToGamePos) {
+                if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY < -JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos > backToGamePos) {
                     if (!wasButton3Pressed && !wasZPressed) {
                        choicePos -= 200;
                        wasButton3Pressed = true;
@@ -1773,6 +1774,10 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
     firstPlayer.lives = 3;
     secondPlayer.lives = 3;
 
+    sf::Texture t;
+    t.loadFromFile("imgs/bg2.png");
+    sf::Sprite s(t);
+
     // Create menu options
     sf::Text replayOption("Play again", font, 50);
     sf::Text menuOption("Return to menu", font, 50);
@@ -1796,8 +1801,14 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
     bool wasSPressed = false;
     bool wasZPressed = false;
 
+    const float JoystickSensitivity = 7.5f; // Adjust as needed
+    const float JoystickNeutralThreshold = 7.5f; // Adjust as needed
+    // Previous joystick position
+    float prevY = 0.0f;
+
     // Game loop
     while (window.isOpen()) {
+        float currentY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -1820,28 +1831,28 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
             }
 
             // Check if menu options are clicked
-            if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == menuOptionPos) {
+            if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY < -JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == menuOptionPos) {
                 if (!wasButton3Pressed && !wasZPressed) {
                     choicePos = replayOptionPos;
                     wasButton3Pressed = true;
                     wasZPressed = true;
                 }
             } 
-            else if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == menuOptionPos) {
+            else if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY > JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == menuOptionPos) {
                 if (!wasButton0Pressed && !wasSPressed) {
                     choicePos = quitOptionPos;
                     wasButton0Pressed = true;
                     wasSPressed = true;
                 }
             } 
-            else if ((controller1.isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == replayOptionPos) {
+            else if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY > JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) && choicePos == replayOptionPos) {
                 if (!wasButton0Pressed && !wasSPressed) {
                     choicePos = menuOptionPos;
                     wasButton0Pressed = true;
                     wasZPressed = true;
                 }
             } 
-            else if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == quitOptionPos){
+            else if (((std::abs(currentY - prevY) > JoystickSensitivity && currentY < -JoystickNeutralThreshold) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) && choicePos == quitOptionPos){
                 if (!wasButton3Pressed && !wasZPressed) {
                     choicePos = menuOptionPos;
                     wasButton3Pressed = true;
@@ -1869,6 +1880,7 @@ void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool mu
 
         // Draw menu options
         window.clear();
+        window.draw(s);
         window.draw(replayOption);
         window.draw(menuOption);
         window.draw(quitOption);
