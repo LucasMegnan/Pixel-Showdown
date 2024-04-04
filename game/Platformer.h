@@ -137,24 +137,24 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
 
     // cooldowns
     sf::RectangleShape special1cooldown1(sf::Vector2f(150, 10)); 
-    sf::RectangleShape special1cooldown2(sf::Vector2f(150, 10)); 
-    special1cooldown1.setFillColor(sf::Color::Yellow); // fill color
-    special1cooldown2.setFillColor(sf::Color::Yellow); // fill color
-    special1cooldown1.setPosition(650, 50); // position at the bottom right of the health bar 1
-    special1cooldown2.setPosition(window.getSize().x - 810, 50); // position at the bottom left of the health bar 2
     sf::RectangleShape special2cooldown1(sf::Vector2f(150, 10)); 
+    special1cooldown1.setFillColor(sf::Color::Cyan);
+    special2cooldown1.setFillColor(sf::Color::Red); 
+    special1cooldown1.setPosition(490, 50); // position at the bottom right of the health bar 1
+    special2cooldown1.setPosition(490, 65); // position at the bottom left of the health bar 2
+    sf::RectangleShape special1cooldown2(sf::Vector2f(150, 10)); 
     sf::RectangleShape special2cooldown2(sf::Vector2f(150, 10)); 
-    special2cooldown1.setFillColor(sf::Color::Yellow); // fill color
-    special2cooldown2.setFillColor(sf::Color::Yellow); // fill color
-    special2cooldown1.setPosition(650, 65); // position at the bottom right of the health bar 1
-    special2cooldown2.setPosition(window.getSize().x - 810, 65); // position at the bottom left of the health bar 2
-
+    special1cooldown2.setFillColor(sf::Color::Black); 
+    special2cooldown2.setFillColor(sf::Color::Magenta); 
+    special1cooldown2.setPosition(window.getSize().x - 650, 50); // position at the bottom right of the health bar 1
+    special2cooldown2.setPosition(window.getSize().x - 650, 65); // position at the bottom left of the health bar 2
+    // dash cooldowns
     sf::RectangleShape dashCooldown(sf::Vector2f(150, 10)); 
-    dashCooldown.setFillColor(sf::Color::White); // fill color
-    dashCooldown.setPosition(650, 80); // position at the bottom right of the health bar 1 (650, 50)
+    dashCooldown.setFillColor(sf::Color::White); 
+    dashCooldown.setPosition(650, 50); // position at the bottom right of the health bar 1 (650, 50)
     sf::RectangleShape dashCooldown2(sf::Vector2f(150, 10)); 
-    dashCooldown2.setFillColor(sf::Color::White); // fill color
-    dashCooldown2.setPosition(window.getSize().x - 810, 80); // position at the bottom right of the health bar 2 (..., 50)
+    dashCooldown2.setFillColor(sf::Color::White); 
+    dashCooldown2.setPosition(window.getSize().x - 810, 50); // position at the bottom right of the health bar 2 (..., 50)
 
     // permet animation player 1
     int currentFrame = 0;
