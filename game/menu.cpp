@@ -164,19 +164,23 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
 
     sf::Sprite iconGuts;
     sf::Sprite iconShadr;
-    sf::Sprite choose;
+    sf::Sprite choose1;
+    sf::Sprite choose2;
 
     sf::Texture charIconGuts;
     charIconGuts.loadFromFile("Imgs/Guts/icon.png");
     sf::Texture charIconShadr;
     charIconShadr.loadFromFile("Imgs/Shadr/icon.png");
-    sf::Texture charChoose;
-    charChoose.loadFromFile("Imgs/selectHand.png");
+    sf::Texture charChoose1;
+    charChoose1.loadFromFile("Imgs/selectHand1.png");
+    sf::Texture charChoose2;
+    charChoose2.loadFromFile("Imgs/selectHand2.png");
 
     int character;
     int GutsPos = 800;
     int ShadrPos = 1100;
-    int choicePos = 950;
+    int choicePos1 = 950;
+    int choicePos2 = 950;
 
     iconGuts.setPosition(700, 815);
     iconGuts.setTexture(charIconGuts);
@@ -210,38 +214,68 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
                 music.stop();
             }
 
-            choose.setPosition(choicePos, 850);
-            choose.setTexture(charChoose);
-            choose.setScale(sf::Vector2f(3.0f, 3.0));
+            choose1.setPosition(choicePos1, 800);
+            choose1.setTexture(charChoose1);
+            choose1.setScale(sf::Vector2f(3.0f, 3.0));
+            choose2.setPosition(choicePos2, 850);
+            choose2.setTexture(charChoose2);
+            choose2.setScale(sf::Vector2f(3.0f, 3.0));
+
 
             
             if (controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-                if (choicePos >= GutsPos) {
+                if (choicePos1 >= GutsPos) {
                     chosenChar1 = 2;
-                    choicePos = 800;
+                    choicePos1 = 800;
                 }
                 else{}
             }
             if (controller1.isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-                if (choicePos <= ShadrPos) {
+                if (choicePos1 <= ShadrPos) {
                     chosenChar1 = 1;
-                    choicePos = 1100;
+                    choicePos1 = 1100;
+                }
+                else{}
+            }
+            if (controller1.isButtonPressed(1, 2)) {
+                if (choicePos2 >= GutsPos) {
+                    chosenChar2 = 1;
+                    choicePos2 = 800;
+                }
+                else{}
+            }
+            if (controller1.isButtonPressed(1, 1)){
+                if (choicePos2 <= ShadrPos) {
+                    chosenChar2 = 2;
+                    choicePos2 = 1100;
                 }
                 else{}
             }
 
 
-            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == GutsPos && !(chosenChar1 == 0)){
-                music.stop();
-                chosenChar1 = 1; // to load properly the sprites for now
-                chosenChar2 = 2;
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer); // Fix: Add missing argument for the launchGame function
+            if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && !chosenChar1 == 0 && !chosenChar2 == 0){
+                if (choicePos1 == GutsPos){
+                    music.stop();
+                    chosenChar1 = 1;
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                }
+                else if (choicePos1 == ShadrPos){
+                    music.stop();
+                    chosenChar1 = 2; 
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                }
             }
-            else if ((controller1.isButtonPressed(0, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && choicePos == ShadrPos && !(chosenChar1 == 0)){
-                music.stop();
-                chosenChar1 = 2; // to load properly the sprites for now
-                chosenChar2 = 1;
-                launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer); // Fix: Add missing argument for the launchGame function
+            else if ((controller1.isButtonPressed(1, 7) || sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) && !chosenChar1 == 0 && !chosenChar2 == 0){
+                if (choicePos2 == GutsPos){
+                    music.stop();
+                    chosenChar2 = 1;
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                }
+                else if (choicePos2 == ShadrPos){
+                    music.stop();
+                    chosenChar2 = 2; 
+                    launchGame(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer);
+                }
             }
 
             window.clear(sf::Color::Black);
@@ -250,7 +284,8 @@ void charSelection (sf::RenderWindow& window, sf::Font font, int musicOn){
             window.draw(iconSquare2);
             window.draw(iconGuts);
             window.draw(iconShadr);
-            window.draw(choose);
+            window.draw(choose1);
+            window.draw(choose2);
             window.draw(ChooseCharacter);
             window.draw(CharacterName1);
             window.draw(CharacterName2);

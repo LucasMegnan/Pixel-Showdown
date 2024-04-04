@@ -88,16 +88,34 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     secondPlayer.chosenChar = chosenChar2;
     if (firstPlayer.chosenChar == 1){
         Player.setTexture(IdleGutsSheet[0]);
-        Player2.setTexture(IdleLShadrSheet[0]);
     }
     else if (firstPlayer.chosenChar == 2){
         Player.setTexture(IdleShadrSheet[0]);
+    }
+    if (secondPlayer.chosenChar == 1){
         Player2.setTexture(IdleLGutsSheet[0]);
+    }
+    else if (secondPlayer.chosenChar == 2){
+        Player2.setTexture(IdleLShadrSheet[0]);
     }
     Player.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player.setPosition(250, 250);
     Player2.setScale(sf::Vector2f(3.0f, 3.0)); // Ajust the sprite's height if needed
     Player2.setPosition(1500, 250);
+
+    sf::Sprite iconPlayer;
+    sf::Sprite iconPlayer2;
+    sf::Texture icon1Player;
+    icon1Player.loadFromFile("Imgs/p1.png");
+    sf::Texture icon2Player;
+    icon2Player.loadFromFile("Imgs/p2.png");
+    iconPlayer.setTexture(icon1Player);
+    iconPlayer2.setTexture(icon2Player);
+    iconPlayer.setPosition(Player.getPosition().x + 10, Player.getPosition().y - 5);
+    iconPlayer.setScale(sf::Vector2f(2.0f, 2.0));
+    iconPlayer2.setPosition(Player2.getPosition().x + 10, Player2.getPosition().y - 5);
+    iconPlayer2.setScale(sf::Vector2f(2.0f, 2.0));
+
 
     sf::Sprite lifeGuts;
     sf::Sprite lifeShadr;
@@ -109,16 +127,21 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         lifeGuts.setTexture(charlifeGuts);
         lifeGuts.setPosition(50, 50);
         lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
-        lifeShadr.setTexture(charlifeShadr);
+    }
+    else if (firstPlayer.chosenChar == 2){
+        lifeGuts.setTexture(charlifeShadr);
+        lifeGuts.setPosition(50, 50);
+        lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
+        
+    }
+    if (secondPlayer.chosenChar == 1){
+        lifeShadr.setTexture(charlifeGuts);
         lifeShadr.setPosition(window.getSize().x - 80, 50);
         lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
     }
-    else if (firstPlayer.chosenChar == 2){
-        lifeGuts.setTexture(charlifeGuts);
-        lifeGuts.setPosition(window.getSize().x - 80, 50);
-        lifeGuts.setScale(sf::Vector2f(1.0f, 1.0));
+    else if (secondPlayer.chosenChar == 2){
         lifeShadr.setTexture(charlifeShadr);
-        lifeShadr.setPosition(50, 50);
+        lifeShadr.setPosition(window.getSize().x - 80, 50);
         lifeShadr.setScale(sf::Vector2f(1.0f, 1.0));
     }
 
@@ -322,14 +345,18 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     if (firstPlayer.chosenChar == 1){
         firstPlayer.special1Cooldown = special1Cooldown1;
         firstPlayer.special2Cooldown = special2Cooldown1;
-        secondPlayer.special1Cooldown = special1Cooldown2;
-        secondPlayer.special2Cooldown = special2Cooldown2;
     }
     else if (firstPlayer.chosenChar == 2){
         firstPlayer.special1Cooldown = special1Cooldown2;
         firstPlayer.special2Cooldown = special2Cooldown2;
+    }
+    if (secondPlayer.chosenChar == 1){
         secondPlayer.special1Cooldown = special1Cooldown1;
         secondPlayer.special2Cooldown = special2Cooldown1;
+    }
+    else if (secondPlayer.chosenChar == 2){
+        secondPlayer.special1Cooldown = special1Cooldown2;
+        secondPlayer.special2Cooldown = special2Cooldown2;
     }
 
     // Constants for joystick sensitivity and neutral position threshold
@@ -1581,6 +1608,22 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                 endGameMenu(window, character, font, musicOn, chosenChar1, chosenChar2, firstPlayer, secondPlayer, music, controller1);
             }
 
+            iconPlayer.setTexture(icon1Player);
+            if (firstPlayer.chosenChar == 1){
+                iconPlayer.setPosition(Player.getPosition().x + 75, Player.getPosition().y - 5);
+            }
+            else if (firstPlayer.chosenChar == 2){
+                iconPlayer.setPosition(Player.getPosition().x + 75, Player.getPosition().y + 65);
+            }
+            iconPlayer2.setTexture(icon2Player);
+            if (secondPlayer.chosenChar == 1){
+                iconPlayer2.setPosition(Player2.getPosition().x + 75, Player2.getPosition().y - 5);
+            }
+            else if (secondPlayer.chosenChar == 2){
+                iconPlayer2.setPosition(Player2.getPosition().x + 75, Player2.getPosition().y + 65);
+            }
+
+
 
         window.clear(sf::Color::Black);
         window.draw(sprite);
@@ -1598,6 +1641,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
         window.draw(special2cooldown2);
         window.draw(dashCooldown);
         window.draw(dashCooldown2);
+        window.draw(iconPlayer);
+        window.draw(iconPlayer2);
                 
 
 
