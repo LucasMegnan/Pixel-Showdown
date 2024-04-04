@@ -138,8 +138,6 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     // cooldowns
     sf::RectangleShape special1cooldown1(sf::Vector2f(150, 10)); 
     sf::RectangleShape special2cooldown1(sf::Vector2f(150, 10)); 
-    special1cooldown1.setFillColor(sf::Color::Cyan);
-    special2cooldown1.setFillColor(sf::Color::Red); 
     special1cooldown1.setPosition(490, 50); // position at the bottom right of the health bar 1
     special2cooldown1.setPosition(490, 65); // position at the bottom left of the health bar 2
     sf::RectangleShape special1cooldown2(sf::Vector2f(150, 10)); 
@@ -148,6 +146,23 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     special2cooldown2.setFillColor(sf::Color::Magenta); 
     special1cooldown2.setPosition(window.getSize().x - 650, 50); // position at the bottom right of the health bar 1
     special2cooldown2.setPosition(window.getSize().x - 650, 65); // position at the bottom left of the health bar 2
+    if (firstPlayer.chosenChar == 1){
+        special1cooldown1.setFillColor(sf::Color::Cyan);
+        special2cooldown1.setFillColor(sf::Color::Red);
+    }
+    else if (firstPlayer.chosenChar == 2){
+        special1cooldown1.setFillColor(sf::Color::Black); 
+        special2cooldown1.setFillColor(sf::Color::Magenta); 
+    }
+    if (secondPlayer.chosenChar == 1){
+        special1cooldown2.setFillColor(sf::Color::Cyan); 
+        special2cooldown2.setFillColor(sf::Color::Red); 
+    }
+    else if (secondPlayer.chosenChar == 2){
+        special1cooldown2.setFillColor(sf::Color::Black); 
+        special2cooldown2.setFillColor(sf::Color::Magenta); 
+    }
+   
     // dash cooldowns
     sf::RectangleShape dashCooldown(sf::Vector2f(150, 10)); 
     dashCooldown.setFillColor(sf::Color::White); 
@@ -300,11 +315,19 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
     float special1Cooldown1 = 3.0f;
     float special2Cooldown1 = 3.0f;
     float special1Cooldown2 = 4.0f;
-    float special2Cooldown2 = 5.0f;
-    firstPlayer.special1Cooldown = special1Cooldown1;
-    firstPlayer.special2Cooldown = special2Cooldown1;
-    secondPlayer.special1Cooldown = special1Cooldown2;
-    secondPlayer.special2Cooldown = special2Cooldown2;
+    float special2Cooldown2 = 5.0f;    
+    if (firstPlayer.chosenChar == 1){
+        firstPlayer.special1Cooldown = special1Cooldown1;
+        firstPlayer.special2Cooldown = special2Cooldown1;
+        secondPlayer.special1Cooldown = special1Cooldown2;
+        secondPlayer.special2Cooldown = special2Cooldown2;
+    }
+    else if (firstPlayer.chosenChar == 2){
+        firstPlayer.special1Cooldown = special1Cooldown2;
+        firstPlayer.special2Cooldown = special2Cooldown2;
+        secondPlayer.special1Cooldown = special1Cooldown1;
+        secondPlayer.special2Cooldown = special2Cooldown1;
+    }
 
     // Constants for joystick sensitivity and neutral position threshold
     const float JoystickSensitivity = 5.0f; // Adjust as needed
@@ -387,8 +410,8 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
                     } else if (choicePos == backToMenuPos) {
                         // Go back to the menu and will end all the programs at the end
                         music.stop();
-                        system("sfml-app.exe");
-                        system("taskkill /F /IM sfml-app.exe");
+                        system("Pixel-Showdown.exe");
+                        system("taskkill /F /IM Pixel-Showdown.exe");
                         
                         return;
                     } else if (choicePos == closeGamePos) {
@@ -412,7 +435,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if ((controller1.isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::F)) && !firstPlayer.isProtect && basicAttack1Clock1.getElapsedTime().asSeconds() > 0.5f && !firstPlayer.isAttack1) {
                     currentFrame = 0;
                     firstPlayer.isAttack1 = true;
-                    firstPlayer.attackDamage = 1;
+                    firstPlayer.attackDamage = 0.7;
                     isAttack1P1 = true;
                     frameClock.restart();
                 }
@@ -460,7 +483,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if ((controller1.isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::C)) && !firstPlayer.isProtect && basicAttack2Clock1.getElapsedTime().asSeconds() > 0.5f && !firstPlayer.isAttack2) {
                     currentFrame = 0;
                     firstPlayer.isAttack2 = true;
-                    firstPlayer.attackDamage = 1;
+                    firstPlayer.attackDamage = 0.7;
                     isAttack2P1 = true;
                     frameClock.restart();
                 }
@@ -507,7 +530,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if ((controller1.isButtonPressed(0, 4) || sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && !firstPlayer.isProtect && special1AttackClock1.getElapsedTime().asSeconds() > 3.0f && !firstPlayer.isSpecial1) {
                 currentFrame = 0;
                 firstPlayer.isSpecial1 = true;
-                firstPlayer.attackDamage = 2;
+                if (firstPlayer.chosenChar == 1){
+                    firstPlayer.attackDamage = 0.7;
+                }
+                else if (firstPlayer.chosenChar == 2){
+                    firstPlayer.attackDamage = 0.3;
+                }
                 isSpecial1P1 = true;
                 frameClock.restart();
             }
@@ -552,7 +580,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if ((controller1.isButtonPressed(0, 5) || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) && !firstPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 3.0f && !firstPlayer.isSpecial2) {
                     currentFrame = 0;
                     firstPlayer.isSpecial2 = true;
-                    firstPlayer.attackDamage = 2;
+                    if (firstPlayer.chosenChar == 1){
+                        firstPlayer.attackDamage = 0.7;
+                    }
+                    else if (firstPlayer.chosenChar == 2){
+                        firstPlayer.attackDamage = 0.3;
+                    }
                     isSpecial2P1 = true;
                     frameClock.restart();
                 }   
@@ -601,7 +634,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if (controller2.isButtonPressed(1, 2) && basicAttack1Clock2.getElapsedTime().asSeconds() > 2.0f && !secondPlayer.isAttack1) {
                     currentFrame2 = 0;
                     secondPlayer.isAttack1 = true;
-                    secondPlayer.attackDamage = 1;
+                    secondPlayer.attackDamage = 0.7;
                     isAttack1P2 = true;
                     frameClock2.restart();
                 }   
@@ -644,7 +677,7 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if (controller2.isButtonPressed(1, 3) && basicAttack2Clock2.getElapsedTime().asSeconds() > 2.0f && !secondPlayer.isAttack2) {
                     currentFrame2 = 0;
                     secondPlayer.isAttack2 = true;
-                    secondPlayer.attackDamage = 1;
+                    secondPlayer.attackDamage = 0.7;
                     isAttack2P2 = true;
                     frameClock2.restart();
                 }
@@ -687,7 +720,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if (controller2.isButtonPressed(1, 4) && !secondPlayer.isProtect && special1AttackClock2.getElapsedTime().asSeconds() > 5.0f && !secondPlayer.isSpecial1) {
                     currentFrame2 = 0;
                     secondPlayer.isSpecial1 = true;
-                    secondPlayer.attackDamage = 2;
+                    if (secondPlayer.chosenChar == 1){
+                        secondPlayer.attackDamage = 0.7;
+                    }
+                    else if (secondPlayer.chosenChar == 2){
+                        secondPlayer.attackDamage = 0.3;
+                    }
                     isSpecial1P2 = true;
                     frameClock2.restart();
                 }
@@ -732,7 +770,12 @@ void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool mus
             if (controller2.isButtonPressed(1, 5) && !secondPlayer.isProtect && special2AttackClock1.getElapsedTime().asSeconds() > 5.0f && !secondPlayer.isSpecial2) {
                     currentFrame2 = 0;
                     secondPlayer.isSpecial2 = true;
-                    secondPlayer.attackDamage = 2;
+                    if (secondPlayer.chosenChar == 1){
+                        secondPlayer.attackDamage = 0.7;
+                    }
+                    else if (secondPlayer.chosenChar == 2){
+                        secondPlayer.attackDamage = 0.3;
+                    }
                     isSpecial2P2 = true;
                     frameClock2.restart();
                 }
