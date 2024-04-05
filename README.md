@@ -22,7 +22,7 @@ Be careful, it can be quite hard to install the library properly, don't hesitate
 ## Main Features
 
 Pixel Showdown contains some features that makes him unique:
-- Graphics are made in pixel art. Some sprites have been found (open-source only) and some have been made my the collaborators. <br>
+- Graphics are made in pixel art. Some sprites have been found (open-source only) and some have been made by the collaborators. <br>
 ![](./Documents/img/image.png)
 - A versus-fighting game aimed at pleasing either novice or experienced players.
 - Some functionalities are hidden, such as combos. You have to find them out by yourself!
