@@ -1,4 +1,4 @@
-#include "src/class.h"
+#include "class.h"
 
 void endGameMenu(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer, sf::Music& music, sf::Joystick controller1);
 void launchGame(sf::RenderWindow& window, int character, sf::Font font, bool musicOn, int chosenChar1, int chosenChar2, Character firstPlayer, Character secondPlayer);

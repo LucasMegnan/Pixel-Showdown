@@ -1,4 +1,4 @@
-#include "Platformer.h"
+#include "src/game.h"
 
 bool wasZPressed = false;
 bool wasSPressed = false;
